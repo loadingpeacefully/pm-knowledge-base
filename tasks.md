@@ -10,6 +10,7 @@ _Updated: 2026-04-06. Update at end of every session._
 - [x] Architecture v2 migration — CLAUDE.md, 9 config files, 4 lesson rewrites, dashboard level selector — done 2026-04-06
 
 ### Next lessons (all must be v2)
+- [ ] Write: Idempotency (01.06) — API Versioning — /new-lesson
 - [ ] Write: North Star Metric (06.01) — /new-lesson "north star metric"
 - [ ] Write: Unit Economics (07.01) — /new-lesson "unit economics"
 - [ ] Write: Go-To-Market Strategy (08.01) — /new-lesson "go-to-market strategy"
@@ -19,7 +20,7 @@ _Updated: 2026-04-06. Update at end of every session._
 
 ## Backlog
 
-- [ ] Write remaining Module 01 lessons (01.05 through 01.10 — all v2)
+- [ ] Write remaining Module 01 lessons (01.06 through 01.10 — all v2)
 - [ ] Write all Module 02 lessons (10 lessons — all v2)
 - [ ] Write Modules 03–09 in priority order (all v2)
 - [ ] Add diagrams or flow illustrations to key technical lessons
@@ -36,3 +37,4 @@ _Updated: 2026-04-06. Update at end of every session._
 - [x] Write: Rate Limiting & Throttling (01.04) — v2, ready, 0 Critical/High (2026-04-06)
 - [x] Write: CI/CD Pipelines (03.04) — v2, ready, 0 Critical/High (2026-04-06)
 - [x] Architecture v2 migration — all config files, 4 lesson rewrites, dashboard update (2026-04-06)
+- [x] Write: Idempotency (01.05) — v2, ready, 0 Critical/High (2026-04-06)
