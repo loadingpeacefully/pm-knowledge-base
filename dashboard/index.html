@@ -510,7 +510,13 @@ async function selectLesson(id) {
   try {
     const r = await fetch(`../concept-library/${lesson.file}?t=${Date.now()}`);
     if (!r.ok) throw new Error('HTTP ' + r.status);
-    renderLesson(lesson, await r.text());
+    const mdText = await r.text();
+    try {
+      renderLesson(lesson, mdText);
+    } catch (renderErr) {
+      console.error('renderLesson error:', renderErr);
+      setContent(`<div class="empty-state"><h3>Render error</h3><p>${esc(renderErr.message)}</p></div>`);
+    }
   } catch (e) {
     setContent(`<div class="empty-state"><h3>Could not load lesson</h3><p>${esc(e.message)}<br><br>Make sure the server is running:<br><code>python3 -m http.server 8080</code></p></div>`);
   }
@@ -629,7 +635,7 @@ function parseLevels(body) {
     }
 
     // Skip the level header comment lines themselves (between open/close separators)
-    if (current && /^# (?:FOUNDATION|WORKING KNOWLEDGE|STRATEGIC DEPTH|For:|Assumes:|This level)/.test(l)) continue;
+    if (current && /^# (?:FOUNDATION|WORKING KNOWLEDGE|STRATEGIC DEPTH|For:|Assumes:|Prereq:|This level)/.test(l)) continue;
 
     if (current) buf.push(l);
   }
@@ -723,9 +729,11 @@ function renderMd(md) {
       i++; continue;
     }
 
+    if (/^# (?!═)/.test(l))  { i++; continue; } // skip h1 lines (level headers leaked from parseLevels)
     if (/^## /.test(l))   { out += `<h2>${inline(l.slice(3))}</h2>`;  i++; continue; }
     if (/^### /.test(l))  { out += `<h3>${inline(l.slice(4))}</h3>`;  i++; continue; }
     if (/^#### /.test(l)) { out += `<h4>${inline(l.slice(5))}</h4>`;  i++; continue; }
+    if (/^---+$/.test(l)) { out += `<hr style="border:none;border-top:2px solid #E5E7EB;margin:24px 0">`; i++; continue; }
 
     if (/^\|/.test(l) && i + 1 < lines.length && /^\|\s*[-:]+/.test(lines[i + 1])) {
       const tl = [];
