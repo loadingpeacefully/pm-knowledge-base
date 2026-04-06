@@ -9,6 +9,11 @@ _Updated: 2026-04-06. Update at end of every session._
 ### Critical — architecture v2 migration (complete)
 - [x] Architecture v2 migration — CLAUDE.md, 9 config files, 4 lesson rewrites, dashboard level selector — done 2026-04-06
 
+### Swarm + formatter pipeline
+- [ ] Run pm_swarm.py on all 5 existing lessons (Design Agent feedback)
+- [ ] Run pm_format.py on lessons with run_formatter: true
+- [ ] Verify dashboard renders all new markdown components
+
 ### Next lessons (all must be v2)
 - [ ] Write: North Star Metric (06.01) — /new-lesson "north star metric"
 - [ ] Write: Unit Economics (07.01) — /new-lesson "unit economics"

@@ -43,3 +43,17 @@ _Every architectural or product decision for this project. For humans only — n
 Value: each lesson now serves the full PM spectrum, not just the technical PM.
 
 **Files changed:** CLAUDE.md, lesson-writer.md, lesson-qa.md, new-lesson.md, review-lesson.md, qa-lesson.md, daily-start.md, status.md, rewrite-lesson.md (new), settings.json, _CONCEPT_INDEX.md, dashboard/index.html, 4 existing lessons rewritten to v2.
+
+## 2026-04-06 — Design Agent added to swarm
+
+**Decision:** Added D1 Nadia (Senior Product Designer) as 11th agent in pm_swarm.py. Created pm_format.py formatter script and upgraded dashboard renderer.
+
+**Why:** Lessons were passing content QA but remained walls of text. The swarm had no visual scannability reviewer — dense prose was passing where tables, callouts, and cards would serve readers better.
+
+**What changed:**
+- D1 Nadia reads Working Knowledge level for visual hierarchy, comparison structure, callout usage, and information density
+- Synthesizer now flags formatting issues and sets `run_formatter: true` when 2+ visual flags found
+- pm_format.py applies Claude Haiku formatting transforms section-by-section (non-destructive, creates .bak)
+- dashboard/index.html renders all new components: blockquote variants (warning/tip/info), quick-ref box, table rec rows, → arrows, markdown links
+
+**Tradeoff:** Adds one more swarm agent (11 total, still fits in parallel budget). Formatter is optional — only runs when flagged.

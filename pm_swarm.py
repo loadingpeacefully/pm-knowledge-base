@@ -45,7 +45,7 @@ MODEL_FULL = "claude-sonnet-4-6"
 MODEL = MODEL_FAST          # overridden by --mode flag at runtime
 MAX_TOKENS = 3000           # P7 Vikram needs 2608 out tokens — set ceiling at 3000
 SYNTH_MAX_TOKENS = 8192     # Haiku ceiling — synth generates ~5600 tok with 10 reviews
-CONTENT_LIMIT = 6000        # chars per level — was 4000, missed W3/W4 in longer lessons
+CONTENT_LIMIT = 10000       # chars per level — 6000 cut W1 additive-only and S3 force-migration
 PARALLEL_WORKERS = 5        # batches of 5 to stay within rate limits
 
 # ── 10 PM AGENT PERSONAS ──────────────────────────────────────────────────────
@@ -261,6 +261,38 @@ AGENTS = [
             "Would she recommend this lesson to a junior PM on her team — and if so, for which level?",
         ],
         "scoring_lens": "Senior PM value — is there anything genuinely new or shareable here?",
+    },
+    {
+        "id": "D1",
+        "name": "Nadia",
+        "role": "Senior Product Designer",
+        "level": "working",
+        "background": (
+            "8 years product design at Figma, Notion, and a B2B SaaS. "
+            "Obsessed with information hierarchy and cognitive load. "
+            "Reads PM content and immediately sees where the eye gets lost. "
+            "Has strong opinions about when prose should become a table, "
+            "when a list should become a card grid, and when a callout box "
+            "saves the reader from burying the lede. "
+            "Gets frustrated when important information is hidden in paragraph 3 "
+            "of a dense block when it could be the first thing you see."
+        ),
+        "checks": [
+            "Is there any section where 4+ consecutive lines of prose could be broken into a table, list, or callout?",
+            "Does the 'What decisions it affects' section use comparison structure (A vs B) or is it prose blobs?",
+            "Does each 'Real product example' have a clear visual structure (company / what / outcome) or is it narrative prose?",
+            "Are the 'Questions to ask your engineer' visually distinct from each other — or do they blur together?",
+            "Is the most important insight in each section at the TOP — or buried in the middle of a paragraph?",
+            "Does the lesson use any callout boxes, warning blocks, or highlighted key terms?",
+            "Could any section benefit from a quick-reference summary box at the top?",
+            "Is the reading flow clear — does the eye know where to go next after each section?",
+            "Are there any walls of text (4+ dense paragraphs with no visual break)?",
+            "Could any comparison ('REST vs GraphQL', 'public vs internal') be a side-by-side table?",
+        ],
+        "scoring_lens": (
+            "Visual scannability and information hierarchy — "
+            "can a reader find what they need in 30 seconds without reading every word?"
+        ),
     },
 ]
 
@@ -500,6 +532,14 @@ Your job:
 4. Identify any new case studies or examples multiple agents wanted
 5. Assess the overall curriculum health of this lesson
 
+FORMATTING FLAGS (separate from content flags):
+Check if D1 Nadia or any agent flagged scannability issues:
+- wall of text or dense paragraphs or no visual breaks
+- needs comparison table or should be a table
+- buried or hidden in paragraph or lede buried
+- no callout or missing highlight or no visual hierarchy
+If 2+ formatting flags found across all agents (including D1): set run_formatter: true.
+
 Rules for ranking:
 - CRITICAL: Same issue flagged by 3+ agents, OR any single Critical flag from any agent
 - HIGH: Same issue flagged by 2 agents in same level, OR single High flag touching core structure
@@ -539,7 +579,15 @@ Respond in this EXACT JSON format:
   "what_is_working": [
     "<max 80 chars per item>"
   ],
-  "summary_for_author": "<2-3 sentences max, no inner quotes>"
+  "summary_for_author": "<2-3 sentences max, no inner quotes>",
+  "formatting_flags": [
+    {{
+      "section": "<which section>",
+      "issue": "<max 80 chars, what the design agent flagged>",
+      "transform": "<table|callout|card|list|warning|highlight|summary-box>"
+    }}
+  ],
+  "run_formatter": <true|false>
 }}
 
 IMPORTANT: Keep all string values short (see char limits above). Do not use apostrophes or
@@ -571,7 +619,7 @@ def write_report(lesson_path: Path, reviews: list, synthesis: dict) -> Path:
     lines = []
     lines.append(f"# Feedback Report — {synthesis.get('lesson_title', lesson_stem)}")
     lines.append(f"Generated: {synthesis.get('review_date', datetime.now().strftime('%Y-%m-%d'))}")
-    lines.append(f"Agents: 10 | Model: {MODEL}")
+    lines.append(f"Agents: {len(AGENTS)} | Model: {MODEL}")
     lines.append("")
 
     # Summary box
@@ -676,6 +724,20 @@ def write_report(lesson_path: Path, reviews: list, synthesis: dict) -> Path:
                 lines.append(f"- {m}")
             lines.append("")
 
+    # Formatting flags section (used by pm_format.py)
+    fmt_flags = synthesis.get("formatting_flags", [])
+    run_fmt = synthesis.get("run_formatter", False)
+    lines.append("## Formatting flags")
+    lines.append(f"run_formatter: {str(run_fmt).lower()}")
+    lines.append("")
+    if fmt_flags:
+        for ff in fmt_flags:
+            lines.append(f"- [{ff.get('transform', '')}] {ff.get('section', '')}: {ff.get('issue', '')}")
+        lines.append("")
+    else:
+        lines.append("- No formatting flags raised.")
+        lines.append("")
+
     report_path.write_text("\n".join(lines), encoding="utf-8")
     return report_path
 
@@ -738,13 +800,13 @@ def main():
             score = result.get("overall_score", "ERR")
             verdict = result.get("verdict", "ERROR")
             flags = len(result.get("flags", []))
-            print(f"  [{i+1:2d}/10] {agent['id']} {agent['name']:8s} ({agent['role'][:30]:30s}) → {score}/10 {verdict} | {flags} flags")
+            print(f"  [{i+1:2d}/{len(AGENTS)}] {agent['id']} {agent['name']:8s} ({agent['role'][:30]:30s}) → {score}/10 {verdict} | {flags} flags")
 
     # Sort reviews by agent ID for consistent output
     reviews.sort(key=lambda r: r.get("agent_id", "P0"))
 
     # Synthesize
-    print(f"\n  Synthesizing findings across all 10 agents...")
+    print(f"\n  Synthesizing findings across all {len(AGENTS)} agents...")
     synthesis = synthesize(client, reviews, lesson)
 
     # Write report

@@ -119,6 +119,24 @@
     .lesson-body th { background: #000; color: var(--accent); padding: 10px 12px; text-align: left; font-weight: 700; }
     .lesson-body td { padding: 10px 12px; border-bottom: 1px solid #000; }
     .lesson-body tr:nth-child(even) td { background: var(--bg); }
+    .lesson-body table { box-shadow: 3px 3px 0 #000; }
+    .lesson-body th { font-size: 12px; font-family: 'Courier New', monospace; }
+    .lesson-body td { font-size: 13px; vertical-align: top; border-right: 0.5px solid #0001; }
+    .lesson-body tr:last-child td { border-bottom: 2px solid #000; }
+    .lesson-body tr.rec td { background: #F7FEE7; font-weight: 700; }
+
+    /* Callout variants */
+    .lesson-body blockquote { border-left: 3px solid #000; padding: 10px 16px; margin: 16px 0; background: #FEFCE8; font-size: 14px; line-height: 1.65; }
+    .lesson-body blockquote.warning { border-left-color: #E24B4A; background: #FCEBEB; }
+    .lesson-body blockquote.tip    { border-left-color: #A3E635; background: #F7FEE7; }
+    .lesson-body blockquote.info   { border-left-color: #378ADD; background: #E6F1FB; }
+
+    /* Quick reference box */
+    .quick-ref { border: 2px solid #000; background: #fff; padding: 14px 16px; margin-bottom: 24px; box-shadow: 4px 4px 0 #000; }
+    .quick-ref-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #6B7280; margin-bottom: 8px; }
+    .quick-ref-row { font-size: 13px; padding: 3px 0; border-bottom: 0.5px solid #0001; display: flex; gap: 8px; }
+    .quick-ref-row:last-child { border-bottom: none; }
+    .quick-ref-label { font-weight: 700; min-width: 80px; color: #000; flex-shrink: 0; }
 
     /* ── LEVEL SELECTOR ── */
     .level-selector { display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
@@ -735,6 +753,28 @@ function renderMd(md) {
     if (/^#### /.test(l)) { out += `<h4>${inline(l.slice(5))}</h4>`;  i++; continue; }
     if (/^---+$/.test(l)) { out += `<hr style="border:none;border-top:2px solid #E5E7EB;margin:24px 0">`; i++; continue; }
 
+    if (l.startsWith('> ')) {
+      const bqLines = [];
+      while (i < lines.length && lines[i].startsWith('> ')) { bqLines.push(lines[i].slice(2)); i++; }
+      const firstLine = bqLines[0] || '';
+      const inner = bqLines.map(ln => `<p style="margin:3px 0">${inline(ln)}</p>`).join('');
+      if (firstLine.includes('Quick reference') || firstLine.includes('Quick Reference')) {
+        const rows = bqLines.slice(1).filter(ln => ln.trim());
+        const rowsHtml = rows.map(row => {
+          const m = row.match(/^\*?\*?([^:*]+)\*?\*?:\s*(.+)$/);
+          if (m) return `<div class="quick-ref-row"><span class="quick-ref-label">${esc(m[1].trim())}</span><span>${inline(m[2].trim())}</span></div>`;
+          return `<div class="quick-ref-row">${inline(row)}</div>`;
+        }).join('');
+        const title = firstLine.replace(/\*\*/g,'').replace(/Quick [Rr]eference/,'').replace('—','').trim();
+        out += `<div class="quick-ref"><div class="quick-ref-title">Quick reference${title ? ' \u2014 ' + esc(title) : ''}</div>${rowsHtml}</div>`;
+        continue;
+      }
+      if (firstLine.includes('\u26a0\ufe0f') || /watch out|warning/i.test(firstLine)) { out += `<blockquote class="warning">${inner}</blockquote>`; continue; }
+      if (firstLine.includes('\ud83d\udca1') || /\*\*pm tip|\*\*tip/i.test(firstLine))  { out += `<blockquote class="tip">${inner}</blockquote>`; continue; }
+      out += `<blockquote class="info">${inner}</blockquote>`;
+      continue;
+    }
+
     if (/^\|/.test(l) && i + 1 < lines.length && /^\|\s*[-:]+/.test(lines[i + 1])) {
       const tl = [];
       while (i < lines.length && /^\|/.test(lines[i])) { tl.push(lines[i]); i++; }
@@ -777,6 +817,8 @@ function inline(s) {
   s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
   s = s.replace(/(?<!\*)\*([^*]+)\*(?!\*)/g, '<em>$1</em>');
   s = s.replace(/\x00(\d+)\x00/g, (_, i) => codes[+i]);
+  s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" style="color:#000;text-decoration:underline">$1</a>');
+  s = s.replace(/→/g, '<span style="color:var(--accent);font-weight:700">→</span>');
   return s;
 }
 
@@ -785,7 +827,11 @@ function renderTable(tl) {
   const parse = line => line.split('|').slice(1, -1).map(c => c.trim());
   const hd = parse(tl[0]);
   const rows = tl.slice(2).map(parse);
-  return `<table><thead><tr>${hd.map(c => `<th>${inline(c)}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${r.map(c => `<td>${inline(c)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+  const bodyHtml = rows.map(r => {
+    const isRec = r[0] && /\*\*/.test(r[0]);
+    return `<tr${isRec ? ' class="rec"' : ''}>${r.map(c => `<td>${inline(c)}</td>`).join('')}</tr>`;
+  }).join('');
+  return `<table><thead><tr>${hd.map(c => `<th>${inline(c)}</th>`).join('')}</tr></thead><tbody>${bodyHtml}</tbody></table>`;
 }
 
 function renderRelated(md) {
