@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PM Curriculum — Concept Library</title>
+  <script src="config.js" onerror="console.warn('config.js not found — use ⚙ to set API key')"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #FFFBEB;
+      --surface: #FFFFFF;
+      --accent: #A3E635;
+      --black: #000000;
+      --muted: #6B7280;
+      --shadow-card: 8px 8px 0px 0px #000;
+      --shadow-sm:   4px 4px 0px 0px #000;
+      --shadow-btn:  3px 3px 0px 0px #000;
+      --shadow-lime: 3px 3px 0px 0px #A3E635;
+      --font: 'Courier New', Courier, monospace;
+      --header-h: 52px;
+      --sidebar-w: 240px;
+      --notes-w: 300px;
+    }
+
+    html, body { font-family: var(--font); background: var(--bg); color: var(--black); height: 100%; overflow: hidden; }
+
+    ::selection { background: #000; color: #A3E635; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: #000; }
+
+    /* ── HEADER ── */
+    #header {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--header-h);
+      background: var(--black); color: var(--accent);
+      display: flex; align-items: center; gap: 12px; padding: 0 16px;
+      z-index: 100; border-bottom: 2px solid var(--accent);
+    }
+    #menu-btn { display: none; background: none; border: none; color: var(--accent); font-family: var(--font); font-size: 20px; cursor: pointer; padding: 2px 6px; }
+    #header-title { font-size: 14px; font-weight: 700; letter-spacing: .04em; flex: 1; }
+    #progress-btn { background: none; border: 1.5px solid var(--accent); color: var(--accent); font-family: var(--font); font-size: 12px; cursor: pointer; padding: 4px 10px; white-space: nowrap; }
+    #progress-btn:hover { background: var(--accent); color: #000; }
+    #search-wrap { position: relative; }
+    #search-input { background: #111; border: 1.5px solid #444; color: var(--accent); font-family: var(--font); font-size: 12px; padding: 5px 32px 5px 10px; width: 200px; outline: none; }
+    #search-input::placeholder { color: #555; }
+    #search-input:focus { border-color: var(--accent); }
+    #search-count { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-size: 10px; color: var(--accent); pointer-events: none; }
+    #settings-btn { background: none; border: none; color: #555; font-family: var(--font); font-size: 16px; cursor: pointer; padding: 4px 6px; }
+    #settings-btn:hover { color: var(--accent); }
+
+    /* ── SIDEBAR ── */
+    #sidebar {
+      position: fixed; top: var(--header-h); left: 0;
+      width: var(--sidebar-w); height: calc(100vh - var(--header-h));
+      background: var(--surface); border-right: 2px solid #000;
+      overflow-y: auto; overflow-x: hidden; z-index: 50;
+    }
+    .module-header { display: flex; flex-direction: column; padding: 10px 12px 8px; cursor: pointer; border-bottom: 2px solid #000; user-select: none; transition: background .1s; }
+    .module-header:hover { background: #F5F5F5; }
+    .module-header.expanded { background: #000; color: var(--accent); border-bottom-color: var(--accent); }
+    .module-header-row { display: flex; align-items: center; gap: 6px; }
+    .module-arrow { font-size: 9px; transition: transform .15s; flex-shrink: 0; display: inline-block; }
+    .module-header.expanded .module-arrow { transform: rotate(90deg); }
+    .module-num { font-size: 12px; font-weight: 700; flex-shrink: 0; }
+    .module-name { font-size: 13px; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .module-progress-text { font-size: 11px; flex-shrink: 0; }
+    .module-dots { display: flex; flex-wrap: wrap; gap: 2px; margin-top: 5px; padding-left: 18px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid #000; display: inline-block; }
+    .module-header.expanded .dot { border-color: #555; }
+    .dot.ready { background: var(--accent); }
+    .dot.draft { background: #FCD34D; }
+    .dot.none  { background: var(--bg); }
+    .module-header.expanded .dot.none { background: #333; }
+    .lesson-list { display: none; border-bottom: 2px solid #000; }
+    .lesson-list.open { display: block; }
+    .lesson-item { display: flex; align-items: center; padding: 8px 10px 8px 24px; cursor: pointer; border-bottom: 1px solid #E5E7EB; gap: 6px; transition: transform .1s, box-shadow .1s; position: relative; border-left: 3px solid transparent; }
+    .lesson-item:hover { transform: translate(-1px,-1px); background: #F9F9F9; box-shadow: 2px 2px 0 #000; }
+    .lesson-item.active { border-left-color: var(--accent); background: #F7FEE7; }
+    .lesson-id { font-size: 11px; color: var(--muted); flex-shrink: 0; width: 34px; }
+    .lesson-title-sb { font-size: 12px; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .status-pill { font-size: 10px; padding: 2px 6px; border-radius: 99px; border: 1.5px solid #000; white-space: nowrap; flex-shrink: 0; }
+    .status-pill.ready { background: var(--accent); color: #000; box-shadow: 2px 2px 0 #000; }
+    .status-pill.draft { background: #FCD34D; color: #000; }
+    .status-pill.none  { background: #E5E7EB; color: var(--muted); border-color: #CCC; }
+
+    /* ── CONTENT PANEL ── */
+    #content { margin-left: var(--sidebar-w); margin-right: var(--notes-w); margin-top: var(--header-h); height: calc(100vh - var(--header-h)); overflow-y: auto; }
+    .content-inner { max-width: 720px; margin: 0 auto; padding: 32px 24px 80px; }
+
+    /* Lesson header card */
+    .lesson-hcard { background: var(--surface); border: 2px solid #000; box-shadow: var(--shadow-card); padding: 20px 24px; margin-bottom: 32px; }
+    .lhc-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+    .lhc-id { font-size: 12px; color: var(--muted); font-weight: 700; }
+    .lhc-title { font-size: 22px; font-weight: 700; line-height: 1.3; margin-bottom: 4px; }
+    .lhc-module { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+    .lhc-footer { display: flex; align-items: center; gap: 12px; font-size: 12px; color: var(--muted); }
+    .tag-pill { font-size: 10px; padding: 2px 8px; background: #E5E7EB; color: #000; border: 1.5px solid #000; border-radius: 99px; box-shadow: var(--shadow-btn); }
+
+    /* Typography */
+    .lesson-body h2 { font-size: 18px; font-weight: 700; border-bottom: 2px solid #000; padding-bottom: 6px; margin: 32px 0 16px; }
+    .lesson-body h3 { font-size: 15px; font-weight: 700; margin: 24px 0 10px; padding-left: 8px; border-left: 3px solid var(--accent); }
+    .lesson-body h4 { font-size: 14px; font-weight: 700; margin: 20px 0 8px; }
+    .lesson-body p  { font-size: 15px; line-height: 1.75; margin-bottom: 16px; color: #111; }
+    .lesson-body ul { list-style: none; padding: 0; margin: 0 0 16px; }
+    .lesson-body ul li { padding: 4px 0 4px 20px; text-indent: -20px; font-size: 15px; line-height: 1.7; }
+    .lesson-body ul li::before { content: "→ "; color: var(--accent); font-weight: 700; }
+    .lesson-body ol { padding-left: 0; margin: 0 0 16px; counter-reset: item; }
+    .lesson-body ol li { counter-increment: item; padding: 6px 0 6px 32px; position: relative; font-size: 15px; line-height: 1.7; list-style: none; }
+    .lesson-body ol li::before { content: counter(item) "."; position: absolute; left: 0; font-weight: 700; color: var(--accent); }
+    .lesson-body code { background: #000; color: var(--accent); font-family: var(--font); font-size: 13px; padding: 2px 6px; border-radius: 0; }
+    .lesson-body pre { background: #000; color: var(--accent); border: 2px solid #000; padding: 16px; overflow-x: auto; margin: 16px 0; font-size: 13px; line-height: 1.6; box-shadow: 4px 4px 0 var(--accent); }
+    .lesson-body pre code { background: none; padding: 0; }
+    .lesson-body strong { font-weight: 700; }
+    .lesson-body em { font-style: italic; }
+    .lesson-body table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+    .lesson-body th { background: #000; color: var(--accent); padding: 10px 12px; text-align: left; font-weight: 700; }
+    .lesson-body td { padding: 10px 12px; border-bottom: 1px solid #000; }
+    .lesson-body tr:nth-child(even) td { background: var(--bg); }
+
+    /* ── LEVEL SELECTOR ── */
+    .level-selector { display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
+    .level-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+    .level-pill { background: #E5E7EB; border: 1.5px solid #000; color: #000; font-family: var(--font); font-size: 12px; font-weight: 700; padding: 5px 14px; cursor: pointer; box-shadow: var(--shadow-btn); white-space: nowrap; }
+    .level-pill:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 #000; }
+    .level-pill.active { background: var(--accent); box-shadow: 3px 3px 0 #000; }
+    .level-hint { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+    /* V1 banner */
+    .v1-banner { background: #FEF9C3; border: 2px solid #000; box-shadow: var(--shadow-sm); padding: 12px 16px; margin-bottom: 24px; font-size: 13px; color: #78350F; }
+
+    /* AI annotation */
+    .ai-annotated { background: #FEFCE8; border-bottom: 2px solid var(--accent); cursor: pointer; }
+    .ai-annotated:hover { background: #FEF9C3; }
+    .ai-annotated::after { content: "✦"; font-size: 10px; color: var(--accent); margin-left: 2px; vertical-align: super; }
+
+    /* Related lessons */
+    .related-section { margin-top: 40px; }
+    .related-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+    .related-card { background: var(--surface); border: 2px solid #000; box-shadow: var(--shadow-btn); padding: 12px 14px; cursor: pointer; transition: transform .1s, box-shadow .1s; }
+    .related-card:hover { transform: translate(-2px,-2px); box-shadow: 10px 10px 0 #000; }
+    .related-card-top { display: flex; align-items: baseline; gap: 4px; margin-bottom: 4px; }
+    .related-card-arrow { color: var(--accent); font-weight: 700; flex-shrink: 0; }
+    .related-card-title { font-size: 13px; font-weight: 700; flex: 1; }
+    .related-card-id { font-size: 11px; color: var(--muted); }
+    .related-card-desc { font-size: 12px; color: var(--muted); line-height: 1.4; }
+
+    /* Empty/error states */
+    .empty-state { border: 2px solid #000; box-shadow: var(--shadow-card); background: var(--surface); padding: 40px 32px; text-align: center; margin-top: 40px; }
+    .empty-state h3 { font-size: 16px; margin-bottom: 16px; }
+    .empty-state p { font-size: 14px; color: var(--muted); line-height: 1.75; }
+    .empty-state code { background: #000; color: var(--accent); padding: 2px 8px; font-family: var(--font); }
+
+    /* ── NOTES PANEL ── */
+    #notes-panel { position: fixed; top: var(--header-h); right: 0; width: var(--notes-w); height: calc(100vh - var(--header-h)); background: var(--bg); border-left: 2px solid #000; display: flex; flex-direction: column; z-index: 50; overflow: hidden; }
+    .np-header { display: flex; align-items: center; padding: 12px 14px; border-bottom: 2px solid #000; background: var(--surface); flex-shrink: 0; }
+    .np-title { font-size: 13px; font-weight: 700; flex: 1; }
+    .np-ctx { font-size: 11px; color: var(--muted); padding: 6px 14px 8px; border-bottom: 1px solid #E5E7EB; background: var(--surface); flex-shrink: 0; }
+    .np-body { flex: 1; overflow-y: auto; padding: 12px; }
+    .notes-empty { padding: 20px 4px; font-size: 13px; color: var(--muted); line-height: 1.8; text-align: center; }
+    #np-add-btn { background: var(--accent); border: 1.5px solid #000; color: #000; font-family: var(--font); font-size: 14px; font-weight: 700; cursor: pointer; padding: 2px 8px; box-shadow: var(--shadow-btn); }
+    #np-add-btn:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 #000; }
+
+    /* Note card */
+    .note-card { background: var(--surface); border: 2px solid #000; box-shadow: var(--shadow-sm); margin-bottom: 12px; }
+    .note-card-hd { display: flex; align-items: center; padding: 7px 10px; border-bottom: 1px solid #000; background: #000; color: var(--accent); font-size: 11px; }
+    .note-card-hd-left { flex: 1; display: flex; align-items: center; gap: 6px; }
+    .note-del-btn { background: none; border: none; color: var(--accent); cursor: pointer; font-size: 12px; font-family: var(--font); opacity: .7; }
+    .note-del-btn:hover { opacity: 1; }
+    .note-selected { padding: 8px 10px; font-style: italic; font-size: 13px; border-left: 3px solid var(--accent); background: #FEFCE8; border-bottom: 1px solid #E5E7EB; line-height: 1.5; color: #444; }
+    .note-question { padding: 8px 10px; font-size: 13px; font-weight: 700; border-bottom: 1px solid #E5E7EB; }
+    .note-answer { padding: 10px; font-size: 14px; line-height: 1.65; }
+    .note-user-note { padding: 10px; font-size: 14px; line-height: 1.65; background: #FFFBEB; }
+    .note-loading { padding: 12px 10px; font-size: 13px; color: var(--muted); }
+
+    /* Rail (960–1279px) */
+    #np-rail { display: none; flex-direction: column; align-items: center; padding: 14px 0; gap: 8px; cursor: pointer; flex: 1; }
+    #np-rail:hover { background: #F5F5F5; }
+    .np-rail-icon { font-size: 14px; color: var(--accent); }
+    .np-rail-badge { background: var(--accent); border: 1.5px solid #000; border-radius: 99px; font-size: 10px; font-weight: 700; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; }
+
+    /* Full notes panel (≥1280px) */
+    #np-full { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
+
+    /* Inline free note form */
+    .free-note-form { background: var(--surface); border: 2px solid var(--accent); box-shadow: var(--shadow-lime); padding: 12px; margin-bottom: 12px; }
+    .free-note-form label { font-size: 11px; color: var(--muted); display: block; margin-bottom: 6px; }
+    .free-note-form textarea { width: 100%; background: var(--bg); border: 1.5px solid #000; font-family: var(--font); font-size: 13px; padding: 6px 8px; resize: vertical; outline: none; color: #000; }
+    .free-note-form textarea:focus { border-color: var(--accent); }
+    .free-note-form-actions { display: flex; justify-content: flex-end; gap: 6px; margin-top: 8px; }
+    .btn-cancel { background: none; border: 1.5px solid #000; font-family: var(--font); font-size: 12px; padding: 4px 10px; cursor: pointer; }
+    .btn-save { background: var(--accent); border: 1.5px solid #000; font-family: var(--font); font-size: 12px; font-weight: 700; padding: 4px 12px; cursor: pointer; box-shadow: var(--shadow-lime); }
+    .btn-save:hover { transform: translate(-1px,-1px); }
+
+    /* ── SELECTION TOOLBAR ── */
+    #sel-toolbar { position: fixed; z-index: 200; background: #000; border: 2px solid var(--accent); box-shadow: var(--shadow-btn); display: flex; align-items: center; }
+    #sel-toolbar.hidden { display: none; }
+    .tb-btn { background: none; border: none; color: var(--accent); font-family: var(--font); font-size: 12px; padding: 6px 12px; cursor: pointer; border-right: 1px solid #333; white-space: nowrap; }
+    .tb-btn:last-child { border-right: none; }
+    .tb-btn:hover { background: var(--accent); color: #000; }
+
+    /* Input popup */
+    #input-popup { position: fixed; z-index: 201; background: var(--surface); border: 2px solid #000; box-shadow: var(--shadow-card); padding: 14px; width: 320px; font-size: 13px; }
+    #input-popup.hidden { display: none; }
+    .ip-selected { font-size: 11px; color: var(--muted); font-style: italic; border-left: 2px solid var(--accent); padding-left: 8px; margin-bottom: 10px; line-height: 1.5; }
+    #ip-q, #ip-n { width: 100%; background: var(--bg); border: 1.5px solid #000; font-family: var(--font); font-size: 13px; padding: 6px 8px; outline: none; margin-bottom: 8px; color: #000; }
+    #ip-q:focus, #ip-n:focus { border-color: var(--accent); }
+    #ip-n { resize: vertical; }
+    .ip-actions { display: flex; justify-content: flex-end; gap: 6px; }
+
+    /* ── PROGRESS POPUP ── */
+    #prog-popup { position: fixed; z-index: 150; top: calc(var(--header-h) + 8px); background: var(--surface); border: 2px solid #000; box-shadow: var(--shadow-card); padding: 16px 20px; min-width: 220px; font-size: 13px; }
+    #prog-popup.hidden { display: none; }
+    .pp-title { font-size: 13px; font-weight: 700; border-bottom: 2px solid #000; padding-bottom: 6px; margin-bottom: 10px; }
+    .pp-row { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #E5E7EB; }
+    .pp-foot { margin-top: 8px; font-size: 12px; color: var(--muted); }
+
+    /* ── API KEY MODAL ── */
+    #api-modal { position: fixed; inset: 0; background: rgba(0,0,0,.75); z-index: 300; display: flex; align-items: center; justify-content: center; }
+    #api-modal.hidden { display: none; }
+    .api-inner { background: var(--surface); border: 2px solid #000; box-shadow: var(--shadow-card); padding: 24px; width: 380px; max-width: 90vw; }
+    .api-title { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
+    .api-desc { font-size: 13px; color: var(--muted); margin-bottom: 14px; line-height: 1.6; }
+    #api-key-input { width: 100%; background: var(--bg); border: 1.5px solid #000; font-family: var(--font); font-size: 13px; padding: 8px 10px; outline: none; margin-bottom: 12px; color: #000; }
+    #api-key-input:focus { border-color: var(--accent); }
+    .api-actions { display: flex; justify-content: flex-end; gap: 8px; }
+
+    /* ── NOTES OVERLAY ── */
+    #notes-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 90; }
+    #notes-overlay.open { display: block; }
+    #notes-overlay-inner { position: absolute; right: 0; top: 52px; width: 300px; height: calc(100vh - 52px); background: var(--bg); border-left: 2px solid #000; display: flex; flex-direction: column; }
+    .ov-np-body { flex: 1; overflow-y: auto; padding: 12px; }
+
+    /* Float notes btn (mobile) */
+    #notes-float-btn { display: none; position: fixed; bottom: 20px; right: 20px; z-index: 90; width: 44px; height: 44px; background: #000; border: 2px solid var(--accent); color: var(--accent); font-family: var(--font); font-size: 16px; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--shadow-btn); }
+
+    /* Sidebar overlay (mobile) */
+    #sb-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 70; }
+    #sb-overlay.open { display: block; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1279px) {
+      :root { --notes-w: 40px; }
+      #np-full { display: none; }
+      #np-rail { display: flex; }
+    }
+    @media (max-width: 959px) {
+      :root { --notes-w: 0px; }
+      #sidebar { transform: translateX(-240px); transition: transform .2s; }
+      #sidebar.open { transform: translateX(0); }
+      #notes-panel { display: none; }
+      #content { margin-left: 0; margin-right: 0; }
+      #menu-btn { display: flex; }
+      #notes-float-btn { display: flex; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="header">
+  <button id="menu-btn" onclick="toggleSidebar()">≡</button>
+  <span id="header-title">PM Curriculum — Concept Library</span>
+  <button id="progress-btn" onclick="toggleProgPopup()">0/88 ready</button>
+  <div id="search-wrap">
+    <input id="search-input" type="text" placeholder="search lessons…" oninput="handleSearch(this.value)" autocomplete="off">
+    <span id="search-count"></span>
+  </div>
+  <button id="settings-btn" onclick="openApiModal()" title="API Key">⚙</button>
+</header>
+
+<!-- Sidebar overlay (mobile) -->
+<div id="sb-overlay" onclick="toggleSidebar()"></div>
+
+<!-- SIDEBAR -->
+<aside id="sidebar"><div id="sb-modules"></div></aside>
+
+<!-- CONTENT PANEL -->
+<main id="content">
+  <div class="content-inner" id="content-inner">
+    <div class="empty-state"><h3>Loading curriculum…</h3></div>
+  </div>
+</main>
+
+<!-- NOTES PANEL -->
+<aside id="notes-panel">
+  <div id="np-rail" onclick="openNotesOverlay()">
+    <span class="np-rail-icon">✦</span>
+    <span class="np-rail-badge" id="np-rail-count">0</span>
+  </div>
+  <div id="np-full">
+    <div class="np-header">
+      <span class="np-title">STUDY NOTES</span>
+      <button id="np-add-btn" onclick="openFreeNote('np-body')">+</button>
+    </div>
+    <div class="np-ctx" id="np-ctx">Select a lesson to see notes</div>
+    <div class="np-body" id="np-body">
+      <div class="notes-empty">Select any text in the lesson<br>and click "Ask AI" or "Note"<br>to capture context here.<br><br>Notes stay per lesson.</div>
+    </div>
+  </div>
+</aside>
+
+<!-- NOTES OVERLAY (960–1279px + mobile) -->
+<div id="notes-overlay" onclick="closeNotesOverlay()">
+  <div id="notes-overlay-inner" onclick="event.stopPropagation()">
+    <div class="np-header">
+      <span class="np-title">STUDY NOTES</span>
+      <button style="background:var(--accent);border:1.5px solid #000;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;padding:2px 8px;box-shadow:var(--shadow-btn)" onclick="openFreeNote('np-body-ov')">+</button>
+    </div>
+    <div class="np-ctx" id="np-ctx-ov">Select a lesson to see notes</div>
+    <div class="ov-np-body" id="np-body-ov">
+      <div class="notes-empty">No notes yet.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Float notes button (mobile) -->
+<button id="notes-float-btn" onclick="openNotesOverlay()">✦</button>
+
+<!-- SELECTION TOOLBAR -->
+<div id="sel-toolbar" class="hidden">
+  <button class="tb-btn" onclick="openAskAI()">✦ Ask AI</button>
+  <button class="tb-btn" onclick="openManualNote()">✎ Note</button>
+  <button class="tb-btn" onclick="dismissToolbar()">✕</button>
+</div>
+
+<!-- Input popup -->
+<div id="input-popup" class="hidden">
+  <div class="ip-selected" id="ip-selected"></div>
+  <input  type="text"  id="ip-q" placeholder="Your question…"  style="display:none" onkeydown="if(event.key==='Enter')submitInput()">
+  <textarea            id="ip-n" placeholder="Add your note…"  style="display:none" rows="3"></textarea>
+  <div class="ip-actions">
+    <button class="btn-cancel" onclick="closeInputPopup()">Cancel</button>
+    <button class="btn-save"   id="ip-submit" onclick="submitInput()">Ask →</button>
+  </div>
+</div>
+
+<!-- PROGRESS POPUP -->
+<div id="prog-popup" class="hidden">
+  <div class="pp-title">Curriculum Progress</div>
+  <div class="pp-row"><span>Ready</span><span id="pp-ready">0 lessons</span></div>
+  <div class="pp-row"><span>Draft</span><span id="pp-draft">0 lessons</span></div>
+  <div class="pp-row"><span>To do</span><span id="pp-todo">0 lessons</span></div>
+  <div class="pp-foot" id="pp-time">Estimated reading time: ~0 min</div>
+</div>
+
+<!-- API KEY MODAL -->
+<div id="api-modal" class="hidden">
+  <div class="api-inner">
+    <div class="api-title">Anthropic API Key</div>
+    <div class="api-desc">Required for "Ask AI". Stored in localStorage only. Get yours at console.anthropic.com.</div>
+    <input type="password" id="api-key-input" placeholder="sk-ant-…" onkeydown="if(event.key==='Enter')saveApiKey()">
+    <div class="api-actions">
+      <button class="btn-cancel" onclick="closeApiModal()">Cancel</button>
+      <button class="btn-save"   onclick="saveApiKey()">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+/* ── STATE ── */
+const S = {
+  modules:  [],
+  byId:     {},
+  active:   null,
+  expanded: new Set(),
+  sel:      null,
+  inputMode: null,
+  activeLevel: null,   // 'foundation' | 'working' | 'strategic'
+  levelContent: null,  // { foundation, working, strategic, profiles } parsed from v2 lesson
+};
+
+const MANIFEST = '../concept-library/_CONCEPT_INDEX.md';
+const WRITER = {
+  'staff-engineer-pm': 'Staff Engineer turned PM',
+  'senior-pm':         'Senior PM',
+  'cfo-finance':       'CFO / Finance Lead',
+  'gtm-lead':          'GTM Lead',
+};
+
+/* ── MANIFEST ── */
+async function loadManifest() {
+  let text;
+  try {
+    const r = await fetch(MANIFEST + '?t=' + Date.now());
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    text = await r.text();
+  } catch (e) {
+    setContent(`<div class="empty-state"><h3>Could not load manifest</h3><p>${esc(e.message)}<br><br>Start the server:<br><code>python3 -m http.server 8080</code></p></div>`);
+    return;
+  }
+  parseManifest(text);
+  renderSidebar();
+  updateProgressBtn();
+  const first = Object.values(S.byId).find(l => l.status === 'ready');
+  if (first) selectLesson(first.id);
+  else setContent(`<div class="empty-state"><h3>No lessons written yet.</h3><br><p>In Claude Code, run:<br><code>write the next lesson</code></p><br><p>Then refresh this page.</p></div>`);
+}
+
+function parseManifest(text) {
+  const modMap = {};
+  for (const raw of text.split('\n')) {
+    const line = raw.trim();
+    if (!line) continue;
+    if (/^## Pipeline/i.test(line)) break;
+
+    const mh = line.match(/^## Module (\d{2})\s*[—\-–]\s*(.+)$/);
+    if (mh) {
+      const [, num, name] = mh;
+      if (!modMap[num]) modMap[num] = { id: num, name: name.trim(), lessons: [] };
+      continue;
+    }
+
+    if (!line.startsWith('|')) continue;
+    const cells = line.split('|').slice(1, -1).map(c => c.trim());
+    const id = cells[0];
+    if (!id || !/^\d{2}\.\d{2}$/.test(id)) continue;
+
+    const title  = cells[1] || '';
+    const file   = cells[2] || '';
+    const rawSt  = (cells[3] || '').toLowerCase().replace(/[—–]/g, '').trim();
+    const writer = cells[4] || '';
+    const modNum = id.slice(0, 2);
+    const norm   = rawSt === 'ready' ? 'ready' : rawSt === 'draft' ? 'draft' : 'none';
+
+    const lesson = { id, title, file, status: norm, writer, modNum };
+    S.byId[id] = lesson;
+    if (!modMap[modNum]) modMap[modNum] = { id: modNum, name: 'Module ' + modNum, lessons: [] };
+    modMap[modNum].lessons.push(lesson);
+  }
+  S.modules = Object.values(modMap).sort((a, b) => a.id.localeCompare(b.id));
+}
+
+/* ── SIDEBAR ── */
+function renderSidebar(filter) {
+  const lf = (filter || '').toLowerCase();
+  let matchCount = 0;
+
+  const html = S.modules.map(mod => {
+    const lessons = lf ? mod.lessons.filter(l => l.title.toLowerCase().includes(lf)) : mod.lessons;
+    if (lf && !lessons.length) return '';
+    matchCount += lessons.length;
+
+    const ready = mod.lessons.filter(l => l.status === 'ready').length;
+    const isExp = lf || S.expanded.has(mod.id) || (S.active && mod.lessons.some(l => l.id === S.active.id));
+
+    const dots = mod.lessons.map(l => `<span class="dot ${l.status}"></span>`).join('');
+    const items = lessons.map(l => {
+      const isAct = S.active && S.active.id === l.id;
+      const label = l.status === 'ready' ? 'ready' : l.status === 'draft' ? 'draft' : '——';
+      return `<div class="lesson-item${isAct ? ' active' : ''}" onclick="selectLesson('${l.id}')" data-lid="${l.id}">
+        <span class="lesson-id">${l.id}</span>
+        <span class="lesson-title-sb">${esc(l.title)}</span>
+        <span class="status-pill ${l.status}">${label}</span>
+      </div>`;
+    }).join('');
+
+    return `<div data-mod="${mod.id}">
+      <div class="module-header${isExp ? ' expanded' : ''}" onclick="toggleModule('${mod.id}')">
+        <div class="module-header-row">
+          <span class="module-arrow">▶</span>
+          <span class="module-num">${mod.id}</span>
+          <span class="module-name">${esc(mod.name)}</span>
+          <span class="module-progress-text">${ready}/${mod.lessons.length}</span>
+        </div>
+        <div class="module-dots">${dots}</div>
+      </div>
+      <div class="lesson-list${isExp ? ' open' : ''}">${items}</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('sb-modules').innerHTML = html;
+  document.getElementById('search-count').textContent = lf && matchCount > 0 ? matchCount : '';
+}
+
+function toggleModule(id) {
+  S.expanded.has(id) ? S.expanded.delete(id) : S.expanded.add(id);
+  renderSidebar(document.getElementById('search-input').value);
+}
+
+/* ── LESSON LOADER ── */
+async function selectLesson(id) {
+  const lesson = S.byId[id];
+  if (!lesson) return;
+  S.active = lesson;
+  S.expanded.add(lesson.modNum);
+
+  if (window.innerWidth < 960) toggleSidebar(false);
+  renderSidebar(document.getElementById('search-input').value);
+
+  setTimeout(() => {
+    const el = document.querySelector(`[data-lid="${id}"]`);
+    if (el) el.scrollIntoView({ block: 'nearest' });
+  }, 50);
+
+  loadNotesForLesson(id);
+
+  if (lesson.status !== 'ready' || !lesson.file) {
+    setContent(`<div class="empty-state"><h3>${esc(lesson.id)} — ${esc(lesson.title)}</h3><p>Status: ${lesson.status === 'draft' ? 'draft' : 'not started'}</p><br><p>This lesson hasn't been written yet.</p><br><p>In Claude Code, run:<br><code>write lesson ${lesson.id}</code></p></div>`);
+    return;
+  }
+
+  setContent('<div class="empty-state"><h3>Loading…</h3></div>');
+  document.getElementById('content').scrollTop = 0;
+
+  try {
+    const r = await fetch(`../concept-library/${lesson.file}?t=${Date.now()}`);
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    renderLesson(lesson, await r.text());
+  } catch (e) {
+    setContent(`<div class="empty-state"><h3>Could not load lesson</h3><p>${esc(e.message)}<br><br>Make sure the server is running:<br><code>python3 -m http.server 8080</code></p></div>`);
+  }
+}
+
+function setContent(html) {
+  document.getElementById('content-inner').innerHTML = html;
+}
+
+/* ── LESSON RENDERER ── */
+function renderLesson(lesson, md) {
+  const fm   = parseFm(md);
+  const mod  = S.modules.find(m => m.id === lesson.modNum);
+  const tags = (fm.tags || '').replace(/^\[|\]$/g, '').split(',').map(t => t.trim()).filter(Boolean);
+  const sc   = lesson.status === 'ready' ? 'ready' : lesson.status === 'draft' ? 'draft' : 'none';
+  const sl   = lesson.status === 'ready' ? 'ready' : lesson.status === 'draft' ? 'draft' : '——';
+
+  // Parse v2 levels
+  const levels = parseLevels(fm.body);
+  S.levelContent = levels;
+
+  // Determine active level
+  const savedLevel = localStorage.getItem(`pm_level_${lesson.id}`);
+  const defaultLevel = (fm.difficulty || 'foundation').toLowerCase();
+  S.activeLevel = (savedLevel && levels[savedLevel]) ? savedLevel : defaultLevel;
+  if (!levels[S.activeLevel]) S.activeLevel = levels.foundation ? 'foundation' : 'working';
+
+  const totalWords = fm.body.split(/\s+/).filter(Boolean).length;
+  const mins = Math.max(1, Math.ceil(totalWords / 200));
+
+  const hcard = `<div class="lesson-hcard">
+    <div class="lhc-meta">
+      <span class="lhc-id">${esc(lesson.id)}</span>
+      <span class="status-pill ${sc}">${sl}</span>
+      ${tags.map(t => `<span class="tag-pill">${esc(t)}</span>`).join('')}
+    </div>
+    <div class="lhc-title">${esc(lesson.title)}</div>
+    <div class="lhc-module">Module ${lesson.modNum} — ${esc(mod ? mod.name : 'Module ' + lesson.modNum)}</div>
+    <div class="lhc-footer">
+      <span>✎ ${esc(WRITER[lesson.writer] || lesson.writer || 'PM')}</span>
+      <span>·</span>
+      <span>⏱ ${mins} min read</span>
+    </div>
+  </div>`;
+
+  // Build level selector if v2
+  let levelSelectorHtml = '';
+  if (levels.isV2) {
+    const profiles = levels.profiles || {};
+    const hint = profiles[S.activeLevel] ? `For: ${esc(profiles[S.activeLevel])}` : '';
+    levelSelectorHtml = `<div class="level-selector" id="level-selector">
+      <div class="level-pills">
+        <button class="level-pill${S.activeLevel === 'foundation' ? ' active' : ''}" onclick="changeLevel('foundation')">Foundation</button>
+        <button class="level-pill${S.activeLevel === 'working' ? ' active' : ''}" onclick="changeLevel('working')">Working Knowledge</button>
+        <button class="level-pill${S.activeLevel === 'strategic' ? ' active' : ''}" onclick="changeLevel('strategic')">Strategic Depth</button>
+      </div>
+      <div class="level-hint" id="level-hint">${hint}</div>
+    </div>`;
+  } else {
+    levelSelectorHtml = `<div class="v1-banner">This lesson is being updated to the new three-level format. Check back soon.</div>`;
+  }
+
+  // Render active level body
+  const activeBody = levels.isV2 ? (levels[S.activeLevel] || levels.foundation || fm.body) : fm.body;
+
+  // Split off related section from active body
+  const relIdx = activeBody.indexOf('\n## Related lessons');
+  const altRelIdx = activeBody.indexOf('\n## Prerequisites');
+  const relSplit = relIdx !== -1 ? relIdx : (altRelIdx !== -1 ? altRelIdx : -1);
+  const mainMd = relSplit !== -1 ? activeBody.slice(0, relSplit) : activeBody;
+  const relMd  = relSplit !== -1 ? activeBody.slice(relSplit) : '';
+
+  // For v2, also look for full related section at the very end of the file body
+  const fullRelIdx = fm.body.lastIndexOf('\n## Prerequisites');
+  const fullRelMd  = levels.isV2 && fullRelIdx !== -1 ? fm.body.slice(fullRelIdx) : '';
+
+  setContent(`${hcard}${levelSelectorHtml}<div class="lesson-body" id="lesson-body">${renderMd(mainMd)}</div>${(fullRelMd || relMd) ? renderRelated(fullRelMd || relMd) : ''}`);
+  document.getElementById('content').scrollTop = 0;
+}
+
+/* ── LEVEL PARSER ── */
+function parseLevels(body) {
+  const LEVEL_RE = /^# ═══/m;
+  if (!LEVEL_RE.test(body)) return { isV2: false };
+
+  const lines = body.split('\n');
+  const levels = { isV2: true, foundation: null, working: null, strategic: null, profiles: {} };
+  let current = null;
+  let buf = [];
+
+  // Also extract profiles from frontmatter-comment block at top
+  const profilesMatch = body.match(/profiles:\s*\n([\s\S]*?)(?=\nstatus:|\nwriter:|---)/);
+
+  for (let i = 0; i < lines.length; i++) {
+    const l = lines[i];
+
+    if (/^# ═══/.test(l)) {
+      // Look at the next few lines to identify if this is an opening separator
+      const peek = lines.slice(i + 1, i + 5).join('\n').toUpperCase();
+      const isOpening = peek.includes('# FOUNDATION') || peek.includes('# WORKING KNOWLEDGE') || peek.includes('# STRATEGIC DEPTH');
+
+      if (isOpening) {
+        // Opening separator: save previous level's content, start new level
+        if (current) levels[current] = buf.join('\n').trim();
+        buf = [];
+        if (peek.includes('# FOUNDATION')) current = 'foundation';
+        else if (peek.includes('# WORKING KNOWLEDGE')) current = 'working';
+        else if (peek.includes('# STRATEGIC DEPTH')) current = 'strategic';
+      }
+      // Closing separator: do nothing — keep current active, content starts after this line
+      continue;
+    }
+
+    // Skip the level header comment lines themselves (between open/close separators)
+    if (current && /^# (?:FOUNDATION|WORKING KNOWLEDGE|STRATEGIC DEPTH|For:|Assumes:|This level)/.test(l)) continue;
+
+    if (current) buf.push(l);
+  }
+  // Save last block
+  if (current) levels[current] = buf.join('\n').trim();
+
+  // Extract profile hints from frontmatter block at start of body
+  const fmMatch = body.match(/^<!--[\s\S]*?-->/);
+  // Try to read profiles from above the first level marker
+  const beforeFirst = body.slice(0, body.search(/^# ═══/m));
+  ['foundation', 'working', 'strategic'].forEach(lvl => {
+    const re = new RegExp(`${lvl}:\\s*([^\\n]+)`, 'i');
+    const m = beforeFirst.match(re);
+    if (m) levels.profiles[lvl] = m[1].trim();
+  });
+
+  return levels;
+}
+
+/* ── LEVEL SWITCHER ── */
+function changeLevel(level) {
+  if (!S.levelContent || !S.levelContent.isV2 || !S.levelContent[level]) return;
+  if (!S.active) return;
+
+  S.activeLevel = level;
+  localStorage.setItem(`pm_level_${S.active.id}`, level);
+
+  // Update pill active states
+  document.querySelectorAll('.level-pill').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.toLowerCase().replace(' ', '') === level.replace(' ', '') ||
+      (level === 'foundation' && btn.textContent === 'Foundation') ||
+      (level === 'working' && btn.textContent === 'Working Knowledge') ||
+      (level === 'strategic' && btn.textContent === 'Strategic Depth'));
+  });
+
+  // Update hint
+  const hint = document.getElementById('level-hint');
+  if (hint && S.levelContent.profiles[level]) {
+    hint.textContent = `For: ${S.levelContent.profiles[level]}`;
+  } else if (hint) { hint.textContent = ''; }
+
+  // Swap body content
+  const activeBody = S.levelContent[level] || '';
+  const relIdx = activeBody.indexOf('\n## Related lessons');
+  const altRelIdx = activeBody.indexOf('\n## Prerequisites');
+  const relSplit = relIdx !== -1 ? relIdx : (altRelIdx !== -1 ? altRelIdx : -1);
+  const mainMd = relSplit !== -1 ? activeBody.slice(0, relSplit) : activeBody;
+
+  const body = document.getElementById('lesson-body');
+  if (body) body.innerHTML = renderMd(mainMd);
+  document.getElementById('content').scrollTop = 0;
+}
+
+function parseFm(md) {
+  const lines = md.split('\n');
+  const fm = {};
+  let dashes = 0, bodyStart = 0;
+  for (let i = 0; i < lines.length; i++) {
+    if (lines[i].trim() === '---') {
+      dashes++;
+      if (dashes === 2) { bodyStart = i + 1; break; }
+      continue;
+    }
+    if (dashes === 1) {
+      const m = lines[i].match(/^([\w-]+):\s*(.*)$/);
+      if (m) fm[m[1]] = m[2].trim();
+    }
+  }
+  fm.body = dashes >= 2 ? lines.slice(bodyStart).join('\n') : md;
+  return fm;
+}
+
+/* ── MARKDOWN RENDERER ── */
+function renderMd(md) {
+  const lines = md.split('\n');
+  let out = '', i = 0;
+
+  while (i < lines.length) {
+    const l = lines[i];
+
+    if (/^```/.test(l)) {
+      let code = ''; i++;
+      while (i < lines.length && !/^```/.test(lines[i])) { code += lines[i] + '\n'; i++; }
+      out += `<pre><code>${esc(code.trimEnd())}</code></pre>`;
+      i++; continue;
+    }
+
+    if (/^## /.test(l))   { out += `<h2>${inline(l.slice(3))}</h2>`;  i++; continue; }
+    if (/^### /.test(l))  { out += `<h3>${inline(l.slice(4))}</h3>`;  i++; continue; }
+    if (/^#### /.test(l)) { out += `<h4>${inline(l.slice(5))}</h4>`;  i++; continue; }
+
+    if (/^\|/.test(l) && i + 1 < lines.length && /^\|\s*[-:]+/.test(lines[i + 1])) {
+      const tl = [];
+      while (i < lines.length && /^\|/.test(lines[i])) { tl.push(lines[i]); i++; }
+      out += renderTable(tl);
+      continue;
+    }
+
+    if (/^\d+\.\s/.test(l)) {
+      const items = [];
+      while (i < lines.length && /^\d+\.\s/.test(lines[i])) { items.push(lines[i].replace(/^\d+\.\s+/, '')); i++; }
+      out += `<ol>${items.map(t => `<li>${inline(t)}</li>`).join('')}</ol>`;
+      continue;
+    }
+
+    if (/^[-*]\s/.test(l) || /^→\s/.test(l)) {
+      const items = [];
+      while (i < lines.length && (/^[-*]\s/.test(lines[i]) || /^→\s/.test(lines[i]))) { items.push(lines[i].replace(/^[-*→]\s+/, '')); i++; }
+      out += `<ul>${items.map(t => `<li>${inline(t)}</li>`).join('')}</ul>`;
+      continue;
+    }
+
+    if (!l.trim()) { i++; continue; }
+
+    let para = '';
+    while (i < lines.length) {
+      const ln = lines[i];
+      if (!ln.trim() || /^#{1,4} /.test(ln) || /^```/.test(ln) || /^\|/.test(ln) || /^\d+\.\s/.test(ln) || /^[-*→]\s/.test(ln)) break;
+      para += (para ? ' ' : '') + ln.trim();
+      i++;
+    }
+    if (para) out += `<p>${inline(para)}</p>`;
+  }
+  return out;
+}
+
+function inline(s) {
+  const codes = [];
+  s = s.replace(/`([^`]+)`/g, (_, c) => { codes.push(`<code>${esc(c)}</code>`); return `\x00${codes.length - 1}\x00`; });
+  s = esc(s);
+  s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  s = s.replace(/(?<!\*)\*([^*]+)\*(?!\*)/g, '<em>$1</em>');
+  s = s.replace(/\x00(\d+)\x00/g, (_, i) => codes[+i]);
+  return s;
+}
+
+function renderTable(tl) {
+  if (tl.length < 2) return '';
+  const parse = line => line.split('|').slice(1, -1).map(c => c.trim());
+  const hd = parse(tl[0]);
+  const rows = tl.slice(2).map(parse);
+  return `<table><thead><tr>${hd.map(c => `<th>${inline(c)}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${r.map(c => `<td>${inline(c)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+}
+
+function renderRelated(md) {
+  const cards = [];
+  for (const line of md.split('\n')) {
+    const m = line.match(/^→\s+(.+?)(?:\s+—\s+(.+))?$/);
+    if (!m) continue;
+    const title = m[1].trim();
+    const desc  = m[2] ? m[2].trim() : '';
+    const found = Object.values(S.byId).find(l => l.title.toLowerCase() === title.toLowerCase());
+    const id    = found ? found.id : null;
+    cards.push(`<div class="related-card" ${id ? `onclick="selectLesson('${id}')"` : ''}>
+      <div class="related-card-top">
+        <span class="related-card-arrow">→</span>
+        <span class="related-card-title">${esc(title)}</span>
+        ${id ? `<span class="related-card-id">${id}</span>` : ''}
+      </div>
+      ${desc ? `<div class="related-card-desc">${esc(desc)}</div>` : ''}
+    </div>`);
+  }
+  if (!cards.length) return '';
+  return `<div class="related-section"><h2 style="font-size:18px;font-weight:700;border-bottom:2px solid #000;padding-bottom:6px;margin:0 0 16px">Related lessons</h2><div class="related-grid">${cards.join('')}</div></div>`;
+}
+
+/* ── PROGRESS POPUP ── */
+function updateProgressBtn() {
+  const all = Object.values(S.byId);
+  document.getElementById('progress-btn').textContent = `${all.filter(l => l.status === 'ready').length}/${all.length} ready`;
+}
+
+function toggleProgPopup() {
+  const popup = document.getElementById('prog-popup');
+  if (!popup.classList.contains('hidden')) { popup.classList.add('hidden'); return; }
+  const all   = Object.values(S.byId);
+  const ready = all.filter(l => l.status === 'ready').length;
+  const draft = all.filter(l => l.status === 'draft').length;
+  const todo  = all.length - ready - draft;
+  document.getElementById('pp-ready').textContent = `${ready} lesson${ready !== 1 ? 's' : ''}`;
+  document.getElementById('pp-draft').textContent = `${draft} lesson${draft !== 1 ? 's' : ''}`;
+  document.getElementById('pp-todo').textContent  = `${todo} lesson${todo !== 1 ? 's' : ''}`;
+  document.getElementById('pp-time').textContent  = `Estimated reading time: ~${ready * 5} min`;
+  const rect = document.getElementById('progress-btn').getBoundingClientRect();
+  popup.style.left = rect.left + 'px';
+  popup.classList.remove('hidden');
+  setTimeout(() => document.addEventListener('click', function h(e) {
+    if (!popup.contains(e.target)) popup.classList.add('hidden');
+    else document.addEventListener('click', h, { once: true });
+  }, { once: true }), 0);
+}
+
+/* ── SEARCH ── */
+function handleSearch(val) { renderSidebar(val); }
+
+/* ── TEXT SELECTION ── */
+document.getElementById('content').addEventListener('mouseup', onMouseUp);
+
+function onMouseUp(e) {
+  if (e.target.closest('#sel-toolbar') || e.target.closest('#input-popup')) return;
+  setTimeout(() => {
+    const sel = window.getSelection();
+    const txt = sel && sel.toString().trim();
+    if (!txt || txt.length < 3) { dismissToolbar(); return; }
+    if (!sel.rangeCount) return;
+    const range = sel.getRangeAt(0);
+    const body  = document.getElementById('lesson-body');
+    if (!body || !body.contains(range.commonAncestorContainer)) { dismissToolbar(); return; }
+    S.sel = { text: txt, range: range.cloneRange(), rect: range.getBoundingClientRect() };
+    posToolbar(S.sel.rect);
+  }, 10);
+}
+
+function posToolbar(rect) {
+  const tb = document.getElementById('sel-toolbar');
+  tb.classList.remove('hidden');
+  tb.style.top  = Math.max(58, rect.top - 44) + 'px';
+  tb.style.left = Math.max(10, Math.min(rect.left, window.innerWidth - 230)) + 'px';
+}
+
+function dismissToolbar() {
+  document.getElementById('sel-toolbar').classList.add('hidden');
+  closeInputPopup();
+  S.sel = null;
+}
+
+function openAskAI() {
+  S.inputMode = 'ai';
+  document.getElementById('ip-selected').textContent = `"${trunc(S.sel.text, 80)}"`;
+  document.getElementById('ip-q').style.display = 'block';
+  document.getElementById('ip-n').style.display = 'none';
+  document.getElementById('ip-submit').textContent = 'Ask →';
+  posInputPopup();
+  document.getElementById('input-popup').classList.remove('hidden');
+  document.getElementById('ip-q').focus();
+}
+
+function openManualNote() {
+  S.inputMode = 'note';
+  document.getElementById('ip-selected').textContent = `"${trunc(S.sel.text, 80)}"`;
+  document.getElementById('ip-q').style.display = 'none';
+  document.getElementById('ip-n').style.display = 'block';
+  document.getElementById('ip-submit').textContent = 'Save →';
+  posInputPopup();
+  document.getElementById('input-popup').classList.remove('hidden');
+  document.getElementById('ip-n').focus();
+}
+
+function posInputPopup() {
+  const r = document.getElementById('sel-toolbar').getBoundingClientRect();
+  document.getElementById('input-popup').style.top  = (r.bottom + 6) + 'px';
+  document.getElementById('input-popup').style.left = Math.min(r.left, window.innerWidth - 330) + 'px';
+}
+
+function closeInputPopup() {
+  document.getElementById('input-popup').classList.add('hidden');
+  document.getElementById('ip-q').value = '';
+  document.getElementById('ip-n').value = '';
+}
+
+async function submitInput() {
+  if (S.inputMode === 'ai') await doAskAI();
+  else doManualNote();
+}
+
+async function doAskAI() {
+  const q = document.getElementById('ip-q').value.trim();
+  if (!q) return;
+  const apiKey = getApiKey();
+  if (!apiKey) { closeInputPopup(); dismissToolbar(); openApiModal(); return; }
+
+  const sel = S.sel;
+  closeInputPopup(); dismissToolbar();
+
+  const noteId = Date.now().toString();
+  annotate(sel.range, noteId);
+
+  const note = { id: noteId, lessonId: S.active.id, lessonTitle: S.active.title, selectedText: sel.text, question: q, answer: null, userNote: null, timestamp: new Date().toISOString() };
+  addNoteCards(note, true);
+
+  try { note.answer = await callAI(sel.text, q); }
+  catch (e) { note.answer = `[Error: ${e.message}]`; }
+
+  saveNote(note);
+  refreshNoteCard(note);
+  refreshNotesCount(note.lessonId);
+}
+
+function doManualNote() {
+  const txt = document.getElementById('ip-n').value.trim();
+  if (!txt) return;
+  const sel = S.sel;
+  closeInputPopup(); dismissToolbar();
+
+  const noteId = Date.now().toString();
+  annotate(sel.range, noteId);
+
+  const note = { id: noteId, lessonId: S.active.id, lessonTitle: S.active.title, selectedText: sel.text, question: null, answer: null, userNote: txt, timestamp: new Date().toISOString() };
+  saveNote(note);
+  addNoteCards(note, false);
+  refreshNotesCount(note.lessonId);
+}
+
+async function callAI(selectedText, question) {
+  const key = getApiKey();
+  const r = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1000,
+      system: `You are a teaching assistant helping a Product Manager study a lesson called "${S.active.title}". The PM selected a passage and asked a question. Answer in 3-5 sentences. Be direct. Use PM-relevant examples. Do not repeat the selected text.`,
+      messages: [{ role: 'user', content: `Selected text: "${selectedText}"\n\nQuestion: ${question}` }],
+    }),
+  });
+  if (!r.ok) { const e = await r.json().catch(() => ({})); throw new Error(e.error?.message || `HTTP ${r.status}`); }
+  return (await r.json()).content[0].text;
+}
+
+function annotate(range, noteId) {
+  try {
+    const span = document.createElement('span');
+    span.className = 'ai-annotated';
+    span.dataset.noteId = noteId;
+    span.onclick = () => scrollToNote(noteId);
+    range.surroundContents(span);
+  } catch { /* selection spans multiple elements — skip annotation */ }
+}
+
+function scrollToNote(noteId) {
+  const card = document.querySelector(`[data-note-card="${noteId}"]`);
+  if (!card) return;
+  card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  card.style.outline = '2px solid var(--accent)';
+  setTimeout(() => { card.style.outline = ''; }, 1500);
+}
+
+/* ── NOTES SYSTEM ── */
+function saveNote(note) {
+  const key = `pm_notes_${note.lessonId}`;
+  const list = JSON.parse(localStorage.getItem(key) || '[]').filter(n => n.id !== note.id);
+  list.unshift(note);
+  localStorage.setItem(key, JSON.stringify(list));
+}
+
+function getNotes(lessonId) {
+  return JSON.parse(localStorage.getItem(`pm_notes_${lessonId}`) || '[]');
+}
+
+function loadNotesForLesson(id) {
+  const notes = getNotes(id);
+  renderNotesList(notes, 'np-body');
+  refreshNotesCount(id);
+}
+
+function refreshNotesCount(lessonId) {
+  const n = getNotes(lessonId).length;
+  const ctx = `${lessonId} · ${n} note${n !== 1 ? 's' : ''}`;
+  ['np-ctx', 'np-ctx-ov'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = ctx; });
+  const badge = document.getElementById('np-rail-count');
+  if (badge) badge.textContent = n;
+}
+
+function renderNotesList(notes, containerId) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  if (!notes.length) {
+    el.innerHTML = `<div class="notes-empty">Select any text in the lesson<br>and click "Ask AI" or "Note"<br>to capture context here.<br><br>Notes stay per lesson.</div>`;
+    return;
+  }
+  el.innerHTML = notes.map(n => noteCardHtml(n, false)).join('');
+}
+
+function noteCardHtml(n, loading) {
+  const sel = n.selectedText ? trunc(n.selectedText, 120) : null;
+  return `<div class="note-card" data-note-card="${n.id}">
+    <div class="note-card-hd">
+      <div class="note-card-hd-left"><span>✦</span><span>${esc(n.lessonId)} · ${timeAgo(n.timestamp)}</span></div>
+      <button class="note-del-btn" onclick="deleteNote('${n.id}')">✕</button>
+    </div>
+    ${sel ? `<div class="note-selected">"${esc(sel)}"</div>` : ''}
+    ${n.question ? `<div class="note-question">Q: ${esc(n.question)}</div>` : ''}
+    ${loading ? `<div class="note-loading">⏳ Asking AI…</div>` : ''}
+    ${n.answer && !loading ? `<div class="note-answer">${esc(n.answer)}</div>` : ''}
+    ${n.userNote ? `<div class="note-user-note">${esc(n.userNote)}</div>` : ''}
+  </div>`;
+}
+
+function addNoteCards(note, loading) {
+  ['np-body', 'np-body-ov'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.querySelector('.notes-empty')?.remove();
+    const div = document.createElement('div');
+    div.innerHTML = noteCardHtml(note, loading);
+    el.insertBefore(div.firstElementChild, el.firstChild);
+  });
+}
+
+function refreshNoteCard(note) {
+  document.querySelectorAll(`[data-note-card="${note.id}"]`).forEach(el => { el.outerHTML = noteCardHtml(note, false); });
+}
+
+function deleteNote(noteId) {
+  if (!S.active) return;
+  const key = `pm_notes_${S.active.id}`;
+  const list = JSON.parse(localStorage.getItem(key) || '[]').filter(n => n.id !== noteId);
+  localStorage.setItem(key, JSON.stringify(list));
+
+  document.querySelectorAll(`[data-note-card="${noteId}"]`).forEach(el => el.remove());
+
+  const ann = document.querySelector(`.ai-annotated[data-note-id="${noteId}"]`);
+  if (ann) { const p = ann.parentNode; while (ann.firstChild) p.insertBefore(ann.firstChild, ann); p.removeChild(ann); }
+
+  refreshNotesCount(S.active.id);
+
+  ['np-body', 'np-body-ov'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el && !el.querySelector('.note-card')) el.innerHTML = `<div class="notes-empty">Select any text in the lesson<br>and click "Ask AI" or "Note"<br>to capture context here.</div>`;
+  });
+}
+
+function openFreeNote(bodyId) {
+  const el = document.getElementById(bodyId);
+  if (!el) return;
+  if (el.querySelector('.free-note-form')) { el.querySelector('.free-note-form').remove(); return; }
+  const form = document.createElement('div');
+  form.className = 'free-note-form';
+  form.innerHTML = `<label>Free note for this lesson:</label><textarea rows="3" placeholder="Type anything…"></textarea><div class="free-note-form-actions"><button class="btn-cancel" onclick="this.closest('.free-note-form').remove()">Cancel</button><button class="btn-save" onclick="saveFreeNote(this,'${bodyId}')">Save →</button></div>`;
+  el.insertBefore(form, el.firstChild);
+  form.querySelector('textarea').focus();
+}
+
+function saveFreeNote(btn, bodyId) {
+  const form = btn.closest('.free-note-form');
+  const txt  = form.querySelector('textarea').value.trim();
+  if (!txt || !S.active) return;
+  form.remove();
+  const note = { id: Date.now().toString(), lessonId: S.active.id, lessonTitle: S.active.title, selectedText: null, question: null, answer: null, userNote: txt, timestamp: new Date().toISOString() };
+  saveNote(note);
+  addNoteCards(note, false);
+  refreshNotesCount(note.lessonId);
+}
+
+/* ── API KEY ── */
+function getApiKey() {
+  const fromConfig = window.PM_CONFIG?.ANTHROPIC_API_KEY;
+  if (fromConfig && fromConfig !== 'YOUR_KEY_HERE') return fromConfig;
+  return localStorage.getItem('pm_api_key') || null;
+}
+
+function openApiModal() {
+  document.getElementById('api-key-input').value = localStorage.getItem('pm_api_key') || '';
+  document.getElementById('api-modal').classList.remove('hidden');
+  document.getElementById('api-key-input').focus();
+}
+function closeApiModal() { document.getElementById('api-modal').classList.add('hidden'); }
+function saveApiKey() {
+  const k = document.getElementById('api-key-input').value.trim();
+  if (k) localStorage.setItem('pm_api_key', k); else localStorage.removeItem('pm_api_key');
+  closeApiModal();
+}
+
+/* ── RESPONSIVE ── */
+function toggleSidebar(force) {
+  const sb = document.getElementById('sidebar');
+  const ov = document.getElementById('sb-overlay');
+  const open = force === undefined ? !sb.classList.contains('open') : force !== false;
+  sb.classList.toggle('open', open);
+  ov.classList.toggle('open', open);
+}
+
+function openNotesOverlay() {
+  if (S.active) {
+    const notes = getNotes(S.active.id);
+    renderNotesList(notes, 'np-body-ov');
+    const n = notes.length;
+    const ctxEl = document.getElementById('np-ctx-ov');
+    if (ctxEl) ctxEl.textContent = `${S.active.id} · ${n} note${n !== 1 ? 's' : ''}`;
+  }
+  document.getElementById('notes-overlay').classList.add('open');
+}
+
+function closeNotesOverlay() { document.getElementById('notes-overlay').classList.remove('open'); }
+
+/* ── UTILS ── */
+function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function trunc(s, n) { return s.length > n ? s.slice(0, n) + '…' : s; }
+function timeAgo(iso) {
+  const d = Date.now() - new Date(iso).getTime();
+  if (d < 60000)    return 'just now';
+  if (d < 3600000)  return Math.floor(d / 60000) + 'm ago';
+  if (d < 86400000) return Math.floor(d / 3600000) + 'h ago';
+  return Math.floor(d / 86400000) + 'd ago';
+}
+
+/* ── GLOBAL EVENTS ── */
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  dismissToolbar();
+  closeApiModal();
+  closeNotesOverlay();
+  document.getElementById('prog-popup').classList.add('hidden');
+  if (document.getElementById('sidebar').classList.contains('open')) toggleSidebar(false);
+});
+document.getElementById('content').addEventListener('scroll', dismissToolbar);
+
+/* ── INIT ── */
+// Hide settings button if key is already loaded from config.js
+if (window.PM_CONFIG?.ANTHROPIC_API_KEY && window.PM_CONFIG.ANTHROPIC_API_KEY !== 'YOUR_KEY_HERE') {
+  document.getElementById('settings-btn').style.display = 'none';
+}
+loadManifest();
+</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(**)",
+      "Edit(concept-library/**)",
+      "Edit(dashboard/index.html)",
+      "Edit(tasks.md)",
+      "Edit(decisions.md)",
+      "Edit(memory.md)",
+      "Edit(CLAUDE.md)",
+      "Edit(.claude/**)",
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(ls:*)",
+      "Bash(wc:*)",
+      "Bash(mkdir:*)",
+      "Bash(cat:*)",
+      "Bash(cp:*)"
+    ],
+    "deny": [
+      "Edit(_REGISTRY.md)",
+      "Edit(technical-architecture/**)",
+      "Edit(product-prd/**)",
+      "Edit(research-competitive/**)",
+      "Edit(performance-reviews/**)",
+      "Bash(rm:*)",
+      "Bash(mv:*)",
+      "Bash(curl:*)"
+    ]
+  }
+}
