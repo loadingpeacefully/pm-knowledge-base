@@ -3,3 +3,5 @@
 node_modules/
 .env
 *.log
+*.bak
+FEEDBACK_*.md
