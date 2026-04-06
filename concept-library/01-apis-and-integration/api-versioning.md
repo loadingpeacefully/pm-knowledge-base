@@ -26,15 +26,12 @@ last_qa: 2026-04-06
   Foundation → Working → Strategic is the recommended reading order.
   Ex-engineers and senior PMs may start at Working or Strategic directly.
 -->
-
-# FOUNDATION
-
-**For:** non-technical PMs, aspiring PMs, designers transitioning to PM, MBA PMs on tech modules
-
-**Assumes:** 01.01 What is an API. You know what an API call is and what a "contract" means.
-
----
 ```
+# ═══════════════════════════════════
+# FOUNDATION
+# For: non-technical PMs, aspiring PMs, designers transitioning to PM, MBA PMs on tech modules
+# Assumes: 01.01 What is an API. You know what an API call is and what a "contract" means.
+# ═══════════════════════════════════
 
 ## F1. The world before this existed
 
@@ -54,97 +51,86 @@ Renaming a field is a breaking change. So is removing a field. So is changing wh
 
 API versioning is the system that lets you evolve your API without breaking clients that depend on the current version.
 
-
-
 ## F2. What it is — definition and core split
 
-> **API versioning:** Publishing your API under a version identifier — most commonly `/v1/` or `/v2/` in the URL path — so that when you need to make an incompatible change, you can create a new version (`/v2/`) while clients on the old version (`/v1/`) keep working until they're ready to migrate.
+> **API Versioning:** Publishing your API under a version identifier (most commonly `/v1/` or `/v2/` in the URL path) so that incompatible changes can be deployed as a new version while existing clients continue working until they migrate.
 
-### The core PM skill: identifying change type
+### The Core PM Skill
 
-| **Non-breaking changes** | **Breaking changes** |
-|---|---|
-| Safe to add to current version | Require a new version |
-| Existing clients continue working | Existing clients will fail |
-| Adding a new optional field to a response | Removing a field |
-| Adding a new endpoint | Renaming a field (`name` → `fullName`) |
-| Adding an optional query parameter | Changing a field's data type (string to integer) |
-| Fixing a bug in existing behaviour (usually) | Making an optional field required |
-| | Removing an endpoint |
-| | Changing an error code or error format |
+Understanding the difference between two types of API changes:
 
-⚠️ **Common mistake:** Teams treat non-breaking changes casually and miss when a "small cleanup" is actually breaking. The rename example above—`name` → `fullName`—looks like a refactor but is a breaking change that requires a new API version.
+| Change Type | Definition | Examples | Client Impact |
+|---|---|---|---|
+| **Non-breaking** | Safe to add to current version | • Adding new optional field<br>• Adding new endpoint<br>• Adding optional query parameter<br>• Fixing existing bugs | ✅ No clients break |
+| **Breaking** | Requires new version | • Removing a field<br>• Renaming a field (`name` → `fullName`)<br>• Changing data type (string → integer)<br>• Making optional field required<br>• Removing an endpoint<br>• Changing error code/format | ❌ Existing clients fail |
+
+### The Real Risk
+
+Teams treat non-breaking changes casually and fail to recognize when a "small cleanup" is actually breaking.
+
+**Example:** Renaming `name` → `fullName` looks like a refactor but is a breaking change in disguise.
 
 ## F3. The analogy that makes it click
 
-**Textbook editions as API versions**
+### Textbook Editions = API Versions
 
-When an author makes substantial updates — new chapters, reorganised content, different exercises — they release a 2nd edition with a new ISBN. Schools can keep teaching from the 1st edition while new students get the 2nd. Both editions co-exist simultaneously.
+When an author releases a textbook with substantial updates, they publish a new edition with a new ISBN. Both editions coexist—schools can keep using the 1st edition while new students get the 2nd. Nothing reaches back to change the 1st edition after publication.
 
-| Element | Textbook Edition | API Versioning |
-|---------|------------------|-----------------|
-| **Version identifier** | ISBN | Version number |
-| **What changes** | Chapters, content, exercises | API contract |
-| **Backward compatibility** | Old edition still available | v1 and v2 run side-by-side |
-| **When you create new version** | Breaking changes for users | Breaking changes to contract |
-| **Can you modify after release?** | No — edition is fixed | No — version is immutable |
+**The mapping:**
+| Textbook World | API World |
+|---|---|
+| ISBN | Version number |
+| Textbook content | API contract |
+| New edition (breaking changes) | New API version |
+| Simultaneous editions in use | v1 and v2 running together |
 
-**URL versioning: the standard approach**
+### URL Versioning: The Standard Approach
 
-Most teams embed the version directly in the URL, like an ISBN on a book spine:
+Most teams put the version directly in the URL path, mirroring how an ISBN appears on a book spine.
 
-```
-GET /v1/student     → version 1 of the student lookup API
-GET /v2/student     → version 2, with breaking changes, running alongside v1
-```
+**Examples:**
+- `GET /v1/student` — version 1 of the student lookup API
+- `GET /v2/student` — version 2, with breaking changes, running alongside v1
 
-**Why URL versioning wins**
+**Why this works:**
+- ✅ Both versions testable in a browser
+- ✅ URLs shareable in Slack messages
+- ✅ Visible in logs and monitoring
+- ✅ Immediately clear which version you're using
 
-- ✓ Test both versions in a browser
-- ✓ Share either URL in Slack or documentation
-- ✓ Version appears in logs and monitoring
-- ✓ Visible everywhere by default
+The version visibility everywhere is why URL versioning remains the default approach for most teams.
 
 ## F3. When you'll encounter this as a PM
 
-### Scenario 1: Internal "cleanup" that's actually breaking
-Engineers often don't notice the boundary between non-breaking and breaking changes.
+### Shipping "cleanup" that's actually a breaking change
+Engineers often don't notice the boundary. "We're just renaming this field" feels trivial internally. From the outside, it breaks every client using that field.
 
-**The problem:** "We're just renaming this field" feels trivial internally. From the outside, it breaks every client using that field.
-
-**Your question to ask:**
-> "Who depends on this response today, and what happens to them when this changes?"
+**Your move:** Ask "Who depends on this response today, and what happens to them when this changes?"
 
 ---
 
-### Scenario 2: Third-party API integration
-**The risk:** If you call `/v1/` and the vendor sunset v1 six months ago without telling you, you'll get failures with no warning.
+### Integrating with a third-party API
+⚠️ **Risk:** If you call `/v1/` and the vendor sunset v1 six months ago without telling you, you'll get failures with no warning.
 
-**Your mitigation:**
+**Your move:** 
 - Pin to a specific version in your integration
-- Monitor for deprecation notices
-- Don't assume vendor support continues
+- Monitor for deprecation notices from the vendor
 
 ---
 
-### Scenario 3: Security fix requiring breaking change
-⚠️ **Worst case scenario**
+### Security issue requiring breaking-change fixes
+⚠️ **Worst case scenario:** The secure fix requires a breaking change. You can't silently apply it — that breaks clients.
 
-| Constraint | Your decision |
-|---|---|
-| Can't silently apply secure fix | Would break existing clients |
-| Must version the change | Run insecure v1 + secure v2 in parallel |
-| Migration window length | Product and risk decision, not engineering-only |
+**What happens:**
+- Run insecure v1 alongside secure v2 during migration window
+- How long that window lasts = **product and risk decision, not just engineering**
 
 ---
 
-### Scenario 4: Public API with external developers
-**Why this matters:** Developers build business logic on your API. Every breaking change without versioning destroys developer trust.
+### Offering a public API
+> **Developer trust principle:** Every breaking change you ship without versioning destroys developer trust.
 
-**Companies that get this right** (Stripe, Twilio, Shopify) treat versioning as a commitment, not an afterthought. This becomes competitive advantage.
-
----
-
+**Why it matters:** Teams with the best developer relationships (Stripe, Twilio, Shopify) treat versioning as a **commitment, not an afterthought**.
 # ═══════════════════════════════════
 # WORKING KNOWLEDGE
 # For: growth PM, consumer startup PM, B2B enterprise PM, 2+ years experience
@@ -153,57 +139,51 @@ Engineers often don't notice the boundary between non-breaking and breaking chan
 
 ## W1. How it works — mechanics and deprecation lifecycle
 
-### Quick Reference
+### Quick Reference: Versioning Approaches
 
-| Approach | Syntax | Pros | Cons | Best for |
-|----------|--------|------|------|----------|
-| **URL Path** | `GET /v2/student` | Visible in logs, testable in browser, easy to route | — | Default choice |
-| **Header** | `GET /student` + `API-Version: 2024-01-01` | Clean URLs, elegant | Invisible in logs, harder to test, easy to forget | Teams with dedicated API platform function |
-| **Query Parameter** | `GET /student?version=2` | Works | Mixes with functional params, messy | Only for retrofitting legacy APIs |
+| Approach | Format | Visibility | Testing | Use When |
+|----------|--------|------------|---------|----------|
+| **URL Path** | `GET /v2/student` | Visible in logs & browser | Easy, no tooling needed | Starting fresh (default) |
+| **Header** | `GET /student` + `API-Version: 2024-01-01` | Hidden from URL | Requires tooling | Dedicated API platform team |
+| **Query Parameter** | `GET /student?version=2` | Mixed with functional params | Works but messy | Retrofitting only |
 
-**Default recommendation:** URL path versioning. Pick it at the start and stay consistent. The wrong choice is mixing approaches — some endpoints on path, some on headers.
+**Default recommendation:** URL path versioning. Pick it at the start and stay consistent.
+
+⚠️ **The critical mistake:** Mixing approaches — some endpoints on path, some on headers — destroys predictability across your API surface.
 
 ---
 
-### Three versioning approaches
+### Three Versioning Approaches
 
-**URL path versioning**
-
+#### URL Path Versioning
 ```
 GET /v1/student
 GET /v2/student
 ```
-
 Visible in logs, testable in a browser, easy to route at the infrastructure layer. Most teams start and stay here.
 
----
-
-**Header versioning**
-
+#### Header Versioning
 ```
 GET /student
 API-Version: 2024-01-01
 ```
-
 Stripe uses this approach — each API key is pinned to a specific version date. Elegant architecture, but invisible in URLs, harder to test without tooling, easier to forget in client code. Suitable for teams with a dedicated API platform function that can enforce consistency.
 
----
-
-**Query parameter versioning**
-
+#### Query Parameter Versioning
 ```
 GET /student?version=2
 ```
-
-Least common. Works, but messy. Versions get mixed with functional query parameters. Avoid unless you're retrofitting an API that didn't originally plan for versioning.
+Least common. Works, but messy. Versions get mixed with functional query parameters. **Avoid** unless you're retrofitting an API that didn't originally plan for versioning.
 
 ---
 
-## The deprecation lifecycle
+### The Deprecation Lifecycle
+
+> **Deprecation Lifecycle:** The process of running two API versions simultaneously through a defined window, then removing the old version cleanly — not abandoning it mid-flight.
 
 Versioning is not just about launching v2. It's about running v1 and v2 simultaneously through a defined deprecation window and then removing v1 cleanly.
 
-**The five-step lifecycle:**
+**The five-step process:**
 
 1. **Design v2** with the breaking change. Ship it alongside v1 — both endpoints live.
 2. **Announce deprecation** of v1 with a specific sunset date. Document what changed and what clients need to do. Publish a migration guide.
@@ -211,118 +191,120 @@ Versioning is not just about launching v2. It's about running v1 and v2 simultan
 4. **Support the migration** — don't just announce and disappear. Build migration tooling if the change is complex. Run office hours for external developers if you have them.
 5. **Sunset v1** on the announced date. Remove the code. Not "start sending 410 Gone" — actually remove it so the codebase doesn't carry dead weight forever.
 
-**Timeline minimums:**
-- External/public APIs: **6 months minimum**
-- Internal APIs (where you control all clients): **3 months minimum**
+**Timeline guidance:**
+- **External/public APIs:** Minimum 6 months
+- **Internal APIs:** Minimum 3 months (you control all clients)
 
-Shorter timelines create emergencies. Longer timelines mean you're maintaining two codebases indefinitely.
-
----
-
-## KB grounding: a real versioning decision
-
-The student lookup API in production uses `/v1/` path versioning — `GET /v1/student` and `GET /v1/student/details`. That's the versioning strategy working as designed.
-
-### Issue #1: Security gap in default response
-
-⚠️ **Security Issue — High Priority**
-
-The `/v1/student/details` endpoint returns sensitive parent data (email address, phone number) in the default response. The only protection is an opt-in masking flag — `isFe=true` in the query — which frontends are supposed to use to strip the sensitive fields.
-
-**The proper fix:** Make masked data the default, with an explicit opt-in to receive it for authorised internal use. But removing fields from the default response is a breaking change. Any client that currently depends on receiving those fields without the flag will break.
-
-**Current state:** The `isFe=true` pattern is the team deferring that breaking change. It's a reasonable short-term workaround. But the version cost is accumulating. Until they ship `/v2/student/details` with safe defaults, they're running a v1 endpoint with a known security gap — and the reason it hasn't been fixed is that fixing it properly requires going through the versioning process.
+⚠️ **Short timelines** create emergencies. **Long timelines** mean you're maintaining two codebases indefinitely.
 
 ---
 
-### Issue #2: Semantic HTTP status misuse
+### KB Grounding: A Real Versioning Decision
 
-The API returns `success: false` with an HTTP 200 status for records not found. Semantically wrong — a 404 should be used — but fixing it to return 404 is also a breaking change. Any client that checks the `success` field instead of the HTTP status would silently break.
+**The student lookup API uses `/v1/` path versioning** — `GET /v1/student` and `GET /v1/student/details`. That's the versioning strategy working as designed.
 
-**Priority:** Low-priority, sitting in v1 until someone decides the migration cost is worth paying.
+#### The Security Issue
+
+The `/v1/student/details` endpoint has a documented **High-priority security issue:**
+
+| Issue | Current State | Root Cause |
+|-------|---------------|-----------|
+| Sensitive data exposed | Parent email & phone returned by default | Only opt-in masking available (`isFe=true`) |
+| Proper fix | Make masked data default, explicit opt-in for sensitive fields | Breaking change — requires v2 |
+| Status quo cost | Known security gap remains in production | Team deferred breaking change |
+
+The `isFe=true` pattern is a reasonable short-term workaround. But the version cost is accumulating. Until they ship `/v2/student/details` with safe defaults, they're running a v1 endpoint with a known security gap.
+
+#### The Semantic Issue
+
+A second issue on the same endpoint: the API returns `success: false` with an HTTP 200 status for records not found.
+
+| Issue | Current State | Impact |
+|-------|---------------|--------|
+| Wrong HTTP status | Returns 200 for "not found" instead of 404 | Semantically incorrect |
+| Migration cost | Clients checking `success` field would silently break | Breaking change — requires v2 |
+| Priority | Documented as Low-priority | Sits in v1 until tradeoff is accepted |
+
+**What this reveals:** One small inconsistency, documented as Low-priority, sitting in v1 until someone decides the migration cost is worth paying.
 
 ---
 
-**What this reveals:**
-
-API versioning decisions in production are not abstract. They are real debt, real cost, real tradeoff. A single broken choice compounds across the entire API lifetime.
+**This is what API versioning decisions look like in production.** Not abstract. Real debt, real cost, real tradeoff.
 
 ## W2. Tradeoffs — with recommendations
 
 ### Quick Reference
-| Decision | External APIs | Internal APIs |
-|----------|---------------|---------------|
-| **Versioning approach** | URL versioning (default) | URL versioning (default) |
-| **Support window** | 6+ months | 3 months |
-| **Scope** | Whole API per version | Whole API per version |
-| **Change policy** | Additive-only | Additive-only |
+| Decision | Default | Rationale |
+|----------|---------|-----------|
+| URL vs Header versioning | URL versioning | Visible, testable, proxy-friendly |
+| Old version support window | 6mo external / 3mo internal | Balance safety with maintainability |
+| Versioning scope | Whole API | Single version number, one sunset date |
+| Breaking changes | Additive-only policy | Never break within a version |
 
 ---
 
 ### URL versioning vs header versioning
 
-| Dimension | URL Versioning | Header Versioning |
-|-----------|---|---|
-| **Visibility** | Visible in every request | Hidden in headers |
-| **Testability** | Easy to test multiple versions | Requires header manipulation |
-| **Proxy-friendly** | ✓ Proxies understand the route | Can bypass version headers |
-| **Granularity** | One version per URL | Supports date-based pinning (Stripe) |
-| **Enforcement** | Natural for all requests | Requires team discipline |
+| Aspect | URL Versioning | Header Versioning |
+|--------|---|---|
+| **Visibility** | Explicit in request | Hidden in headers |
+| **Testability** | Easy to test manually | Requires header tools |
+| **Proxy-friendly** | Yes | Requires header support |
+| **Architectural cleanliness** | Lower | Higher |
+| **Granularity** | Coarse (whole version) | Fine (date-based pinning) |
 
-**Recommendation:** Default to URL versioning unless you have a dedicated API platform team enforcing header consistency across all services.
+**Default recommendation:** URL versioning
 
-⚠️ **Risk:** Header versioning's invisibility becomes a liability—engineers frequently forget to add version headers in new client code, causing silent version mismatches.
+**When to choose header versioning:** Only with a dedicated API platform team that can enforce consistency across all services.
+
+⚠️ **Risk:** Header versioning's invisibility causes engineers to forget version headers in new client code, creating silent compatibility breaks.
 
 ---
 
 ### How long to run old versions
 
-| Window | Pros | Cons | Best for |
-|--------|------|------|----------|
-| **30–60 days** | Fast migration cadence | Creates client emergencies; insufficient migration time | Internal APIs with enumerated, reachable clients only |
-| **6 months** | Balanced; time for planning | Moderate codebase maintenance burden | Standard for external APIs |
-| **12+ months** | Safe for all clients | Running two+ codebases indefinitely; testing overhead | Only if client diversity requires it |
+| Timeline | External APIs | Internal APIs |
+|----------|---|---|
+| **Short (30–60 days)** | ❌ Creates migration emergencies | ✅ Acceptable with full client enumeration |
+| **Medium (6 months)** | ✅ **Recommended** | ✅ **Recommended** |
+| **Long (12+ months)** | ✅ Safe but costly | ⚠️ Indefinite dual maintenance |
 
-**Recommendation:** 
-- External APIs: **6 months minimum**
-- Internal APIs: **3 months** (only if you can contact every client)
-- Never shorten external timelines—you cannot know all your clients
+**Default:** 6 months for external APIs, 3 months for internal
 
-⚠️ **Risk:** Shortening external timelines creates unmanageable migration chaos for unknown downstream users.
+⚠️ **Critical:** Never shorten external API timelines. You cannot enumerate all clients.
 
 ---
 
-### Version the whole API vs version individual endpoints
+### Version the whole API vs individual endpoints
 
-| Approach | Example | Cost | Risk |
-|----------|---------|------|------|
-| **Whole-API versioning** | `/v2/payment`, `/v2/student`, `/v2/users` | Higher per-version overhead | Single migration event; clear tracking |
-| **Selective versioning** | `/v2/payment` + `/v1/student` + `/v2/users` | Appears economical initially | Version matrix becomes unmaintainable |
+> **Selective versioning:** Versioning only certain endpoints (e.g., `/v2/payment` alongside `/v1/student`)
 
-**The selective approach creates unsustainable complexity:**
+**Problem:** Creates an unmaintainable version matrix
 - Which client is on v1 for payments but v2 for users?
-- What version combinations are officially supported?
-- Which versions can be sunset together?
+- What combinations are officially supported?
+- Testing and support burden grows exponentially
 
-**Recommendation:** Default to versioning the whole API together. One version number, one migration event, one sunset date. The clarity overhead pays off immediately.
+**Default recommendation:** Version the whole API together
+
+**Benefits:**
+- One version number
+- One migration event
+- One sunset date
+- Clarity for clients and engineers
 
 ---
 
 ### Additive-only policy (strong default)
 
-> **Additive-only versioning:** Never remove, rename, or restructure fields within a published version. Only add new fields or endpoints.
+> **Additive-only policy:** Never remove or rename anything in a published version. Only add new fields, endpoints, and behavior.
 
-**How it works:** When you need to remove something, publish a new version; leave the old field untouched in the previous version.
+| Cost | Benefit |
+|------|---------|
+| Old versions accumulate cruft | Clients never experience breaking changes |
+| Larger payload sizes over time | Developers trust the contract implicitly |
+| More backward-compatibility code | No surprise migrations required |
 
-| Dimension | Benefit |
-|-----------|---------|
-| **Stability** | v1 clients never break unexpectedly |
-| **Trust** | Developers rely on the version contract |
-| **Simplicity** | Lowest-cost versioning discipline |
-
-**Trade-off:** Old versions accumulate unused or superseded fields over time (technical cruft).
-
-**Real-world example (Stripe):** Maintains decades of API versions without breaking changes within a version. Cost: some inconsistencies in older endpoints. Benefit: legendary developer trust and minimal client churn during migrations.
+**How Stripe operates:** Maintained decades of API versions without breaking changes within a version. Old versions have inconsistencies, but the guarantee—*this version will never break you*—creates developer trust.
 
 ## W3. Questions to ask your engineer
 
@@ -338,48 +320,47 @@ API versioning decisions in production are not abstract. They are real debt, rea
 
 ## W4. Real companies
 
-### Stripe — Date-based header versioning
+### Stripe — Date-based versioning with 7+ years of backwards compatibility
 
-**What:** API keys pinned to creation date; versions maintained back to 2011 (7+ years backwards compatibility); explicit breaking vs non-breaking changelog per version.
+**What:** Date-based header versioning (`2023-10-16`). Each API key pinned to the version it was created on.
 
-**Why:** Heavy investment in migration guides and upgrade tooling reduces friction for developers.
+**Why:** Maintains versions back to 2011 (~7 years backwards compatibility). Changelog explicitly marks breaking vs non-breaking changes. Heavy investment in migration guides and upgrade tooling.
 
-**Takeaway:** Consistently highest developer trust scores among API platforms — versioning as competitive advantage.
-
----
-
-### Twilio — URL path versioning (date-based)
-
-**What:** Date strings embedded directly in path: `/2010-04-01/Accounts/{AccountSid}/Messages`
-
-**Why:** Version visibility and pinning alongside newer versions, unusual format but same underlying principle.
-
-**Takeaway:** Demonstrates multiple valid implementations of the same core strategy.
+**Takeaway:** Consistently highest developer trust scores among API platforms.
 
 ---
 
-### Shopify — Date-based URL versioning with lifecycle discipline
+### Twilio — Date-based path versioning with account structure
 
-**What:** Quarterly releases; 12-month support window before sunset (`api.myshopify.com/admin/api/2024-01/{resource}`).
+**What:** URL path versioning with date strings embedded: `/2010-04-01/Accounts/{AccountSid}/Messages`
 
-**Why:** Clear migration timeline lets app developers plan predictably.
+**Why:** Version visible, pinned, and running alongside newer versions. Unusual format but same principle as Stripe.
 
-**Takeaway:** Predictability + structured sunset = ecosystem trust, even with active deprecation.
+**Takeaway:** Demonstrates flexibility in *where* you encode versions, not just *how*.
 
 ---
 
-### Student API (KB) — Versioning debt in action
+### Shopify — Quarterly releases with defined sunset windows
 
-**What:** Simple path versioning (`/v1/`); two documented breaking issues unresolved:
+**What:** Date-based URL versioning (`api.myshopify.com/admin/api/2024-01/{resource}`). New versions released quarterly with 12-month support window.
+
+**Why:** App developers in the ecosystem have clear migration timelines and can plan accordingly.
+
+**Takeaway:** Predictable cadence builds trust even with shorter support windows.
+
+---
+
+### Student API (KB) — Path versioning with unresolved technical debt
+
+**What:** Path versioning at `/v1/` for both endpoints. Simple, clean implementation.
+
+**Why:** Two documented issues require breaking changes to fix properly:
 - `isFe=true` security hack
-- `success: false` on 200 for not-found
+- `success: false` on 200 for not-found responses
 
-**Why:** Both require breaking changes to fix; migration cost deferred.
+**Takeaway:** Neither issue has been versioned yet. Classic versioning debt: the right fix exists, the cost is migration, and the team is deferring it.
 
-**Takeaway:** Classic versioning debt: right fix exists, cost is real, team is deferring it. Shows the real-world trade-off between technical correctness and adoption friction.
-
----
-
+*What this reveals:* Versioning isn't just a technical choice—it's a commitment to fixing mistakes. Deferring breaks compounds risk over time.
 # ═══════════════════════════════════
 # STRATEGIC DEPTH
 # For: ex-engineer PM, senior PM, AI-native PM, technical leads moving into product
@@ -391,186 +372,185 @@ API versioning decisions in production are not abstract. They are real debt, rea
 ### The forever-v1 trap
 
 **What happens:**
-The team ships v2 and announces v1 deprecation with a sunset date of six months. Six months pass. One major client hasn't migrated. The sunset date slips to three more months. Those three months pass. Two more clients. Another extension.
-
-Two years later, v1 is still running with five sunset date extensions. Every endpoint exists twice. Every new feature ships to both versions. Engineers budget time for this. It compounds.
+- Team ships v2 and announces v1 deprecation with a sunset date
+- At the midpoint, some clients haven't migrated
+- Sunset date slips
+- Two years later: v1 still running, five sunset extensions, every endpoint maintained twice
 
 **Root cause:**
-The PM didn't audit client migration status at the three-month mark. Migration happened for clients who were watching. Clients who weren't watching didn't migrate. The announcement was sent once. Nobody followed up.
+The PM didn't audit migration status at the three-month mark. Announcements sent once don't drive behavior change for inattentive clients.
 
-**Prevention:**
-
-- Treat API migration like a product launch with a customer success motion
-- Know every client on v1 by name
-- Contact them individually at the midpoint
-- Make migration the path of least resistance with tooling and clear guides
-- **Hold the sunset date** — slipping it once teaches clients that sunset dates are suggestions
+**Prevention checklist:**
+- Treat API migration like a product launch with customer success motion
+- Maintain a named list of every v1 client
+- Contact each client individually at the midpoint
+- Build migration tooling and clear guides
+- **Hold the sunset date** — slipping once teaches clients that dates are suggestions
 
 ---
 
 ### The silent breaking change
 
 **What happens:**
-An engineer makes a change they consider minor. The `GET /v1/student` endpoint was returning `success: false` with HTTP 200 for not-found records — inconsistent, but that's how v1 worked. Someone "fixes" it to return HTTP 404 instead. Ships without a version bump.
+An engineer "fixes" inconsistent behavior they consider a bug. `GET /v1/student` returned `success: false` with HTTP 200 for not-found records. The engineer changes it to return HTTP 404 (semantically correct). Ships without a version bump.
 
-Every client that checked `success: false` to detect not-found behavior now gets a 404 and potentially crashes, because their error handler didn't expect 404 from this endpoint.
+Clients checking `success: false` to detect not-found behavior now get 404 and crash. Their error handlers never expected 404 from this endpoint.
 
 **Why it's dangerous:**
-
-Breaking changes that masquerade as bug fixes are the most dangerous category. There is no malice — just the assumption that "this was wrong before, clients shouldn't have relied on it." Clients did rely on it. They always do.
-
-> **Silent breaking change:** A behavior modification shipped without version increment, disguised as a bug fix, that changes how existing clients experience the API.
+> **Breaking change masquerading as bug fix:** These are the most dangerous category. There is no malice—just the assumption that clients "shouldn't have relied on" the old behavior. They did.
 
 **Mitigation:**
+Code review for all API changes must explicitly ask:
 
-Code review for API changes must explicitly ask:
+> **Required question:** "Does this change the behavior any existing client could depend on?"
 
-| Question | Action |
-|----------|--------|
-| Does this change the behavior any existing client could depend on? | Treat as breaking change |
-| Can you prove no client depends on the old behavior? | Only then skip version bump |
-| Uncertain about client dependencies? | Default to version bump |
+If the answer is "I don't know," default to a version bump unless you can affirmatively prove no client depends on the old behavior.
 
 ---
 
 ### The mass migration failure
 
 **What happens:**
-The team ships v2 with genuine improvements — better security, cleaner response format, lower latency. They announce a 30-day migration window because engineering is confident v2 is ready and wants to move fast.
+- Team ships v2 with real improvements (security, response format, latency)
+- Announces 30-day migration window
+- Internal services migrate in a week
+- Three days before sunset: first external developer files support ticket (missed the announcement)
+- One week after sunset: B2B enterprise partner's integration breaks during a board demo
 
-Internal services migrate in a week. Three days before sunset, the first external developer files a support ticket: they hadn't seen the announcement. A week after sunset, a B2B enterprise partner escalates to the CEO: their integration broke during a board demo.
+**Why it fails:**
+30 days is engineered-team thinking. External developers have day jobs, release cycles, and approval processes.
 
-**The problem:**
+⚠️ **Risk:** Escalation costs far exceed the cost of running both versions longer.
 
-The 30-day window was designed for an engineering team context. External developers have:
-- Day jobs
-- Release cycles
-- Approval processes
-- Support queues
-
-30 days is not enough. The escalation cost more than three additional months of running both versions would have.
-
-**Rule of thumb:**
-
-> Set migration timeline by the slowest client you have, not the fastest. If your slowest client needs 6 months, that's your minimum. You can incentivize faster clients to migrate early, but the sunset date anchors to the laggards.
+**Migration timeline rule:**
+> **Set deadlines by slowest client, not fastest:** If your slowest client needs 6 months, that's your minimum. You can incentivize faster clients to migrate early, but the sunset date anchors to the laggards.
 
 ---
 
 ### API-versioning theater
 
 **What happens:**
-The version number exists in the URL. Breaking changes still happen in v1. The team quietly ships behavioral changes, response format changes, or field renames without incrementing the version — because "it's not really breaking, it's just a fix."
+The version number exists in the URL but versioning is not enforced. Breaking changes ship without incrementing the version:
+- Behavioral changes
+- Response format changes  
+- Field renames
 
-Clients who were stable on v1 start experiencing intermittent failures they can't explain. They check the changelog: nothing there. They file a support ticket. The API is technically on the same version it always was.
+All treated as "just fixes," not new versions.
 
-⚠️ **Trust destruction risk:** Versioning theater maintains the appearance of a stable contract while violating it in practice. This is the most corrosive failure pattern.
+Clients stable on v1 experience intermittent failures. The changelog shows nothing. Support tickets arrive with no explanation.
 
-**Mitigation:**
+⚠️ **Trust destruction:** Versioning theater maintains the appearance of a stable contract while violating it in practice.
 
-- Document an enforced definition of breaking change
-- Route any API change with behavioral impact through a version review before shipping
-- Version review gates the change to production
+**Only mitigation:**
+- Document a strict definition of breaking change
+- Route every API change with behavioral impact through version review before shipping
+- Enforce the process
 
 ## S2. How this connects to the rest of your work
 
 ### 01.01 — What is an API
 
-> **API Contract:** The agreement between you and clients about what data, fields, and behavior the API provides
+> **API Contract:** The agreement between provider and client about what data/functionality is available and how to access it
 
-Versioning is your change management layer on top of the contract. Every breaking change is a contract renegotiation—versioning makes that renegotiation **orderly rather than chaotic**.
-
----
+Versioning is your change management layer on top of the contract. Every breaking change is a contract renegotiation—versioning makes that renegotiation orderly rather than chaotic.
 
 ### 01.02 — API Authentication
 
-| Aspect | Impact on Versioning |
-|--------|----------------------|
-| Authentication schemes | Can change between versions |
-| OAuth scopes | v2 may have more granular permissions than v1 |
-| API key formats | May change across versions |
-| Client migration surface | **Doubles**—clients migrate data contract + auth contract simultaneously |
+| Aspect | Migration Impact |
+|--------|------------------|
+| **Scope granularity** | OAuth scopes for v2 may be more granular than v1 |
+| **Key formats** | May change between versions |
+| **Surface area** | Clients migrate both data contract AND authentication contract simultaneously |
 
-**Plan this in your migration guide.** Clients migrating v1→v2 are solving two problems at once.
-
----
+**Plan for it:** Include authentication changes in your migration guide. This doubles the migration surface.
 
 ### 01.03 — Webhooks vs Polling
 
-> **Webhook Contract:** The specific fields and structure in the payload fired when an event occurs (e.g., payment completion)
+> **Webhook Payload Contract:** The specific fields and structure of data sent to integrations on event triggers
 
-**The risk:** Renaming a field in a webhook payload without versioning breaks every integration listening to it—**silently**.
-
-**Why webhooks are harder:**
-- Webhook consumers are *passive* (data arrives to them; they don't request it)
-- You can't easily find or notify all webhook consumers during migration
-- Silent failures are common
-
----
+Webhook versioning is often forgotten because:
+- Webhook consumers are **passive** (don't request data; data arrives at them)
+- Field renames without versioning break integrations **silently**
+- Webhook consumers are the **hardest clients to find and notify** during migration
 
 ### 01.04 — Rate Limiting
 
-**Strategy:** Use version-specific rate limits as a migration incentive.
+**Version-specific rate limits as migration incentive:**
 
-| Scenario | Client Motivation |
-|----------|-------------------|
-| Same rate limits on v1 and v2 | "Migration is work with no benefit to me" |
-| Higher rate limits on v2 | "Migration gets us better throughput" ✓ |
+- **v1 limits:** Baseline rate ceiling
+- **v2 limits:** Higher throughput available
+- **Outcome:** Converts "migration is work with no benefit" → "migration gets us better throughput"
 
-A tangible performance benefit often provides the nudge needed to unstick slow-moving clients.
+Small leverage point, but sometimes the nudge that unsticks a slow-moving client.
 
 ## S3. The debates worth having
 
 ### Should you ever force-migrate clients?
 
-| **Case For** | **Case Against** |
+| **The case for forcing** | **The case against** |
 |---|---|
-| Infinite backwards compatibility is technically impossible. Infrastructure ages out. Security vulnerabilities accrue. Eventually, the cost of maintaining old versions exceeds the cost of breaking clients who haven't migrated. Stripe and Stripe-level resources can maintain 7 years of versions. Most teams cannot. | Breaking a client without consent violates the contract trust that makes APIs valuable. Developer ecosystems take years to build and can be destroyed in one incident. |
+| Infinite backwards compatibility is technically impossible | Breaking a client without consent violates API contract trust |
+| Infrastructure ages out; security vulnerabilities accrue | Developer ecosystems take years to build and can be destroyed in one incident |
+| Cost of maintaining old versions eventually exceeds cost of breaking unmigrated clients | |
+| Stripe maintains 7 years of versions, but most teams cannot | |
 
-**Position:** Force migration is justified — but only with:
-- ⚠️ **Timeline:** 12+ months minimum for external APIs
-- **Communication:** Multiple channels + direct outreach to every known client
-- **Tooling:** Migration assistance that makes the upgrade path explicit
+**Position: Force migration is justified — with conditions**
 
-⚠️ **What's not acceptable:** Surprise breaking changes with inadequate notice, or setting a sunset date you extend repeatedly until clients stop believing it's real. When you finally enforce it, they're unprepared.
+✅ **Required:**
+- Generous timeline: 12+ months for external APIs
+- Multi-channel communication
+- Direct outreach to every known client
+- Migration tooling that makes the upgrade path explicit
+
+⚠️ **What's not acceptable:**
+- Surprise breaking changes with inadequate notice
+- Sunset dates extended repeatedly until clients stop believing them
+- Forcing migration when clients aren't ready
 
 ---
 
 ### URL versioning vs header versioning
 
-| **Header Versioning** | **URL Versioning** |
+| **Header versioning** | **URL versioning** |
 |---|---|
-| Cleaner URL namespace. More granular version pinning (dates instead of integers). Better support for incremental upgrades without full migration events. Architecturally mature — Stripe built a profitable developer ecosystem on it. | Visible, testable, cacheable, proxy-friendly. Shows up in logs and monitoring without additional tooling. Zero learning curve for any developer. |
+| **Pros:** Cleaner URL namespace; granular version pinning (dates instead of integers); incremental upgrades without full migration events; architecturally mature | **Pros:** Visible and testable; cacheable; proxy-friendly; shows up in logs without additional tooling; zero learning curve |
+| **Cons:** Invisibility requires heavy tooling investment to compensate | **Cons:** Namespace pollution; full migration events required |
+| **Example:** Stripe's profitable developer ecosystem built on this | **Example:** Most teams' default choice |
 
-**Position:** URL versioning wins for most teams.
+**Position: URL versioning wins for most teams**
 
-Header versioning's elegance requires significant tooling investment to compensate for invisibility:
+Header versioning's elegance requires:
 - Developer portals with version dashboards
 - API gateways that enforce version headers
 - Monitoring that tracks version adoption
 
-**Decision rule:** If you have an API platform team, build toward header versioning. If you don't, URL versioning done well beats header versioning done poorly.
+> **When to choose:** If you have an API platform team, build toward header versioning. If you don't, URL versioning done well is better than header versioning done poorly.
 
 ---
 
 ### Should PMs own API versioning decisions or engineering?
 
-**Current reality:** Neither owns it clearly.
-- Engineers make version decisions because "it's a technical question"
-- PMs are not in the room
-- Breaking changes ship without a migration window
-- Post-mortems conclude: "PM should have been involved earlier"
+**The current problem:**
 
-**The trap:** If you hand versioning decisions to PMs without engineering context, you get:
-- Sunset timelines set by business urgency rather than client migration reality
-- Timelines that are too aggressive and underresourced
-- Extensions that become the norm
+Neither owns it clearly. Engineers make decisions because "it's a technical question." PMs aren't in the room. Breaking changes ship without migration windows. Post-mortems reveal: "PM should have been involved earlier."
 
-**Correct split:**
+**The wrong solution:**
 
-| **PM Owns** | **Engineering Owns** |
+Handing versioning to PMs without engineering context produces:
+- Sunset timelines set by business urgency, not client migration reality
+- Timelines that are too aggressive
+- Underresourced execution
+- Deadlines extended repeatedly anyway
+
+**The correct split:**
+
+| **PMs own** | **Engineering owns** |
 |---|---|
-| External relationship surface: sunset timeline, communication strategy, business cost of running parallel versions | Technical surface: what counts as breaking, how to maintain two versions without forking the codebase, when tech debt of old versions exceeds migration cost |
+| External relationship surface | Technical surface |
+| Sunset timeline (you know client migration needs) | What counts as breaking |
+| Communication strategy (you own dev relations) | How to maintain parallel versions without forking |
+| Business cost of running parallel versions | When tech debt of old versions exceeds migration cost |
 
-**Critical principle:** Neither decides alone. The breakdown happens when PMs assume "versioning is a technical decision" and disengage.
+> **The key principle:** Versioning is a product management problem that requires engineering execution. Neither decides alone.
 
-> **Key insight:** Versioning is a product management problem that requires engineering execution — not a purely technical decision.
+⚠️ **Where the breakdown happens:** When PMs assume "versioning is a technical decision" and disengage.

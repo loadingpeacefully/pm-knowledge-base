@@ -32,6 +32,8 @@ Pass conditions:
 - W2: 3–5 tradeoffs, each ending with a recommendation. "It depends" alone = fail.
 - W3: 6–8 questions, each with what the answer reveals
 - W4: 3–5 named companies, at least one hard number
+- W4: every company example uses the ### card format (never prose narrative)
+- W2: every comparison with 2+ named options uses a comparison table (never parallel paragraphs)
 - No BrightChamps product names (use abstracted versions: see kb-reader.md)
 
 ## Quality bar — Strategic Depth
@@ -100,3 +102,37 @@ Use these exact headers to delimit levels. The dashboard parser splits on them.
 - W4 examples without a number or a named outcome
 - S3 that summarizes positions without taking a side or naming the real tension
 - Any level that bleeds vocabulary from a higher level into a lower one
+
+**Anti-pattern: Company examples written as prose narrative**
+W4 (Real product examples) must NEVER be written as bold-company + flowing paragraph.
+Every company example must use this exact card structure:
+
+### [Company Name] — [one-line headline describing the specific thing they did]
+
+**What they did:** One sentence. Specific feature or decision, not "they built X."
+**Why it worked:** One sentence. The mechanism — what made it effective.
+**PM takeaway:** One sentence. What a PM should do or ask differently because of this.
+
+No narrative prose. No "Stripe is the canonical example of..." openers.
+If you find yourself writing a paragraph about a company, stop and use the card format.
+
+---
+
+**Anti-pattern: Comparison sections written as parallel prose paragraphs**
+Any W2 decision with 2+ named options (REST vs GraphQL, polling vs webhooks,
+URL versioning vs header versioning, sync vs async) must NEVER be written as
+bold-label + paragraph + bold-label + paragraph.
+
+Use a comparison table instead:
+
+| | Option A | Option B |
+|---|---|---|
+| Best for | ... | ... |
+| Cost/risk | ... | ... |
+| **Default** | **Use this** | Only when [specific condition] |
+
+Rules for the table:
+- Last row must be **Default** — bold in first cell, recommendation in both option columns
+- Max 4 rows — if you need more, you're comparing too many dimensions
+- "Best for" is always row 1
+- After the table: one callout box with the PM recommendation (> **PM default:** ...)

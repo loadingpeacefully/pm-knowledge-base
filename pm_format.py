@@ -121,10 +121,19 @@ def format_lesson(lesson_path: Path, use_report: bool = False):
         name_match = re.match(r'^## (.+)$', section, re.MULTILINE)
         section_name = name_match.group(1) if name_match else 'unknown'
 
+        # Strip trailing level-marker lines (# ═══ blocks) before sending to Claude.
+        # The ## split puts them at the tail of the preceding section; Claude drops them.
+        lines = section.rstrip('\n').split('\n')
+        tail_markers = []
+        while lines and re.match(r'^# ', lines[-1]):
+            tail_markers.insert(0, lines.pop())
+        section_body = '\n'.join(lines)
+        marker_suffix = ('\n' + '\n'.join(tail_markers)) if tail_markers else ''
+
         # Sections that should NOT be reformatted
         skip_sections = ['the world before', 'related lessons', 'prerequisites']
         if any(skip in section_name.lower() for skip in skip_sections):
-            formatted_sections.append(section)
+            formatted_sections.append(section_body + marker_suffix)
             print(f"  SKIP   {section_name}")
             continue
 
@@ -132,8 +141,8 @@ def format_lesson(lesson_path: Path, use_report: bool = False):
         section_flags = [f for f in flags if section_name.lower() in f.lower()]
 
         print(f"  FORMAT {section_name}... ", end='', flush=True)
-        formatted = format_section(client, section_name, section.strip(), section_flags)
-        formatted_sections.append(formatted)
+        formatted = format_section(client, section_name, section_body.strip(), section_flags)
+        formatted_sections.append(formatted + marker_suffix)
         print("done")
 
     # Reassemble
