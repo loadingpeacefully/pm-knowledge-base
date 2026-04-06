@@ -530,6 +530,10 @@ function renderLesson(lesson, md) {
 
   // Parse v2 levels
   const levels = parseLevels(fm.body);
+  // Merge profiles from frontmatter YAML (parseFm handles nested fields)
+  if (fm.profiles && typeof fm.profiles === 'object') {
+    levels.profiles = Object.assign({}, levels.profiles, fm.profiles);
+  }
   S.levelContent = levels;
 
   // Determine active level
@@ -682,7 +686,7 @@ function changeLevel(level) {
 function parseFm(md) {
   const lines = md.split('\n');
   const fm = {};
-  let dashes = 0, bodyStart = 0;
+  let dashes = 0, bodyStart = 0, lastKey = null;
   for (let i = 0; i < lines.length; i++) {
     if (lines[i].trim() === '---') {
       dashes++;
@@ -690,8 +694,14 @@ function parseFm(md) {
       continue;
     }
     if (dashes === 1) {
-      const m = lines[i].match(/^([\w-]+):\s*(.*)$/);
-      if (m) fm[m[1]] = m[2].trim();
+      const top = lines[i].match(/^([\w-]+):\s*(.*)$/);
+      if (top) { fm[top[1]] = top[2].trim(); lastKey = top[1]; continue; }
+      // Nested key: value (e.g. "  foundation: ..." under profiles:)
+      const sub = lines[i].match(/^\s+([\w-]+):\s*(.+)$/);
+      if (sub && lastKey) {
+        if (typeof fm[lastKey] !== 'object') fm[lastKey] = {};
+        fm[lastKey][sub[1]] = sub[2].trim();
+      }
     }
   }
   fm.body = dashes >= 2 ? lines.slice(bodyStart).join('\n') : md;
