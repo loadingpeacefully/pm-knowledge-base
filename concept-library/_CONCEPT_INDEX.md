@@ -122,7 +122,7 @@ QA default: Senior PM + CFO/Finance Lead + Junior PM Reader
 
 | ID | Lesson | File | Status | Writer | QA Panel | KB Sources | Angle |
 |---|---|---|---|---|---|---|---|
-| 06.01 | North Star Metric | 06-metrics-and-analytics/north-star-metric.md | — | senior-pm | Senior PM, CFO/Finance Lead, Junior PM Reader | performance-reviews/apr24-mar25-performance-review.md, product-prd/nano-skills.md | How to define one, why most teams pick the wrong one, common traps |
+| 06.01 | North Star Metric | 06-metrics-and-analytics/north-star-metric.md | ready | senior-pm | Senior PM, CFO/Finance Lead, Junior PM Reader | performance-reviews/apr24-mar25-performance-review.md, product-prd/nano-skills.md | How to define one, why most teams pick the wrong one, common traps |
 | 06.02 | Funnel Analysis | 06-metrics-and-analytics/funnel-analysis.md | — | senior-pm | Senior PM, CFO/Finance Lead, Junior PM Reader | student-lifecycle/unified-demo-paid-experience-student.md, crm-and-sales/sales-flow.md | Conversion, drop-off, attribution — how to read a funnel without fooling yourself |
 | 06.03 | Cohort Analysis | 06-metrics-and-analytics/cohort-analysis.md | — | senior-pm | Senior PM, CFO/Finance Lead, Junior PM Reader | performance-reviews/apr24-mar25-performance-review.md, payments/credit-system-and-class-balance.md | Retention curves, LTV segmentation — the most important analysis a PM never does |
 | 06.04 | DAU/MAU & Engagement Ratios | 06-metrics-and-analytics/dau-mau-and-engagement-ratios.md | — | senior-pm | Senior PM, CFO/Finance Lead, Junior PM Reader | performance-reviews/apr24-mar25-performance-review.md, student-lifecycle/student-feed.md | Stickiness — what the ratios mean and when they lie |

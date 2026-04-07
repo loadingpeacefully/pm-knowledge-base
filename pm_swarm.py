@@ -45,7 +45,7 @@ MODEL_FULL = "claude-sonnet-4-6"
 MODEL = MODEL_FAST          # overridden by --mode flag at runtime
 MAX_TOKENS = 3000           # P7 Vikram needs 2608 out tokens — set ceiling at 3000
 SYNTH_MAX_TOKENS = 8192     # Haiku ceiling — synth generates ~5600 tok with 10 reviews
-CONTENT_LIMIT = 10000       # chars per level — 6000 cut W1 additive-only and S3 force-migration
+CONTENT_LIMIT = 14000       # chars per level — 10000 cut W4 in 1687-word Working Knowledge sections
 PARALLEL_WORKERS = 5        # batches of 5 to stay within rate limits
 
 # ── 10 PM AGENT PERSONAS ──────────────────────────────────────────────────────

@@ -15,7 +15,7 @@ _Updated: 2026-04-06. Update at end of every session._
 - [ ] Verify dashboard renders all new markdown components
 
 ### Next lessons (all must be v2)
-- [ ] Write: North Star Metric (06.01) — /new-lesson "north star metric"
+- [x] Write: North Star Metric (06.01) — v2, ready, 0 Critical/High (2026-04-07)
 - [ ] Write: Unit Economics (07.01) — /new-lesson "unit economics"
 - [ ] Write: Go-To-Market Strategy (08.01) — /new-lesson "go-to-market strategy"
 
