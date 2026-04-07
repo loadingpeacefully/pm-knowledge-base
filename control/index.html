@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PM·Control</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0a0a0f; --surface:#111118; --surface2:#16161f;
+  --border:rgba(255,255,255,0.07); --border2:rgba(255,255,255,0.12);
+  --text:#e8e8f0; --muted:#6b6b82; --hint:#3a3a50;
+  --green:#00e5a0; --green-dim:rgba(0,229,160,0.12);
+  --amber:#f5a623; --amber-dim:rgba(245,166,35,0.12);
+  --red:#ff4d6d; --red-dim:rgba(255,77,109,0.12);
+  --blue:#4d9eff; --blue-dim:rgba(77,158,255,0.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100vh;overflow:hidden;background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:12px}
+#root{display:flex;flex-direction:column;height:100vh;overflow:hidden}
+
+/* HEADER */
+#hdr{height:48px;background:var(--surface);border-bottom:1px solid var(--border2);display:flex;align-items:center;padding:0 16px;gap:16px;flex-shrink:0;z-index:10}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:16px;letter-spacing:-.02em;color:var(--text)}
+.logo span{color:var(--green)}
+.live-badge{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--green);font-weight:600;letter-spacing:.08em}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+#clock{font-size:12px;color:var(--muted);font-weight:500}
+#last-updated{font-size:10px;color:var(--hint);margin-left:auto}
+#refresh-btn{background:var(--surface2);border:1px solid var(--border2);color:var(--muted);padding:4px 10px;border-radius:4px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11px;transition:all .15s}
+#refresh-btn:hover{color:var(--text);border-color:var(--border2)}
+
+/* STATS BAR */
+#statsbar{height:72px;background:var(--surface);border-bottom:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr 1fr 1fr;flex-shrink:0}
+.stat-cell{display:flex;flex-direction:column;justify-content:center;padding:0 20px;border-right:1px solid var(--border)}
+.stat-cell:last-child{border-right:none}
+.stat-label{font-size:9px;font-weight:600;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-bottom:4px}
+.stat-value{font-family:'Syne',sans-serif;font-size:26px;font-weight:700;color:var(--text);line-height:1}
+.stat-sub{font-size:9px;color:var(--hint);margin-top:2px}
+
+/* PANELS */
+#panels{flex:1;display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);overflow:hidden}
+.panel{background:var(--surface);display:flex;flex-direction:column;overflow:hidden;min-height:0}
+.panel-header{height:42px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 14px;gap:12px;flex-shrink:0}
+.panel-title{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--muted);text-transform:uppercase;flex-shrink:0}
+.tabs{display:flex;gap:2px;margin-left:auto}
+.tab{background:transparent;border:none;color:var(--muted);padding:4px 8px;border-radius:4px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;transition:all .15s}
+.tab:hover{color:var(--text);background:var(--border)}
+.tab.active{color:var(--text);background:var(--hint)}
+.panel-body{flex:1;overflow-y:auto;overflow-x:hidden;min-height:0}
+.panel-body::-webkit-scrollbar{width:3px}
+.panel-body::-webkit-scrollbar-track{background:transparent}
+.panel-body::-webkit-scrollbar-thumb{background:var(--hint);border-radius:2px}
+.tab-pane{display:none;padding:4px 0}
+.tab-pane.visible{display:block}
+
+/* PANEL FEED */
+.panel-feed{height:80px;background:var(--bg);border-top:1px solid var(--border);padding:8px 14px;overflow:hidden;flex-shrink:0}
+.feed-label{font-size:9px;font-weight:600;letter-spacing:.1em;color:var(--hint);text-transform:uppercase;margin-bottom:5px}
+.feed-line{display:flex;gap:8px;padding:1px 0;line-height:1.5}
+.feed-time{font-size:10px;color:var(--hint);flex-shrink:0;min-width:56px}
+.feed-msg{font-size:10px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.feed-msg b{color:var(--text)}
+.feed-empty{font-size:10px;color:var(--hint);font-style:italic}
+
+/* AGENT ROWS */
+.agent-row{display:flex;align-items:center;gap:8px;padding:7px 14px;border-bottom:1px solid var(--border);transition:background .1s}
+.agent-row:hover{background:var(--surface2)}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dot.idle{background:var(--hint)}
+.dot.active{background:var(--green);box-shadow:0 0 6px var(--green)}
+.agent-id{font-size:10px;font-weight:600;color:var(--muted);min-width:32px;flex-shrink:0}
+.agent-name{font-size:11px;font-weight:600;color:var(--text);min-width:52px;flex-shrink:0}
+.agent-role{font-size:10px;color:var(--muted);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.agent-last{font-size:9px;color:var(--hint);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:140px}
+.level-badge{font-size:9px;font-weight:600;letter-spacing:.04em;padding:2px 6px;border-radius:3px;flex-shrink:0;text-transform:uppercase}
+.level-badge.foundation{background:var(--blue-dim);color:var(--blue)}
+.level-badge.working{background:var(--amber-dim);color:var(--amber)}
+.level-badge.strategic{background:var(--green-dim);color:var(--green)}
+.level-badge.all{background:var(--border);color:var(--muted)}
+
+/* LESSON ROWS */
+.lesson-row{display:flex;align-items:center;gap:7px;padding:6px 14px;border-bottom:1px solid var(--border);cursor:default;transition:background .1s}
+.lesson-row:hover{background:var(--surface2)}
+.score-pill{font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;flex-shrink:0;min-width:34px;text-align:center}
+.lesson-title{font-size:11px;color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.module-badge{font-size:9px;font-weight:600;background:var(--surface2);color:var(--muted);padding:2px 5px;border-radius:3px;flex-shrink:0}
+.flag-badge{font-size:9px;font-weight:600;padding:2px 5px;border-radius:3px;flex-shrink:0}
+.flag-badge.clean{background:var(--green-dim);color:var(--green)}
+.flag-badge.critical{background:var(--red-dim);color:var(--red)}
+.flag-badge.high{background:var(--amber-dim);color:var(--amber)}
+.flag-badge.reviewing{background:var(--blue-dim);color:var(--blue)}
+.sparkline{display:flex;gap:2px;align-items:flex-end;height:16px;flex-shrink:0}
+
+/* MODULE ROWS */
+.module-row{display:flex;align-items:center;gap:8px;padding:8px 14px;border-bottom:1px solid var(--border);transition:background .1s}
+.module-row:hover{background:var(--surface2)}
+.module-num{font-size:10px;font-weight:600;color:var(--muted);min-width:32px;flex-shrink:0}
+.module-title-text{font-size:11px;color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.module-count{font-size:10px;color:var(--hint);flex-shrink:0;min-width:36px;text-align:right}
+
+/* TREND */
+#trend-canvas{display:block;width:100%;height:220px}
+#trend-stats{font-size:10px;color:var(--muted);padding:8px 14px}
+
+/* LEARNER PANEL */
+.demo-banner{background:var(--amber-dim);border-bottom:1px solid rgba(245,166,35,0.2);padding:8px 14px;font-size:10px;color:var(--amber);font-weight:600;letter-spacing:.02em;flex-shrink:0}
+.learner-row{display:flex;align-items:center;gap:9px;padding:7px 14px;border-bottom:1px solid var(--border);transition:background .1s}
+.learner-row:hover{background:var(--surface2)}
+.avatar{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;color:#0a0a0f}
+.learner-info{flex:1;min-width:0}
+.learner-name{font-size:11px;font-weight:600;color:var(--text)}
+.learner-lesson{font-size:10px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.learner-meta{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.progress-bar{width:52px;height:4px;background:var(--hint);border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;border-radius:2px}
+.status-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.status-active{background:var(--green)}
+.status-stalled{background:var(--amber)}
+.status-churned{background:var(--red)}
+
+.dropoff-row{display:flex;align-items:center;gap:8px;padding:7px 14px;border-bottom:1px solid var(--border)}
+.dropoff-lesson{font-size:11px;color:var(--text);flex:1}
+.dropoff-section{font-size:10px;color:var(--muted)}
+.dropoff-pct{font-size:11px;font-weight:600;color:var(--red)}
+
+.insight-row{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;border-bottom:1px solid var(--border)}
+.insight-label{font-size:10px;color:var(--muted)}
+.insight-value{font-size:11px;font-weight:600;color:var(--text)}
+
+.note-text{font-size:10px;color:var(--hint);padding:8px 14px;font-style:italic}
+</style>
+</head>
+<body>
+<div id="root">
+
+<!-- HEADER -->
+<header id="hdr">
+  <span class="logo">PM<span>·</span>Control</span>
+  <div class="live-badge"><div class="live-dot"></div>LIVE</div>
+  <span id="clock">00:00:00 IST</span>
+  <span id="last-updated"></span>
+  <button id="refresh-btn">↺ refresh</button>
+</header>
+
+<!-- STATS BAR -->
+<div id="statsbar">
+  <div class="stat-cell">
+    <div class="stat-label">Agents</div>
+    <div class="stat-value" id="stat-agents">13</div>
+    <div class="stat-sub">11 PM · 1 Design · 1 Synth</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-label">Avg Quality Score</div>
+    <div class="stat-value" id="stat-score">—</div>
+    <div class="stat-sub">across scored lessons</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-label">Lessons Scored</div>
+    <div class="stat-value" id="stat-scored">— / —</div>
+    <div class="stat-sub">of total curriculum</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-label">Critical Flags</div>
+    <div class="stat-value" id="stat-critical">—</div>
+    <div class="stat-sub">across all lessons</div>
+  </div>
+</div>
+
+<!-- PANELS -->
+<div id="panels">
+
+  <!-- PANEL 1: AGENT SWARM -->
+  <div class="panel" id="panel-agents">
+    <div class="panel-header">
+      <span class="panel-title">Agent Swarm</span>
+    </div>
+    <div class="panel-body">
+      <div class="tab-pane visible" id="pane-agents-main">
+        <div class="agent-row"><span class="dot idle"></span><span class="agent-id">P1</span><span class="agent-name">Priya</span><span class="agent-role">Non-tech biz PM</span><span class="agent-last" style="display:none"></span><span class="level-badge foundation">foundation</span></div>
+        <div class="agent-row"><span class="dot idle"></span><span class="agent-id">P2</span><span class="agent-name">Arjun</span><span class="agent-role">Ex-engineer PM</span><span class="agent-last" style="display:none"></span><span class="level-badge strategic">strategic</span></div>
+        <div class="agent-row"><span class="dot idle"></span><span class="agent-id">P3</span><span class="agent-name">Sofia</span><span class="agent-role">MBA PM</span><span class="agent-last" style="display:none"></span><span class="level-badge foundation">foundation</span></div>
+        <div class="agent-row"><span class="dot idle"></span><span class="agent-id">P4</span><span class="agent-name">Rahul</span><span class="agent-role">Aspiring PM / SDE</span><span class="agent-last" style="display:none"></span><span class="level-badge foundation">foundation</span></div>
+        <div class="agent-row"><span class="dot idle"></span><span class="agent-id">P5</span><span class="agent-name">Meera</span><span class="agent-role">Growth / Data PM</span><span class="agent-last" style="display:none"></span><span class="level-badge working">working</span></div>
+        <div class="agent-row"><span class="dot idle"></span><span class="agent-id">P6</span><span class="agent-name">Lena</span><span class="agent-role">Designer → PM</span><span class="agent-last" style="display:none"></span><span class="level-badge foundation">foundation</span></div>
+        <div class="agent-row"><span class="dot idle"></span><span class="agent-id">P7</span><span class="agent-name">Vikram</span><span class="agent-role">Enterprise B2B PM</span><span class="agent-last" style="display:none"></span><span class="level-badge working">working</span></div>
+        <div class="agent-row"><span class="dot idle"></span><span class="agent-id">P8</span><span class="agent-name">Anya</span><span class="agent-role">Consumer startup PM</span><span class="agent-last" style="display:none"></span><span class="level-badge working">working</span></div>
+        <div class="agent-row"><span class="dot idle"></span><span class="agent-id">P9</span><span class="agent-name">Zain</span><span class="agent-role">Gen-Z AI-native PM</span><span class="agent-last" style="display:none"></span><span class="level-badge strategic">strategic</span></div>
+        <div class="agent-row"><span class="dot idle"></span><span class="agent-id">P10</span><span class="agent-name">Deepa</span><span class="agent-role">Senior PM / HoP</span><span class="agent-last" style="display:none"></span><span class="level-badge strategic">strategic</span></div>
+        <div class="agent-row"><span class="dot idle"></span><span class="agent-id">D1</span><span class="agent-name">Nadia</span><span class="agent-role">Senior product designer</span><span class="agent-last" style="display:none"></span><span class="level-badge working">working</span></div>
+        <div class="agent-row"><span class="dot idle"></span><span class="agent-id">SYN</span><span class="agent-name">Synthesizer</span><span class="agent-role">Cross-agent synthesis</span><span class="agent-last" style="display:none"></span><span class="level-badge all">all</span></div>
+        <div class="agent-row"><span class="dot idle"></span><span class="agent-id">FMT</span><span class="agent-name">Formatter</span><span class="agent-role">Markdown formatter</span><span class="agent-last" style="display:none"></span><span class="level-badge all">all</span></div>
+      </div>
+    </div>
+    <div class="panel-feed">
+      <div class="feed-label">Activity</div>
+      <div id="agents-feed"></div>
+    </div>
+  </div>
+
+  <!-- PANEL 2: CONTENT HEALTH -->
+  <div class="panel" id="panel-content">
+    <div class="panel-header">
+      <span class="panel-title">Content Health</span>
+      <div class="tabs">
+        <button class="tab active" data-tab="lesson" onclick="switchTab(this)">Lessons</button>
+        <button class="tab" data-tab="module" onclick="switchTab(this)">Modules</button>
+        <button class="tab" data-tab="trend" onclick="switchTab(this)">Trend</button>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="tab-pane visible" id="pane-lesson">
+        <div id="lessons-list"></div>
+      </div>
+      <div class="tab-pane" id="pane-module">
+        <div id="modules-list"></div>
+      </div>
+      <div class="tab-pane" id="pane-trend">
+        <canvas id="trend-canvas"></canvas>
+        <div id="trend-stats">loading…</div>
+      </div>
+    </div>
+    <div class="panel-feed">
+      <div class="feed-label">Recent Scores</div>
+      <div id="content-feed"></div>
+    </div>
+  </div>
+
+  <!-- PANEL 3: LEARNER PULSE -->
+  <div class="panel" id="panel-learner">
+    <div class="panel-header">
+      <span class="panel-title">Learner Pulse</span>
+      <div class="tabs">
+        <button class="tab active" data-tab="learners" onclick="switchTab(this)">Learners</button>
+        <button class="tab" data-tab="dropoffs" onclick="switchTab(this)">Drop-offs</button>
+        <button class="tab" data-tab="insights" onclick="switchTab(this)">Insights</button>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="demo-banner">Demo mode — learner tracking not yet wired. Data below is illustrative.</div>
+
+      <div class="tab-pane visible" id="pane-learners">
+        <div class="learner-row">
+          <div class="avatar" style="background:#00e5a0">SJ</div>
+          <div class="learner-info">
+            <div class="learner-name">Suneet J.</div>
+            <div class="learner-lesson">07.01 Unit Economics · Strategic</div>
+          </div>
+          <div class="learner-meta">
+            <div class="progress-bar"><div class="progress-fill" style="width:94%;background:var(--green)"></div></div>
+            <span style="font-size:10px;color:var(--muted)">94%</span>
+            <div class="status-dot status-active"></div>
+          </div>
+        </div>
+        <div class="learner-row">
+          <div class="avatar" style="background:#f5a623">PM</div>
+          <div class="learner-info">
+            <div class="learner-name">Priya M.</div>
+            <div class="learner-lesson">02.04 Caching (Redis) · Working</div>
+          </div>
+          <div class="learner-meta">
+            <div class="progress-bar"><div class="progress-fill" style="width:67%;background:var(--amber)"></div></div>
+            <span style="font-size:10px;color:var(--muted)">67%</span>
+            <div class="status-dot status-stalled"></div>
+          </div>
+        </div>
+        <div class="learner-row">
+          <div class="avatar" style="background:#4d9eff">AK</div>
+          <div class="learner-info">
+            <div class="learner-name">Arjun K.</div>
+            <div class="learner-lesson">01.03 Webhooks vs Polling · Foundation</div>
+          </div>
+          <div class="learner-meta">
+            <div class="progress-bar"><div class="progress-fill" style="width:31%;background:var(--green)"></div></div>
+            <span style="font-size:10px;color:var(--muted)">31%</span>
+            <div class="status-dot status-active"></div>
+          </div>
+        </div>
+        <div class="learner-row">
+          <div class="avatar" style="background:#a78bfa">SR</div>
+          <div class="learner-info">
+            <div class="learner-name">Sofia R.</div>
+            <div class="learner-lesson">03.02 Containers &amp; Docker · Working</div>
+          </div>
+          <div class="learner-meta">
+            <div class="progress-bar"><div class="progress-fill" style="width:88%;background:var(--green)"></div></div>
+            <span style="font-size:10px;color:var(--muted)">88%</span>
+            <div class="status-dot status-active"></div>
+          </div>
+        </div>
+        <div class="learner-row">
+          <div class="avatar" style="background:#6b6b82">RS</div>
+          <div class="learner-info">
+            <div class="learner-name">Rahul S.</div>
+            <div class="learner-lesson">06.01 North Star Metric · Foundation</div>
+          </div>
+          <div class="learner-meta">
+            <div class="progress-bar"><div class="progress-fill" style="width:12%;background:var(--red)"></div></div>
+            <span style="font-size:10px;color:var(--muted)">12%</span>
+            <div class="status-dot status-churned"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane" id="pane-dropoffs">
+        <div class="dropoff-row">
+          <span class="dropoff-lesson">01.01 What is an API</span>
+          <span class="dropoff-section">§ W2</span>
+          <span class="dropoff-pct">34%</span>
+        </div>
+        <div class="dropoff-row">
+          <span class="dropoff-lesson">02.03 Transactions &amp; ACID</span>
+          <span class="dropoff-section">§ W1</span>
+          <span class="dropoff-pct">28%</span>
+        </div>
+        <div class="dropoff-row">
+          <span class="dropoff-lesson">03.03 Kubernetes</span>
+          <span class="dropoff-section">§ S1</span>
+          <span class="dropoff-pct">41%</span>
+        </div>
+        <div class="dropoff-row">
+          <span class="dropoff-lesson">07.01 Unit Economics</span>
+          <span class="dropoff-section">§ W3</span>
+          <span class="dropoff-pct">22%</span>
+        </div>
+        <div class="note-text">Drop-off tracking ships with spy agent — Week 3</div>
+      </div>
+
+      <div class="tab-pane" id="pane-insights">
+        <div class="insight-row">
+          <span class="insight-label">Avg time on Foundation</span>
+          <span class="insight-value">8.4 min</span>
+        </div>
+        <div class="insight-row">
+          <span class="insight-label">Avg time on Working</span>
+          <span class="insight-value">22.1 min</span>
+        </div>
+        <div class="insight-row">
+          <span class="insight-label">Most-noted passage</span>
+          <span class="insight-value" style="font-size:10px;max-width:160px;text-align:right">"The DLQ preservation point"</span>
+        </div>
+        <div class="insight-row">
+          <span class="insight-label">Level switch rate</span>
+          <span class="insight-value">34% reach Strategic</span>
+        </div>
+        <div class="note-text">Behavioral signals ship with spy agent — Week 3</div>
+      </div>
+    </div>
+    <div class="panel-feed">
+      <div class="feed-label">Activity</div>
+      <div>
+        <div class="feed-line"><span class="feed-time">2m ago</span><span class="feed-msg"><b>Suneet J.</b> completed 07.01 · Strategic</span></div>
+        <div class="feed-line"><span class="feed-time">14m ago</span><span class="feed-msg"><b>Priya M.</b> stalled at 02.04 · 67%</span></div>
+        <div class="feed-line"><span class="feed-time">1h ago</span><span class="feed-msg"><b>Arjun K.</b> started 01.03 · Foundation</span></div>
+        <div class="feed-line"><span class="feed-time">3h ago</span><span class="feed-msg"><b>Sofia R.</b> resumed 03.02 · Working</span></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /panels -->
+</div><!-- /root -->
+
+<script>
+function updateClock(){
+  const ist=new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Kolkata'}));
+  document.getElementById('clock').textContent=
+    [ist.getHours(),ist.getMinutes(),ist.getSeconds()].map(n=>String(n).padStart(2,'0')).join(':')+' IST';
+}
+setInterval(updateClock,1000);updateClock();
+
+async function loadData(){
+  try{const r=await fetch('data.json?t='+Date.now());return await r.json();}
+  catch(e){console.error('data.json not found — run python3 control/data.py first');return null;}
+}
+
+function timeAgo(iso){
+  if(!iso)return'—';
+  const diff=Date.now()-new Date(iso).getTime();
+  const mins=Math.floor(diff/60000);
+  if(mins<1)return'just now';
+  if(mins<60)return mins+'m ago';
+  const hrs=Math.floor(mins/60);
+  if(hrs<24)return hrs+'h ago';
+  return Math.floor(hrs/24)+'d ago';
+}
+
+function scoreColor(s){if(s==null)return'var(--blue)';if(s>=7.5)return'var(--green)';if(s>=6.5)return'var(--amber)';return'var(--red)';}
+function scoreBg(s){if(s==null)return'var(--blue-dim)';if(s>=7.5)return'var(--green-dim)';if(s>=6.5)return'var(--amber-dim)';return'var(--red-dim)';}
+
+function switchTab(btn){
+  const panel=btn.closest('.panel');
+  const tabId=btn.dataset.tab;
+  panel.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  panel.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('visible'));
+  btn.classList.add('active');
+  const pane=panel.querySelector('#pane-'+tabId);
+  if(pane)pane.classList.add('visible');
+  if(tabId==='trend'&&window._lastData)drawTrend(document.getElementById('trend-canvas'),window._lastData.lessons);
+}
+
+function renderStats(data){
+  const s=data.summary;
+  document.getElementById('stat-agents').textContent='13';
+  document.getElementById('stat-score').textContent=s.avg_score?s.avg_score.toFixed(1):'—';
+  document.getElementById('stat-scored').textContent=s.lessons_scored+' / '+s.total_lessons;
+  const critEl=document.getElementById('stat-critical');
+  critEl.textContent=s.total_critical;
+  critEl.style.color=s.total_critical>0?'var(--red)':'var(--green)';
+}
+
+function renderAgents(data){
+  const recent=[...data.lessons].filter(l=>l.last_run&&l.score).sort((a,b)=>new Date(b.last_run)-new Date(a.last_run)).slice(0,4);
+  const feed=document.getElementById('agents-feed');
+  feed.innerHTML=recent.map(l=>
+    `<div class="feed-line"><span class="feed-time">${timeAgo(l.last_run)}</span><span class="feed-msg">Swarm completed <b>${l.title}</b> · ${l.score}</span></div>`
+  ).join('')||'<div class="feed-line feed-empty">No swarm runs yet</div>';
+  document.getElementById('last-updated').textContent=data.generated_at?'Updated '+timeAgo(data.generated_at):'';
+}
+
+function renderLessons(data){
+  const lessons=[...data.lessons].sort((a,b)=>{
+    if(a.score==null&&b.score==null)return 0;
+    if(a.score==null)return 1;if(b.score==null)return -1;
+    return b.score-a.score;
+  });
+  document.getElementById('lessons-list').innerHTML=lessons.map(l=>{
+    const sc=l.score;const col=scoreColor(sc);const bg=scoreBg(sc);
+    const scoreText=sc!=null?sc.toFixed(1):'—';
+    let flagHtml='';
+    if(l.status!=='ready'){flagHtml=`<span class="flag-badge reviewing">reviewing</span>`;}
+    else if(!l.criticals&&!l.highs){flagHtml=`<span class="flag-badge clean">clean</span>`;}
+    else{
+      const parts=[];
+      if(l.criticals)parts.push(`<span class="flag-badge critical">${l.criticals}C</span>`);
+      if(l.highs)parts.push(`<span class="flag-badge high">${l.highs}H</span>`);
+      flagHtml=parts.join('');
+    }
+    const sbl=l.scores_by_level||{};
+    const sparkHtml=['foundation','working','strategic'].map(lvl=>{
+      const v=sbl[lvl];const h=v?Math.round(((v-5)/4)*16):2;const c=v?scoreColor(v):'var(--hint)';
+      return `<div style="width:5px;height:${h}px;background:${c};border-radius:1px;align-self:flex-end"></div>`;
+    }).join('');
+    return `<div class="lesson-row">
+      <span class="score-pill" style="color:${col};background:${bg}">${scoreText}</span>
+      <span class="lesson-title" title="${l.title}">${l.title}</span>
+      <span class="module-badge">${l.module_id}</span>
+      ${flagHtml}
+      <div class="sparkline">${sparkHtml}</div>
+    </div>`;
+  }).join('');
+  const recent=[...data.lessons].filter(l=>l.last_run&&l.score).sort((a,b)=>new Date(b.last_run)-new Date(a.last_run)).slice(0,4);
+  document.getElementById('content-feed').innerHTML=recent.map(l=>
+    `<div class="feed-line"><span class="feed-time">${timeAgo(l.last_run)}</span><span class="feed-msg"><b>${l.id}</b> ${l.title} · ${l.score}</span></div>`
+  ).join('')||'<div class="feed-line feed-empty">No scored lessons yet</div>';
+}
+
+function renderModules(data){
+  const mm={};
+  for(const l of data.lessons){
+    if(!mm[l.module_id])mm[l.module_id]={id:l.module_id,title:l.module_title,lessons:[],scores:[],criticals:0,highs:0};
+    mm[l.module_id].lessons.push(l);
+    if(l.score!=null)mm[l.module_id].scores.push(l.score);
+    mm[l.module_id].criticals+=l.criticals||0;
+    mm[l.module_id].highs+=l.highs||0;
+  }
+  document.getElementById('modules-list').innerHTML=Object.values(mm).sort((a,b)=>a.id.localeCompare(b.id)).map(m=>{
+    const avg=m.scores.length?(m.scores.reduce((a,b)=>a+b,0)/m.scores.length).toFixed(1):null;
+    const col=avg?scoreColor(parseFloat(avg)):'var(--muted)';const bg=avg?scoreBg(parseFloat(avg)):'transparent';
+    let severity='clean';if(m.criticals>0)severity='critical';else if(m.highs>0)severity='high';
+    return `<div class="module-row">
+      <span class="module-num">M${m.id}</span>
+      <span class="module-title-text" title="${m.title}">${m.title}</span>
+      <span class="module-count">${m.scores.length}/${m.lessons.length}</span>
+      <span class="score-pill" style="color:${col};background:${bg}">${avg||'—'}</span>
+      <span class="flag-badge ${severity}">${severity==='clean'?'clean':(m.criticals+'C '+m.highs+'H').trim()}</span>
+    </div>`;
+  }).join('');
+}
+
+function drawTrend(canvas,lessons){
+  if(!canvas||!canvas.offsetWidth)return;
+  const scored=lessons.filter(l=>l.score!=null).sort((a,b)=>a.id.localeCompare(b.id));
+  if(!scored.length)return;
+  const dpr=window.devicePixelRatio||1;
+  canvas.width=canvas.offsetWidth*dpr;canvas.height=canvas.offsetHeight*dpr;
+  const ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);
+  const W=canvas.offsetWidth,H=canvas.offsetHeight;
+  const pad={t:20,r:16,b:36,l:44};
+  const cw=W-pad.l-pad.r,ch=H-pad.t-pad.b;
+  const MIN=5.0,MAX=9.0,n=scored.length;
+  function px(i){return pad.l+(n>1?(i/(n-1))*cw:cw/2);}
+  function py(v){return pad.t+ch-((v-MIN)/(MAX-MIN))*ch;}
+  ctx.fillStyle='#16161f';ctx.fillRect(0,0,W,H);
+  [6.0,7.0,8.0].forEach(v=>{
+    ctx.beginPath();ctx.moveTo(pad.l,py(v));ctx.lineTo(W-pad.r,py(v));
+    ctx.strokeStyle='rgba(255,255,255,0.06)';ctx.lineWidth=1;ctx.stroke();
+    ctx.fillStyle='rgba(107,107,130,0.8)';ctx.font='9px JetBrains Mono,monospace';
+    ctx.textAlign='right';ctx.fillText(v.toFixed(1),pad.l-4,py(v)+3);
+  });
+  ctx.beginPath();
+  scored.forEach((l,i)=>{i===0?ctx.moveTo(px(i),py(l.score)):ctx.lineTo(px(i),py(l.score));});
+  ctx.lineTo(px(n-1),py(MIN));ctx.lineTo(px(0),py(MIN));ctx.closePath();
+  ctx.fillStyle='rgba(0,229,160,0.06)';ctx.fill();
+  ctx.beginPath();
+  scored.forEach((l,i)=>{i===0?ctx.moveTo(px(i),py(l.score)):ctx.lineTo(px(i),py(l.score));});
+  ctx.strokeStyle='#00e5a0';ctx.lineWidth=1.5;ctx.stroke();
+  scored.forEach((l,i)=>{
+    ctx.beginPath();ctx.arc(px(i),py(l.score),3,0,Math.PI*2);ctx.fillStyle='#00e5a0';ctx.fill();
+    if(i%4===0){ctx.fillStyle='rgba(107,107,130,0.8)';ctx.font='8px JetBrains Mono,monospace';ctx.textAlign='center';ctx.fillText(l.id,px(i),H-pad.b+14);}
+  });
+  const allS=scored.map(l=>l.score);
+  const avg=(allS.reduce((a,b)=>a+b,0)/allS.length).toFixed(1);
+  document.getElementById('trend-stats').textContent=`avg ${avg}  ·  high ${Math.max(...allS).toFixed(1)}  ·  low ${Math.min(...allS).toFixed(1)}  ·  ${allS.length} runs`;
+}
+
+async function render(){
+  const data=await loadData();if(!data)return;
+  window._lastData=data;
+  renderStats(data);renderAgents(data);renderLessons(data);renderModules(data);
+  const tc=document.getElementById('trend-canvas');
+  if(tc&&tc.closest('.tab-pane.visible'))drawTrend(tc,data.lessons);
+}
+
+document.getElementById('refresh-btn').onclick=async()=>{
+  const btn=document.getElementById('refresh-btn');
+  btn.textContent='↺ refreshing…';btn.disabled=true;
+  await render();btn.textContent='↺ refresh';btn.disabled=false;
+};
+
+window.addEventListener('load',render);
+window.addEventListener('resize',()=>{
+  if(window._lastData){const tc=document.getElementById('trend-canvas');if(tc&&tc.closest('.tab-pane.visible'))drawTrend(tc,window._lastData.lessons);}
+});
+</script>
+</body>
+</html>

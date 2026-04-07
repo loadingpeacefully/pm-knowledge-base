@@ -1,0 +1,1993 @@
+{
+  "generated_at": "2026-04-07T18:16:02.178365+00:00",
+  "summary": {
+    "total_lessons": 88,
+    "lessons_scored": 29,
+    "avg_score": 6.9,
+    "total_critical": 143,
+    "feedback_reports": 29,
+    "modules_total": 9
+  },
+  "modules": [
+    {
+      "id": "01",
+      "title": "APIs & System Integration",
+      "lessons": [
+        {
+          "id": "01.01",
+          "title": "What is an API",
+          "file": "01-apis-and-integration/what-is-an-api.md",
+          "status": "ready",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "01.02",
+          "title": "API Authentication",
+          "file": "01-apis-and-integration/api-authentication.md",
+          "status": "ready",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "01.03",
+          "title": "Webhooks vs Polling",
+          "file": "01-apis-and-integration/webhooks-vs-polling.md",
+          "status": "ready",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "01.04",
+          "title": "Rate Limiting & Throttling",
+          "file": "01-apis-and-integration/rate-limiting-and-throttling.md",
+          "status": "ready",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "01.05",
+          "title": "Idempotency",
+          "file": "01-apis-and-integration/idempotency.md",
+          "status": "ready",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "01.06",
+          "title": "API Versioning",
+          "file": "01-apis-and-integration/api-versioning.md",
+          "status": "ready",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "01.07",
+          "title": "Pagination",
+          "file": "01-apis-and-integration/pagination.md",
+          "status": "ready",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "01.08",
+          "title": "API Gateway",
+          "file": "01-apis-and-integration/api-gateway.md",
+          "status": "ready",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "01.09",
+          "title": "Error Codes & Response Design",
+          "file": "01-apis-and-integration/error-codes-and-response-design.md",
+          "status": "ready",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "01.10",
+          "title": "Third-Party Integration Patterns",
+          "file": "01-apis-and-integration/third-party-integration-patterns.md",
+          "status": "ready",
+          "writer": "staff-engineer-pm"
+        }
+      ]
+    },
+    {
+      "id": "02",
+      "title": "Databases & Data Systems",
+      "lessons": [
+        {
+          "id": "02.01",
+          "title": "SQL vs NoSQL",
+          "file": "02-databases-and-data/sql-vs-nosql.md",
+          "status": "ready",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "02.02",
+          "title": "Indexing",
+          "file": "02-databases-and-data/indexing.md",
+          "status": "ready",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "02.03",
+          "title": "Transactions & ACID",
+          "file": "02-databases-and-data/transactions-and-acid.md",
+          "status": "ready",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "02.04",
+          "title": "Caching (Redis)",
+          "file": "02-databases-and-data/caching-redis.md",
+          "status": "ready",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "02.05",
+          "title": "Data Warehouses vs Databases",
+          "file": "02-databases-and-data/data-warehouses-vs-databases.md",
+          "status": "ready",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "02.06",
+          "title": "ETL Pipelines",
+          "file": "02-databases-and-data/etl-pipelines.md",
+          "status": "ready",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "02.07",
+          "title": "Schema Design Basics",
+          "file": "02-databases-and-data/schema-design-basics.md",
+          "status": "ready",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "02.08",
+          "title": "Soft Delete vs Hard Delete",
+          "file": "02-databases-and-data/soft-delete-vs-hard-delete.md",
+          "status": "ready",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "02.09",
+          "title": "PII & Data Privacy",
+          "file": "02-databases-and-data/pii-and-data-privacy.md",
+          "status": "ready",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "02.10",
+          "title": "Data Replication & Backups",
+          "file": "02-databases-and-data/data-replication-and-backups.md",
+          "status": "ready",
+          "writer": "staff-engineer-pm"
+        }
+      ]
+    },
+    {
+      "id": "03",
+      "title": "Infrastructure & DevOps",
+      "lessons": [
+        {
+          "id": "03.01",
+          "title": "Cloud Infrastructure Basics",
+          "file": "03-infrastructure-and-devops/cloud-infrastructure-basics.md",
+          "status": "ready",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "03.02",
+          "title": "Containers & Docker",
+          "file": "03-infrastructure-and-devops/containers-and-docker.md",
+          "status": "ready",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "03.03",
+          "title": "Kubernetes",
+          "file": "03-infrastructure-and-devops/kubernetes.md",
+          "status": "ready",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "03.04",
+          "title": "CI/CD Pipelines",
+          "file": "03-infrastructure-and-devops/cicd-pipelines.md",
+          "status": "ready",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "03.05",
+          "title": "Infrastructure as Code",
+          "file": "03-infrastructure-and-devops/infrastructure-as-code-terraform.md",
+          "status": "ready",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "03.06",
+          "title": "Queues & Message Brokers",
+          "file": "03-infrastructure-and-devops/queues-and-message-brokers.md",
+          "status": "ready",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "03.07",
+          "title": "CDN & Edge Caching",
+          "file": "03-infrastructure-and-devops/cdn-and-edge-caching.md",
+          "status": "\u2014",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "03.08",
+          "title": "Load Balancing",
+          "file": "03-infrastructure-and-devops/load-balancing.md",
+          "status": "\u2014",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "03.09",
+          "title": "Monitoring & Alerting",
+          "file": "03-infrastructure-and-devops/monitoring-and-alerting.md",
+          "status": "\u2014",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "03.10",
+          "title": "Feature Flags",
+          "file": "03-infrastructure-and-devops/feature-flags.md",
+          "status": "\u2014",
+          "writer": "staff-engineer-pm"
+        }
+      ]
+    },
+    {
+      "id": "04",
+      "title": "AI & ML Systems",
+      "lessons": [
+        {
+          "id": "04.01",
+          "title": "How LLMs Work",
+          "file": "04-ai-and-ml-systems/how-llms-work.md",
+          "status": "\u2014",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "04.02",
+          "title": "Prompt Engineering Basics",
+          "file": "04-ai-and-ml-systems/prompt-engineering-basics.md",
+          "status": "\u2014",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "04.03",
+          "title": "RAG",
+          "file": "04-ai-and-ml-systems/rag-retrieval-augmented-generation.md",
+          "status": "\u2014",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "04.04",
+          "title": "Embeddings & Vector Databases",
+          "file": "04-ai-and-ml-systems/embeddings-and-vector-databases.md",
+          "status": "\u2014",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "04.05",
+          "title": "Fine-tuning vs Prompting",
+          "file": "04-ai-and-ml-systems/fine-tuning-vs-prompting.md",
+          "status": "\u2014",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "04.06",
+          "title": "AI Evals & Quality Scoring",
+          "file": "04-ai-and-ml-systems/ai-evals-and-quality-scoring.md",
+          "status": "\u2014",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "04.07",
+          "title": "Classification Models",
+          "file": "04-ai-and-ml-systems/classification-models.md",
+          "status": "\u2014",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "04.08",
+          "title": "Recommendation Systems",
+          "file": "04-ai-and-ml-systems/recommendation-systems.md",
+          "status": "\u2014",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "04.09",
+          "title": "AI Agent Patterns",
+          "file": "04-ai-and-ml-systems/ai-agent-patterns.md",
+          "status": "\u2014",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "04.10",
+          "title": "AI Cost & Latency Tradeoffs",
+          "file": "04-ai-and-ml-systems/ai-cost-and-latency-tradeoffs.md",
+          "status": "\u2014",
+          "writer": "staff-engineer-pm"
+        }
+      ]
+    },
+    {
+      "id": "05",
+      "title": "Product Fundamentals",
+      "lessons": [
+        {
+          "id": "05.01",
+          "title": "PRD Writing",
+          "file": "05-product-fundamentals/prd-writing.md",
+          "status": "\u2014",
+          "writer": "senior-pm"
+        },
+        {
+          "id": "05.02",
+          "title": "Jobs to Be Done",
+          "file": "05-product-fundamentals/jobs-to-be-done.md",
+          "status": "\u2014",
+          "writer": "senior-pm"
+        },
+        {
+          "id": "05.03",
+          "title": "Prioritization Frameworks",
+          "file": "05-product-fundamentals/prioritization-frameworks.md",
+          "status": "\u2014",
+          "writer": "senior-pm"
+        },
+        {
+          "id": "05.04",
+          "title": "User Story Writing",
+          "file": "05-product-fundamentals/user-story-writing.md",
+          "status": "\u2014",
+          "writer": "senior-pm"
+        },
+        {
+          "id": "05.05",
+          "title": "Roadmapping",
+          "file": "05-product-fundamentals/roadmapping.md",
+          "status": "\u2014",
+          "writer": "senior-pm"
+        },
+        {
+          "id": "05.06",
+          "title": "Discovery vs Delivery",
+          "file": "05-product-fundamentals/discovery-vs-delivery.md",
+          "status": "\u2014",
+          "writer": "senior-pm"
+        },
+        {
+          "id": "05.07",
+          "title": "Experimentation & A/B Testing",
+          "file": "05-product-fundamentals/experimentation-and-ab-testing.md",
+          "status": "\u2014",
+          "writer": "senior-pm"
+        },
+        {
+          "id": "05.08",
+          "title": "Technical Debt for PMs",
+          "file": "05-product-fundamentals/technical-debt-for-pms.md",
+          "status": "\u2014",
+          "writer": "senior-pm"
+        },
+        {
+          "id": "05.09",
+          "title": "System Design Thinking",
+          "file": "05-product-fundamentals/system-design-thinking.md",
+          "status": "\u2014",
+          "writer": "senior-pm"
+        },
+        {
+          "id": "05.10",
+          "title": "Release Management",
+          "file": "05-product-fundamentals/release-management.md",
+          "status": "\u2014",
+          "writer": "senior-pm"
+        }
+      ]
+    },
+    {
+      "id": "06",
+      "title": "Metrics & Analytics",
+      "lessons": [
+        {
+          "id": "06.01",
+          "title": "North Star Metric",
+          "file": "06-metrics-and-analytics/north-star-metric.md",
+          "status": "ready",
+          "writer": "senior-pm"
+        },
+        {
+          "id": "06.02",
+          "title": "Funnel Analysis",
+          "file": "06-metrics-and-analytics/funnel-analysis.md",
+          "status": "\u2014",
+          "writer": "senior-pm"
+        },
+        {
+          "id": "06.03",
+          "title": "Cohort Analysis",
+          "file": "06-metrics-and-analytics/cohort-analysis.md",
+          "status": "\u2014",
+          "writer": "senior-pm"
+        },
+        {
+          "id": "06.04",
+          "title": "DAU/MAU & Engagement Ratios",
+          "file": "06-metrics-and-analytics/dau-mau-and-engagement-ratios.md",
+          "status": "\u2014",
+          "writer": "senior-pm"
+        },
+        {
+          "id": "06.05",
+          "title": "Event Tracking & Instrumentation",
+          "file": "06-metrics-and-analytics/event-tracking-and-instrumentation.md",
+          "status": "\u2014",
+          "writer": "senior-pm"
+        },
+        {
+          "id": "06.06",
+          "title": "Statistical Significance",
+          "file": "06-metrics-and-analytics/statistical-significance.md",
+          "status": "\u2014",
+          "writer": "senior-pm"
+        },
+        {
+          "id": "06.07",
+          "title": "Dashboards & BI Tools",
+          "file": "06-metrics-and-analytics/dashboards-and-bi-tools.md",
+          "status": "\u2014",
+          "writer": "senior-pm"
+        },
+        {
+          "id": "06.08",
+          "title": "Lagging vs Leading Indicators",
+          "file": "06-metrics-and-analytics/lagging-vs-leading-indicators.md",
+          "status": "\u2014",
+          "writer": "senior-pm"
+        },
+        {
+          "id": "06.09",
+          "title": "Counter Metrics",
+          "file": "06-metrics-and-analytics/counter-metrics.md",
+          "status": "\u2014",
+          "writer": "senior-pm"
+        },
+        {
+          "id": "06.10",
+          "title": "Data Quality & Pipelines",
+          "file": "06-metrics-and-analytics/data-quality-and-pipelines.md",
+          "status": "\u2014",
+          "writer": "senior-pm"
+        }
+      ]
+    },
+    {
+      "id": "07",
+      "title": "Business & Monetization",
+      "lessons": [
+        {
+          "id": "07.01",
+          "title": "Unit Economics",
+          "file": "07-business-and-monetization/unit-economics.md",
+          "status": "ready",
+          "writer": "cfo-finance"
+        },
+        {
+          "id": "07.02",
+          "title": "Pricing Models",
+          "file": "07-business-and-monetization/pricing-models.md",
+          "status": "\u2014",
+          "writer": "cfo-finance"
+        },
+        {
+          "id": "07.03",
+          "title": "Gross Margin & COGS",
+          "file": "07-business-and-monetization/gross-margin-and-cogs.md",
+          "status": "\u2014",
+          "writer": "cfo-finance"
+        },
+        {
+          "id": "07.04",
+          "title": "Monetization Design",
+          "file": "07-business-and-monetization/monetization-design.md",
+          "status": "\u2014",
+          "writer": "cfo-finance"
+        },
+        {
+          "id": "07.05",
+          "title": "Payment Infrastructure",
+          "file": "07-business-and-monetization/payment-infrastructure.md",
+          "status": "\u2014",
+          "writer": "cfo-finance"
+        },
+        {
+          "id": "07.06",
+          "title": "Marketplace Economics",
+          "file": "07-business-and-monetization/marketplace-economics.md",
+          "status": "\u2014",
+          "writer": "cfo-finance"
+        },
+        {
+          "id": "07.07",
+          "title": "Churn & Retention Economics",
+          "file": "07-business-and-monetization/churn-and-retention-economics.md",
+          "status": "\u2014",
+          "writer": "cfo-finance"
+        },
+        {
+          "id": "07.08",
+          "title": "Subscription Mechanics",
+          "file": "07-business-and-monetization/subscription-mechanics.md",
+          "status": "\u2014",
+          "writer": "cfo-finance"
+        },
+        {
+          "id": "07.09",
+          "title": "Virtual Currency & Rewards",
+          "file": "07-business-and-monetization/virtual-currency-and-rewards.md",
+          "status": "\u2014",
+          "writer": "cfo-finance"
+        },
+        {
+          "id": "07.10",
+          "title": "Financial Modeling Basics",
+          "file": "07-business-and-monetization/financial-modeling-basics.md",
+          "status": "\u2014",
+          "writer": "cfo-finance"
+        }
+      ]
+    },
+    {
+      "id": "08",
+      "title": "GTM & Growth",
+      "lessons": [
+        {
+          "id": "08.01",
+          "title": "Go-To-Market Strategy",
+          "file": "08-gtm-and-growth/go-to-market-strategy.md",
+          "status": "ready",
+          "writer": "gtm-lead"
+        },
+        {
+          "id": "08.02",
+          "title": "Product-Led Growth",
+          "file": "08-gtm-and-growth/product-led-growth.md",
+          "status": "\u2014",
+          "writer": "gtm-lead"
+        },
+        {
+          "id": "08.03",
+          "title": "Growth Loops",
+          "file": "08-gtm-and-growth/growth-loops.md",
+          "status": "\u2014",
+          "writer": "gtm-lead"
+        },
+        {
+          "id": "08.04",
+          "title": "User Onboarding Design",
+          "file": "08-gtm-and-growth/user-onboarding-design.md",
+          "status": "\u2014",
+          "writer": "gtm-lead"
+        },
+        {
+          "id": "08.05",
+          "title": "Referral & Virality Mechanics",
+          "file": "08-gtm-and-growth/referral-and-virality-mechanics.md",
+          "status": "\u2014",
+          "writer": "gtm-lead"
+        },
+        {
+          "id": "08.06",
+          "title": "SEO Basics for PMs",
+          "file": "08-gtm-and-growth/seo-basics-for-pms.md",
+          "status": "\u2014",
+          "writer": "gtm-lead"
+        },
+        {
+          "id": "08.07",
+          "title": "Paid Acquisition Fundamentals",
+          "file": "08-gtm-and-growth/paid-acquisition-fundamentals.md",
+          "status": "\u2014",
+          "writer": "gtm-lead"
+        },
+        {
+          "id": "08.08",
+          "title": "CRM & Sales Pipeline",
+          "file": "08-gtm-and-growth/crm-and-sales-pipeline.md",
+          "status": "\u2014",
+          "writer": "gtm-lead"
+        },
+        {
+          "id": "08.09",
+          "title": "Internationalization & Localization",
+          "file": "08-gtm-and-growth/internationalization-and-localization.md",
+          "status": "\u2014",
+          "writer": "gtm-lead"
+        },
+        {
+          "id": "08.10",
+          "title": "Competitive Benchmarking",
+          "file": "08-gtm-and-growth/competitive-benchmarking.md",
+          "status": "\u2014",
+          "writer": "gtm-lead"
+        }
+      ]
+    },
+    {
+      "id": "09",
+      "title": "Security, Compliance & Scale",
+      "lessons": [
+        {
+          "id": "09.01",
+          "title": "Authentication vs Authorization",
+          "file": "09-security-and-scale/authentication-vs-authorization.md",
+          "status": "\u2014",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "09.02",
+          "title": "GDPR & Data Privacy for PMs",
+          "file": "09-security-and-scale/gdpr-and-data-privacy.md",
+          "status": "\u2014",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "09.03",
+          "title": "OWASP Top 10 for PMs",
+          "file": "09-security-and-scale/owasp-top-10-for-pms.md",
+          "status": "\u2014",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "09.04",
+          "title": "Scalability Patterns",
+          "file": "09-security-and-scale/scalability-patterns.md",
+          "status": "\u2014",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "09.05",
+          "title": "Incident Management",
+          "file": "09-security-and-scale/incident-management.md",
+          "status": "\u2014",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "09.06",
+          "title": "Multi-Tenancy",
+          "file": "09-security-and-scale/multi-tenancy.md",
+          "status": "\u2014",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "09.07",
+          "title": "Penetration Testing & Bug Bounty",
+          "file": "09-security-and-scale/penetration-testing-and-bug-bounty.md",
+          "status": "\u2014",
+          "writer": "staff-engineer-pm"
+        },
+        {
+          "id": "09.08",
+          "title": "Accessibility (a11y)",
+          "file": "09-security-and-scale/accessibility.md",
+          "status": "\u2014",
+          "writer": "staff-engineer-pm"
+        }
+      ]
+    }
+  ],
+  "lessons": [
+    {
+      "id": "01.01",
+      "title": "What is an API",
+      "module_id": "01",
+      "module_title": "APIs & System Integration",
+      "file": "01-apis-and-integration/what-is-an-api.md",
+      "status": "ready",
+      "writer": "staff-engineer-pm",
+      "word_count": 4480,
+      "score": 7.0,
+      "health": "GOOD",
+      "criticals": 3,
+      "highs": 22,
+      "mediums": 46,
+      "run_formatter": true,
+      "last_run": "2026-04-06T17:30:15.937107+00:00",
+      "scores_by_level": {
+        "foundation": 7.2,
+        "working": 7.0,
+        "strategic": 7.0
+      }
+    },
+    {
+      "id": "01.02",
+      "title": "API Authentication",
+      "module_id": "01",
+      "module_title": "APIs & System Integration",
+      "file": "01-apis-and-integration/api-authentication.md",
+      "status": "ready",
+      "writer": "staff-engineer-pm",
+      "word_count": 4056,
+      "score": 6.9,
+      "health": "GOOD",
+      "criticals": 4,
+      "highs": 24,
+      "mediums": 38,
+      "run_formatter": true,
+      "last_run": "2026-04-06T17:11:51.882010+00:00",
+      "scores_by_level": {
+        "foundation": 7.2,
+        "working": 6.5,
+        "strategic": 7.0
+      }
+    },
+    {
+      "id": "01.03",
+      "title": "Webhooks vs Polling",
+      "module_id": "01",
+      "module_title": "APIs & System Integration",
+      "file": "01-apis-and-integration/webhooks-vs-polling.md",
+      "status": "ready",
+      "writer": "staff-engineer-pm",
+      "word_count": 4211,
+      "score": 7.2,
+      "health": "GOOD",
+      "criticals": 6,
+      "highs": 30,
+      "mediums": 45,
+      "run_formatter": true,
+      "last_run": "2026-04-06T17:13:35.139390+00:00",
+      "scores_by_level": {
+        "foundation": 7.4,
+        "working": 7.0,
+        "strategic": 7.3
+      }
+    },
+    {
+      "id": "01.04",
+      "title": "Rate Limiting & Throttling",
+      "module_id": "01",
+      "module_title": "APIs & System Integration",
+      "file": "01-apis-and-integration/rate-limiting-and-throttling.md",
+      "status": "ready",
+      "writer": "staff-engineer-pm",
+      "word_count": 3704,
+      "score": 6.9,
+      "health": "GOOD",
+      "criticals": 4,
+      "highs": 24,
+      "mediums": 35,
+      "run_formatter": true,
+      "last_run": "2026-04-07T16:11:48.031589+00:00",
+      "scores_by_level": {
+        "foundation": 6.7,
+        "working": 7.0,
+        "strategic": 7.0
+      }
+    },
+    {
+      "id": "01.05",
+      "title": "Idempotency",
+      "module_id": "01",
+      "module_title": "APIs & System Integration",
+      "file": "01-apis-and-integration/idempotency.md",
+      "status": "ready",
+      "writer": "staff-engineer-pm",
+      "word_count": 4501,
+      "score": 7.1,
+      "health": "GOOD",
+      "criticals": 5,
+      "highs": 29,
+      "mediums": 47,
+      "run_formatter": true,
+      "last_run": "2026-04-07T16:13:29.557109+00:00",
+      "scores_by_level": {
+        "foundation": 7.2,
+        "working": 6.3,
+        "strategic": 7.3
+      }
+    },
+    {
+      "id": "01.06",
+      "title": "API Versioning",
+      "module_id": "01",
+      "module_title": "APIs & System Integration",
+      "file": "01-apis-and-integration/api-versioning.md",
+      "status": "ready",
+      "writer": "staff-engineer-pm",
+      "word_count": 4017,
+      "score": 7.0,
+      "health": "GOOD",
+      "criticals": 8,
+      "highs": 27,
+      "mediums": 44,
+      "run_formatter": true,
+      "last_run": "2026-04-06T17:06:35.024428+00:00",
+      "scores_by_level": {
+        "foundation": 7.2,
+        "working": 7.0,
+        "strategic": 7.0
+      }
+    },
+    {
+      "id": "01.07",
+      "title": "Pagination",
+      "module_id": "01",
+      "module_title": "APIs & System Integration",
+      "file": "01-apis-and-integration/pagination.md",
+      "status": "ready",
+      "writer": "staff-engineer-pm",
+      "word_count": 4192,
+      "score": 6.9,
+      "health": "GOOD",
+      "criticals": 5,
+      "highs": 22,
+      "mediums": 41,
+      "run_formatter": true,
+      "last_run": "2026-04-07T08:35:55.844158+00:00",
+      "scores_by_level": {
+        "foundation": 7.2,
+        "working": 7.0,
+        "strategic": 6.7
+      }
+    },
+    {
+      "id": "01.08",
+      "title": "API Gateway",
+      "module_id": "01",
+      "module_title": "APIs & System Integration",
+      "file": "01-apis-and-integration/api-gateway.md",
+      "status": "ready",
+      "writer": "staff-engineer-pm",
+      "word_count": 4774,
+      "score": 6.9,
+      "health": "GOOD",
+      "criticals": 5,
+      "highs": 28,
+      "mediums": 44,
+      "run_formatter": true,
+      "last_run": "2026-04-07T10:43:39.302472+00:00",
+      "scores_by_level": {
+        "foundation": 7.2,
+        "working": 6.7,
+        "strategic": 7.0
+      }
+    },
+    {
+      "id": "01.09",
+      "title": "Error Codes & Response Design",
+      "module_id": "01",
+      "module_title": "APIs & System Integration",
+      "file": "01-apis-and-integration/error-codes-and-response-design.md",
+      "status": "ready",
+      "writer": "staff-engineer-pm",
+      "word_count": 4937,
+      "score": 7.4,
+      "health": "GOOD",
+      "criticals": 4,
+      "highs": 19,
+      "mediums": 52,
+      "run_formatter": true,
+      "last_run": "2026-04-07T10:51:21.145971+00:00",
+      "scores_by_level": {
+        "foundation": 7.5,
+        "working": 7.2,
+        "strategic": 7.3
+      }
+    },
+    {
+      "id": "01.10",
+      "title": "Third-Party Integration Patterns",
+      "module_id": "01",
+      "module_title": "APIs & System Integration",
+      "file": "01-apis-and-integration/third-party-integration-patterns.md",
+      "status": "ready",
+      "writer": "staff-engineer-pm",
+      "word_count": 5250,
+      "score": 7.1,
+      "health": "GOOD",
+      "criticals": 3,
+      "highs": 25,
+      "mediums": 38,
+      "run_formatter": true,
+      "last_run": "2026-04-07T11:21:46.961298+00:00",
+      "scores_by_level": {
+        "foundation": 7.3,
+        "working": 6.5,
+        "strategic": 7.3
+      }
+    },
+    {
+      "id": "02.01",
+      "title": "SQL vs NoSQL",
+      "module_id": "02",
+      "module_title": "Databases & Data Systems",
+      "file": "02-databases-and-data/sql-vs-nosql.md",
+      "status": "ready",
+      "writer": "staff-engineer-pm",
+      "word_count": 5058,
+      "score": 6.7,
+      "health": "GOOD",
+      "criticals": 5,
+      "highs": 22,
+      "mediums": 41,
+      "run_formatter": true,
+      "last_run": "2026-04-07T12:36:00.883295+00:00",
+      "scores_by_level": {
+        "foundation": 7.2,
+        "working": 5.0,
+        "strategic": 7.0
+      }
+    },
+    {
+      "id": "02.02",
+      "title": "Indexing",
+      "module_id": "02",
+      "module_title": "Databases & Data Systems",
+      "file": "02-databases-and-data/indexing.md",
+      "status": "ready",
+      "writer": "staff-engineer-pm",
+      "word_count": 5312,
+      "score": 6.9,
+      "health": "GOOD",
+      "criticals": 5,
+      "highs": 26,
+      "mediums": 44,
+      "run_formatter": true,
+      "last_run": "2026-04-07T12:47:01.449134+00:00",
+      "scores_by_level": {
+        "foundation": 7.3,
+        "working": 6.8,
+        "strategic": 6.7
+      }
+    },
+    {
+      "id": "02.03",
+      "title": "Transactions & ACID",
+      "module_id": "02",
+      "module_title": "Databases & Data Systems",
+      "file": "02-databases-and-data/transactions-and-acid.md",
+      "status": "ready",
+      "writer": "staff-engineer-pm",
+      "word_count": 6147,
+      "score": 6.7,
+      "health": "GOOD",
+      "criticals": 11,
+      "highs": 27,
+      "mediums": 50,
+      "run_formatter": true,
+      "last_run": "2026-04-07T13:04:13.567476+00:00",
+      "scores_by_level": {
+        "foundation": 7.2,
+        "working": 6.3,
+        "strategic": 7.0
+      }
+    },
+    {
+      "id": "02.04",
+      "title": "Caching (Redis)",
+      "module_id": "02",
+      "module_title": "Databases & Data Systems",
+      "file": "02-databases-and-data/caching-redis.md",
+      "status": "ready",
+      "writer": "staff-engineer-pm",
+      "word_count": 6229,
+      "score": 7.0,
+      "health": "GOOD",
+      "criticals": 2,
+      "highs": 24,
+      "mediums": 42,
+      "run_formatter": true,
+      "last_run": "2026-04-07T13:16:39.930791+00:00",
+      "scores_by_level": {
+        "foundation": 7.2,
+        "working": 7.0,
+        "strategic": 7.0
+      }
+    },
+    {
+      "id": "02.05",
+      "title": "Data Warehouses vs Databases",
+      "module_id": "02",
+      "module_title": "Databases & Data Systems",
+      "file": "02-databases-and-data/data-warehouses-vs-databases.md",
+      "status": "ready",
+      "writer": "staff-engineer-pm",
+      "word_count": 6648,
+      "score": 7.1,
+      "health": "GOOD",
+      "criticals": 4,
+      "highs": 20,
+      "mediums": 37,
+      "run_formatter": true,
+      "last_run": "2026-04-07T13:27:51.455858+00:00",
+      "scores_by_level": {
+        "foundation": 7.2,
+        "working": 7.0,
+        "strategic": 7.0
+      }
+    },
+    {
+      "id": "02.06",
+      "title": "ETL Pipelines",
+      "module_id": "02",
+      "module_title": "Databases & Data Systems",
+      "file": "02-databases-and-data/etl-pipelines.md",
+      "status": "ready",
+      "writer": "staff-engineer-pm",
+      "word_count": 6638,
+      "score": 6.9,
+      "health": "GOOD",
+      "criticals": 4,
+      "highs": 21,
+      "mediums": 39,
+      "run_formatter": true,
+      "last_run": "2026-04-07T14:32:28.470820+00:00",
+      "scores_by_level": {
+        "foundation": 7.3,
+        "working": 7.0,
+        "strategic": 6.3
+      }
+    },
+    {
+      "id": "02.07",
+      "title": "Schema Design Basics",
+      "module_id": "02",
+      "module_title": "Databases & Data Systems",
+      "file": "02-databases-and-data/schema-design-basics.md",
+      "status": "ready",
+      "writer": "staff-engineer-pm",
+      "word_count": 6603,
+      "score": 6.9,
+      "health": "GOOD",
+      "criticals": 4,
+      "highs": 28,
+      "mediums": 52,
+      "run_formatter": true,
+      "last_run": "2026-04-07T14:44:47.329338+00:00",
+      "scores_by_level": {
+        "foundation": 7.3,
+        "working": 6.7,
+        "strategic": 6.5
+      }
+    },
+    {
+      "id": "02.08",
+      "title": "Soft Delete vs Hard Delete",
+      "module_id": "02",
+      "module_title": "Databases & Data Systems",
+      "file": "02-databases-and-data/soft-delete-vs-hard-delete.md",
+      "status": "ready",
+      "writer": "staff-engineer-pm",
+      "word_count": 6139,
+      "score": 7.1,
+      "health": "GOOD",
+      "criticals": 4,
+      "highs": 29,
+      "mediums": 50,
+      "run_formatter": true,
+      "last_run": "2026-04-07T15:06:29.710939+00:00",
+      "scores_by_level": {
+        "foundation": 7.2,
+        "working": 7.0,
+        "strategic": 7.3
+      }
+    },
+    {
+      "id": "02.09",
+      "title": "PII & Data Privacy",
+      "module_id": "02",
+      "module_title": "Databases & Data Systems",
+      "file": "02-databases-and-data/pii-and-data-privacy.md",
+      "status": "ready",
+      "writer": "staff-engineer-pm",
+      "word_count": 7041,
+      "score": 6.8,
+      "health": "GOOD",
+      "criticals": 6,
+      "highs": 31,
+      "mediums": 46,
+      "run_formatter": true,
+      "last_run": "2026-04-07T15:16:47.231513+00:00",
+      "scores_by_level": {
+        "foundation": 6.8,
+        "working": 6.5,
+        "strategic": 7.0
+      }
+    },
+    {
+      "id": "02.10",
+      "title": "Data Replication & Backups",
+      "module_id": "02",
+      "module_title": "Databases & Data Systems",
+      "file": "02-databases-and-data/data-replication-and-backups.md",
+      "status": "ready",
+      "writer": "staff-engineer-pm",
+      "word_count": 6867,
+      "score": 6.9,
+      "health": "GOOD",
+      "criticals": 7,
+      "highs": 26,
+      "mediums": 46,
+      "run_formatter": true,
+      "last_run": "2026-04-07T16:15:26.765407+00:00",
+      "scores_by_level": {
+        "foundation": 7.0,
+        "working": 6.7,
+        "strategic": 7.0
+      }
+    },
+    {
+      "id": "03.01",
+      "title": "Cloud Infrastructure Basics",
+      "module_id": "03",
+      "module_title": "Infrastructure & DevOps",
+      "file": "03-infrastructure-and-devops/cloud-infrastructure-basics.md",
+      "status": "ready",
+      "writer": "staff-engineer-pm",
+      "word_count": 7026,
+      "score": 6.7,
+      "health": "GOOD",
+      "criticals": 5,
+      "highs": 21,
+      "mediums": 48,
+      "run_formatter": true,
+      "last_run": "2026-04-07T15:45:04.728642+00:00",
+      "scores_by_level": {
+        "foundation": 6.5,
+        "working": 7.0,
+        "strategic": 6.3
+      }
+    },
+    {
+      "id": "03.02",
+      "title": "Containers & Docker",
+      "module_id": "03",
+      "module_title": "Infrastructure & DevOps",
+      "file": "03-infrastructure-and-devops/containers-and-docker.md",
+      "status": "ready",
+      "writer": "staff-engineer-pm",
+      "word_count": 6224,
+      "score": 6.8,
+      "health": "GOOD",
+      "criticals": 7,
+      "highs": 27,
+      "mediums": 48,
+      "run_formatter": true,
+      "last_run": "2026-04-07T15:58:12.869138+00:00",
+      "scores_by_level": {
+        "foundation": 6.8,
+        "working": 6.6,
+        "strategic": 7.0
+      }
+    },
+    {
+      "id": "03.03",
+      "title": "Kubernetes",
+      "module_id": "03",
+      "module_title": "Infrastructure & DevOps",
+      "file": "03-infrastructure-and-devops/kubernetes.md",
+      "status": "ready",
+      "writer": "staff-engineer-pm",
+      "word_count": 6008,
+      "score": 6.9,
+      "health": "GOOD",
+      "criticals": 4,
+      "highs": 25,
+      "mediums": 41,
+      "run_formatter": true,
+      "last_run": "2026-04-07T17:15:37.772195+00:00",
+      "scores_by_level": {
+        "foundation": 7.2,
+        "working": 6.5,
+        "strategic": 7.0
+      }
+    },
+    {
+      "id": "03.04",
+      "title": "CI/CD Pipelines",
+      "module_id": "03",
+      "module_title": "Infrastructure & DevOps",
+      "file": "03-infrastructure-and-devops/cicd-pipelines.md",
+      "status": "ready",
+      "writer": "staff-engineer-pm",
+      "word_count": 3999,
+      "score": 6.7,
+      "health": "GOOD",
+      "criticals": 10,
+      "highs": 28,
+      "mediums": 44,
+      "run_formatter": true,
+      "last_run": "2026-04-06T17:15:19.896137+00:00",
+      "scores_by_level": {
+        "foundation": 7.3,
+        "working": 6.5,
+        "strategic": 7.0
+      }
+    },
+    {
+      "id": "03.05",
+      "title": "Infrastructure as Code",
+      "module_id": "03",
+      "module_title": "Infrastructure & DevOps",
+      "file": "03-infrastructure-and-devops/infrastructure-as-code-terraform.md",
+      "status": "ready",
+      "writer": "staff-engineer-pm",
+      "word_count": 5059,
+      "score": 6.6,
+      "health": "GOOD",
+      "criticals": 4,
+      "highs": 26,
+      "mediums": 46,
+      "run_formatter": true,
+      "last_run": "2026-04-07T17:39:38.761653+00:00",
+      "scores_by_level": {
+        "foundation": 6.8,
+        "working": 6.5,
+        "strategic": 6.8
+      }
+    },
+    {
+      "id": "03.06",
+      "title": "Queues & Message Brokers",
+      "module_id": "03",
+      "module_title": "Infrastructure & DevOps",
+      "file": "03-infrastructure-and-devops/queues-and-message-brokers.md",
+      "status": "ready",
+      "writer": "staff-engineer-pm",
+      "word_count": 6288,
+      "score": 6.8,
+      "health": "GOOD",
+      "criticals": 3,
+      "highs": 25,
+      "mediums": 44,
+      "run_formatter": true,
+      "last_run": "2026-04-07T17:59:47.867220+00:00",
+      "scores_by_level": {
+        "foundation": 7.0,
+        "working": 6.8,
+        "strategic": 6.3
+      }
+    },
+    {
+      "id": "03.07",
+      "title": "CDN & Edge Caching",
+      "module_id": "03",
+      "module_title": "Infrastructure & DevOps",
+      "file": "03-infrastructure-and-devops/cdn-and-edge-caching.md",
+      "status": "\u2014",
+      "writer": "staff-engineer-pm",
+      "word_count": 0
+    },
+    {
+      "id": "03.08",
+      "title": "Load Balancing",
+      "module_id": "03",
+      "module_title": "Infrastructure & DevOps",
+      "file": "03-infrastructure-and-devops/load-balancing.md",
+      "status": "\u2014",
+      "writer": "staff-engineer-pm",
+      "word_count": 0
+    },
+    {
+      "id": "03.09",
+      "title": "Monitoring & Alerting",
+      "module_id": "03",
+      "module_title": "Infrastructure & DevOps",
+      "file": "03-infrastructure-and-devops/monitoring-and-alerting.md",
+      "status": "\u2014",
+      "writer": "staff-engineer-pm",
+      "word_count": 0
+    },
+    {
+      "id": "03.10",
+      "title": "Feature Flags",
+      "module_id": "03",
+      "module_title": "Infrastructure & DevOps",
+      "file": "03-infrastructure-and-devops/feature-flags.md",
+      "status": "\u2014",
+      "writer": "staff-engineer-pm",
+      "word_count": 0
+    },
+    {
+      "id": "04.01",
+      "title": "How LLMs Work",
+      "module_id": "04",
+      "module_title": "AI & ML Systems",
+      "file": "04-ai-and-ml-systems/how-llms-work.md",
+      "status": "\u2014",
+      "writer": "staff-engineer-pm",
+      "word_count": 0
+    },
+    {
+      "id": "04.02",
+      "title": "Prompt Engineering Basics",
+      "module_id": "04",
+      "module_title": "AI & ML Systems",
+      "file": "04-ai-and-ml-systems/prompt-engineering-basics.md",
+      "status": "\u2014",
+      "writer": "staff-engineer-pm",
+      "word_count": 0
+    },
+    {
+      "id": "04.03",
+      "title": "RAG",
+      "module_id": "04",
+      "module_title": "AI & ML Systems",
+      "file": "04-ai-and-ml-systems/rag-retrieval-augmented-generation.md",
+      "status": "\u2014",
+      "writer": "staff-engineer-pm",
+      "word_count": 0
+    },
+    {
+      "id": "04.04",
+      "title": "Embeddings & Vector Databases",
+      "module_id": "04",
+      "module_title": "AI & ML Systems",
+      "file": "04-ai-and-ml-systems/embeddings-and-vector-databases.md",
+      "status": "\u2014",
+      "writer": "staff-engineer-pm",
+      "word_count": 0
+    },
+    {
+      "id": "04.05",
+      "title": "Fine-tuning vs Prompting",
+      "module_id": "04",
+      "module_title": "AI & ML Systems",
+      "file": "04-ai-and-ml-systems/fine-tuning-vs-prompting.md",
+      "status": "\u2014",
+      "writer": "staff-engineer-pm",
+      "word_count": 0
+    },
+    {
+      "id": "04.06",
+      "title": "AI Evals & Quality Scoring",
+      "module_id": "04",
+      "module_title": "AI & ML Systems",
+      "file": "04-ai-and-ml-systems/ai-evals-and-quality-scoring.md",
+      "status": "\u2014",
+      "writer": "staff-engineer-pm",
+      "word_count": 0
+    },
+    {
+      "id": "04.07",
+      "title": "Classification Models",
+      "module_id": "04",
+      "module_title": "AI & ML Systems",
+      "file": "04-ai-and-ml-systems/classification-models.md",
+      "status": "\u2014",
+      "writer": "staff-engineer-pm",
+      "word_count": 0
+    },
+    {
+      "id": "04.08",
+      "title": "Recommendation Systems",
+      "module_id": "04",
+      "module_title": "AI & ML Systems",
+      "file": "04-ai-and-ml-systems/recommendation-systems.md",
+      "status": "\u2014",
+      "writer": "staff-engineer-pm",
+      "word_count": 0
+    },
+    {
+      "id": "04.09",
+      "title": "AI Agent Patterns",
+      "module_id": "04",
+      "module_title": "AI & ML Systems",
+      "file": "04-ai-and-ml-systems/ai-agent-patterns.md",
+      "status": "\u2014",
+      "writer": "staff-engineer-pm",
+      "word_count": 0
+    },
+    {
+      "id": "04.10",
+      "title": "AI Cost & Latency Tradeoffs",
+      "module_id": "04",
+      "module_title": "AI & ML Systems",
+      "file": "04-ai-and-ml-systems/ai-cost-and-latency-tradeoffs.md",
+      "status": "\u2014",
+      "writer": "staff-engineer-pm",
+      "word_count": 0
+    },
+    {
+      "id": "05.01",
+      "title": "PRD Writing",
+      "module_id": "05",
+      "module_title": "Product Fundamentals",
+      "file": "05-product-fundamentals/prd-writing.md",
+      "status": "\u2014",
+      "writer": "senior-pm",
+      "word_count": 0
+    },
+    {
+      "id": "05.02",
+      "title": "Jobs to Be Done",
+      "module_id": "05",
+      "module_title": "Product Fundamentals",
+      "file": "05-product-fundamentals/jobs-to-be-done.md",
+      "status": "\u2014",
+      "writer": "senior-pm",
+      "word_count": 0
+    },
+    {
+      "id": "05.03",
+      "title": "Prioritization Frameworks",
+      "module_id": "05",
+      "module_title": "Product Fundamentals",
+      "file": "05-product-fundamentals/prioritization-frameworks.md",
+      "status": "\u2014",
+      "writer": "senior-pm",
+      "word_count": 0
+    },
+    {
+      "id": "05.04",
+      "title": "User Story Writing",
+      "module_id": "05",
+      "module_title": "Product Fundamentals",
+      "file": "05-product-fundamentals/user-story-writing.md",
+      "status": "\u2014",
+      "writer": "senior-pm",
+      "word_count": 0
+    },
+    {
+      "id": "05.05",
+      "title": "Roadmapping",
+      "module_id": "05",
+      "module_title": "Product Fundamentals",
+      "file": "05-product-fundamentals/roadmapping.md",
+      "status": "\u2014",
+      "writer": "senior-pm",
+      "word_count": 0
+    },
+    {
+      "id": "05.06",
+      "title": "Discovery vs Delivery",
+      "module_id": "05",
+      "module_title": "Product Fundamentals",
+      "file": "05-product-fundamentals/discovery-vs-delivery.md",
+      "status": "\u2014",
+      "writer": "senior-pm",
+      "word_count": 0
+    },
+    {
+      "id": "05.07",
+      "title": "Experimentation & A/B Testing",
+      "module_id": "05",
+      "module_title": "Product Fundamentals",
+      "file": "05-product-fundamentals/experimentation-and-ab-testing.md",
+      "status": "\u2014",
+      "writer": "senior-pm",
+      "word_count": 0
+    },
+    {
+      "id": "05.08",
+      "title": "Technical Debt for PMs",
+      "module_id": "05",
+      "module_title": "Product Fundamentals",
+      "file": "05-product-fundamentals/technical-debt-for-pms.md",
+      "status": "\u2014",
+      "writer": "senior-pm",
+      "word_count": 0
+    },
+    {
+      "id": "05.09",
+      "title": "System Design Thinking",
+      "module_id": "05",
+      "module_title": "Product Fundamentals",
+      "file": "05-product-fundamentals/system-design-thinking.md",
+      "status": "\u2014",
+      "writer": "senior-pm",
+      "word_count": 0
+    },
+    {
+      "id": "05.10",
+      "title": "Release Management",
+      "module_id": "05",
+      "module_title": "Product Fundamentals",
+      "file": "05-product-fundamentals/release-management.md",
+      "status": "\u2014",
+      "writer": "senior-pm",
+      "word_count": 0
+    },
+    {
+      "id": "06.01",
+      "title": "North Star Metric",
+      "module_id": "06",
+      "module_title": "Metrics & Analytics",
+      "file": "06-metrics-and-analytics/north-star-metric.md",
+      "status": "ready",
+      "writer": "senior-pm",
+      "word_count": 4176,
+      "score": 7.3,
+      "health": "GOOD",
+      "criticals": 3,
+      "highs": 23,
+      "mediums": 44,
+      "run_formatter": true,
+      "last_run": "2026-04-07T05:12:08.231325+00:00",
+      "scores_by_level": {
+        "foundation": 7.6,
+        "working": 7.0,
+        "strategic": 7.3
+      }
+    },
+    {
+      "id": "06.02",
+      "title": "Funnel Analysis",
+      "module_id": "06",
+      "module_title": "Metrics & Analytics",
+      "file": "06-metrics-and-analytics/funnel-analysis.md",
+      "status": "\u2014",
+      "writer": "senior-pm",
+      "word_count": 0
+    },
+    {
+      "id": "06.03",
+      "title": "Cohort Analysis",
+      "module_id": "06",
+      "module_title": "Metrics & Analytics",
+      "file": "06-metrics-and-analytics/cohort-analysis.md",
+      "status": "\u2014",
+      "writer": "senior-pm",
+      "word_count": 0
+    },
+    {
+      "id": "06.04",
+      "title": "DAU/MAU & Engagement Ratios",
+      "module_id": "06",
+      "module_title": "Metrics & Analytics",
+      "file": "06-metrics-and-analytics/dau-mau-and-engagement-ratios.md",
+      "status": "\u2014",
+      "writer": "senior-pm",
+      "word_count": 0
+    },
+    {
+      "id": "06.05",
+      "title": "Event Tracking & Instrumentation",
+      "module_id": "06",
+      "module_title": "Metrics & Analytics",
+      "file": "06-metrics-and-analytics/event-tracking-and-instrumentation.md",
+      "status": "\u2014",
+      "writer": "senior-pm",
+      "word_count": 0
+    },
+    {
+      "id": "06.06",
+      "title": "Statistical Significance",
+      "module_id": "06",
+      "module_title": "Metrics & Analytics",
+      "file": "06-metrics-and-analytics/statistical-significance.md",
+      "status": "\u2014",
+      "writer": "senior-pm",
+      "word_count": 0
+    },
+    {
+      "id": "06.07",
+      "title": "Dashboards & BI Tools",
+      "module_id": "06",
+      "module_title": "Metrics & Analytics",
+      "file": "06-metrics-and-analytics/dashboards-and-bi-tools.md",
+      "status": "\u2014",
+      "writer": "senior-pm",
+      "word_count": 0
+    },
+    {
+      "id": "06.08",
+      "title": "Lagging vs Leading Indicators",
+      "module_id": "06",
+      "module_title": "Metrics & Analytics",
+      "file": "06-metrics-and-analytics/lagging-vs-leading-indicators.md",
+      "status": "\u2014",
+      "writer": "senior-pm",
+      "word_count": 0
+    },
+    {
+      "id": "06.09",
+      "title": "Counter Metrics",
+      "module_id": "06",
+      "module_title": "Metrics & Analytics",
+      "file": "06-metrics-and-analytics/counter-metrics.md",
+      "status": "\u2014",
+      "writer": "senior-pm",
+      "word_count": 0
+    },
+    {
+      "id": "06.10",
+      "title": "Data Quality & Pipelines",
+      "module_id": "06",
+      "module_title": "Metrics & Analytics",
+      "file": "06-metrics-and-analytics/data-quality-and-pipelines.md",
+      "status": "\u2014",
+      "writer": "senior-pm",
+      "word_count": 0
+    },
+    {
+      "id": "07.01",
+      "title": "Unit Economics",
+      "module_id": "07",
+      "module_title": "Business & Monetization",
+      "file": "07-business-and-monetization/unit-economics.md",
+      "status": "ready",
+      "writer": "cfo-finance",
+      "word_count": 4630,
+      "score": 7.3,
+      "health": "GOOD",
+      "criticals": 4,
+      "highs": 22,
+      "mediums": 41,
+      "run_formatter": true,
+      "last_run": "2026-04-07T05:22:42.046617+00:00",
+      "scores_by_level": {
+        "foundation": 7.3,
+        "working": 7.0,
+        "strategic": 7.3
+      }
+    },
+    {
+      "id": "07.02",
+      "title": "Pricing Models",
+      "module_id": "07",
+      "module_title": "Business & Monetization",
+      "file": "07-business-and-monetization/pricing-models.md",
+      "status": "\u2014",
+      "writer": "cfo-finance",
+      "word_count": 0
+    },
+    {
+      "id": "07.03",
+      "title": "Gross Margin & COGS",
+      "module_id": "07",
+      "module_title": "Business & Monetization",
+      "file": "07-business-and-monetization/gross-margin-and-cogs.md",
+      "status": "\u2014",
+      "writer": "cfo-finance",
+      "word_count": 0
+    },
+    {
+      "id": "07.04",
+      "title": "Monetization Design",
+      "module_id": "07",
+      "module_title": "Business & Monetization",
+      "file": "07-business-and-monetization/monetization-design.md",
+      "status": "\u2014",
+      "writer": "cfo-finance",
+      "word_count": 0
+    },
+    {
+      "id": "07.05",
+      "title": "Payment Infrastructure",
+      "module_id": "07",
+      "module_title": "Business & Monetization",
+      "file": "07-business-and-monetization/payment-infrastructure.md",
+      "status": "\u2014",
+      "writer": "cfo-finance",
+      "word_count": 0
+    },
+    {
+      "id": "07.06",
+      "title": "Marketplace Economics",
+      "module_id": "07",
+      "module_title": "Business & Monetization",
+      "file": "07-business-and-monetization/marketplace-economics.md",
+      "status": "\u2014",
+      "writer": "cfo-finance",
+      "word_count": 0
+    },
+    {
+      "id": "07.07",
+      "title": "Churn & Retention Economics",
+      "module_id": "07",
+      "module_title": "Business & Monetization",
+      "file": "07-business-and-monetization/churn-and-retention-economics.md",
+      "status": "\u2014",
+      "writer": "cfo-finance",
+      "word_count": 0
+    },
+    {
+      "id": "07.08",
+      "title": "Subscription Mechanics",
+      "module_id": "07",
+      "module_title": "Business & Monetization",
+      "file": "07-business-and-monetization/subscription-mechanics.md",
+      "status": "\u2014",
+      "writer": "cfo-finance",
+      "word_count": 0
+    },
+    {
+      "id": "07.09",
+      "title": "Virtual Currency & Rewards",
+      "module_id": "07",
+      "module_title": "Business & Monetization",
+      "file": "07-business-and-monetization/virtual-currency-and-rewards.md",
+      "status": "\u2014",
+      "writer": "cfo-finance",
+      "word_count": 0
+    },
+    {
+      "id": "07.10",
+      "title": "Financial Modeling Basics",
+      "module_id": "07",
+      "module_title": "Business & Monetization",
+      "file": "07-business-and-monetization/financial-modeling-basics.md",
+      "status": "\u2014",
+      "writer": "cfo-finance",
+      "word_count": 0
+    },
+    {
+      "id": "08.01",
+      "title": "Go-To-Market Strategy",
+      "module_id": "08",
+      "module_title": "GTM & Growth",
+      "file": "08-gtm-and-growth/go-to-market-strategy.md",
+      "status": "ready",
+      "writer": "gtm-lead",
+      "word_count": 4862,
+      "score": 7.0,
+      "health": "GOOD",
+      "criticals": 4,
+      "highs": 26,
+      "mediums": 45,
+      "run_formatter": true,
+      "last_run": "2026-04-07T08:08:43.402743+00:00",
+      "scores_by_level": {
+        "foundation": 7.2,
+        "working": 7.0,
+        "strategic": 7.0
+      }
+    },
+    {
+      "id": "08.02",
+      "title": "Product-Led Growth",
+      "module_id": "08",
+      "module_title": "GTM & Growth",
+      "file": "08-gtm-and-growth/product-led-growth.md",
+      "status": "\u2014",
+      "writer": "gtm-lead",
+      "word_count": 0
+    },
+    {
+      "id": "08.03",
+      "title": "Growth Loops",
+      "module_id": "08",
+      "module_title": "GTM & Growth",
+      "file": "08-gtm-and-growth/growth-loops.md",
+      "status": "\u2014",
+      "writer": "gtm-lead",
+      "word_count": 0
+    },
+    {
+      "id": "08.04",
+      "title": "User Onboarding Design",
+      "module_id": "08",
+      "module_title": "GTM & Growth",
+      "file": "08-gtm-and-growth/user-onboarding-design.md",
+      "status": "\u2014",
+      "writer": "gtm-lead",
+      "word_count": 0
+    },
+    {
+      "id": "08.05",
+      "title": "Referral & Virality Mechanics",
+      "module_id": "08",
+      "module_title": "GTM & Growth",
+      "file": "08-gtm-and-growth/referral-and-virality-mechanics.md",
+      "status": "\u2014",
+      "writer": "gtm-lead",
+      "word_count": 0
+    },
+    {
+      "id": "08.06",
+      "title": "SEO Basics for PMs",
+      "module_id": "08",
+      "module_title": "GTM & Growth",
+      "file": "08-gtm-and-growth/seo-basics-for-pms.md",
+      "status": "\u2014",
+      "writer": "gtm-lead",
+      "word_count": 0
+    },
+    {
+      "id": "08.07",
+      "title": "Paid Acquisition Fundamentals",
+      "module_id": "08",
+      "module_title": "GTM & Growth",
+      "file": "08-gtm-and-growth/paid-acquisition-fundamentals.md",
+      "status": "\u2014",
+      "writer": "gtm-lead",
+      "word_count": 0
+    },
+    {
+      "id": "08.08",
+      "title": "CRM & Sales Pipeline",
+      "module_id": "08",
+      "module_title": "GTM & Growth",
+      "file": "08-gtm-and-growth/crm-and-sales-pipeline.md",
+      "status": "\u2014",
+      "writer": "gtm-lead",
+      "word_count": 0
+    },
+    {
+      "id": "08.09",
+      "title": "Internationalization & Localization",
+      "module_id": "08",
+      "module_title": "GTM & Growth",
+      "file": "08-gtm-and-growth/internationalization-and-localization.md",
+      "status": "\u2014",
+      "writer": "gtm-lead",
+      "word_count": 0
+    },
+    {
+      "id": "08.10",
+      "title": "Competitive Benchmarking",
+      "module_id": "08",
+      "module_title": "GTM & Growth",
+      "file": "08-gtm-and-growth/competitive-benchmarking.md",
+      "status": "\u2014",
+      "writer": "gtm-lead",
+      "word_count": 0
+    },
+    {
+      "id": "09.01",
+      "title": "Authentication vs Authorization",
+      "module_id": "09",
+      "module_title": "Security, Compliance & Scale",
+      "file": "09-security-and-scale/authentication-vs-authorization.md",
+      "status": "\u2014",
+      "writer": "staff-engineer-pm",
+      "word_count": 0
+    },
+    {
+      "id": "09.02",
+      "title": "GDPR & Data Privacy for PMs",
+      "module_id": "09",
+      "module_title": "Security, Compliance & Scale",
+      "file": "09-security-and-scale/gdpr-and-data-privacy.md",
+      "status": "\u2014",
+      "writer": "staff-engineer-pm",
+      "word_count": 0
+    },
+    {
+      "id": "09.03",
+      "title": "OWASP Top 10 for PMs",
+      "module_id": "09",
+      "module_title": "Security, Compliance & Scale",
+      "file": "09-security-and-scale/owasp-top-10-for-pms.md",
+      "status": "\u2014",
+      "writer": "staff-engineer-pm",
+      "word_count": 0
+    },
+    {
+      "id": "09.04",
+      "title": "Scalability Patterns",
+      "module_id": "09",
+      "module_title": "Security, Compliance & Scale",
+      "file": "09-security-and-scale/scalability-patterns.md",
+      "status": "\u2014",
+      "writer": "staff-engineer-pm",
+      "word_count": 0
+    },
+    {
+      "id": "09.05",
+      "title": "Incident Management",
+      "module_id": "09",
+      "module_title": "Security, Compliance & Scale",
+      "file": "09-security-and-scale/incident-management.md",
+      "status": "\u2014",
+      "writer": "staff-engineer-pm",
+      "word_count": 0
+    },
+    {
+      "id": "09.06",
+      "title": "Multi-Tenancy",
+      "module_id": "09",
+      "module_title": "Security, Compliance & Scale",
+      "file": "09-security-and-scale/multi-tenancy.md",
+      "status": "\u2014",
+      "writer": "staff-engineer-pm",
+      "word_count": 0
+    },
+    {
+      "id": "09.07",
+      "title": "Penetration Testing & Bug Bounty",
+      "module_id": "09",
+      "module_title": "Security, Compliance & Scale",
+      "file": "09-security-and-scale/penetration-testing-and-bug-bounty.md",
+      "status": "\u2014",
+      "writer": "staff-engineer-pm",
+      "word_count": 0
+    },
+    {
+      "id": "09.08",
+      "title": "Accessibility (a11y)",
+      "module_id": "09",
+      "module_title": "Security, Compliance & Scale",
+      "file": "09-security-and-scale/accessibility.md",
+      "status": "\u2014",
+      "writer": "staff-engineer-pm",
+      "word_count": 0
+    }
+  ],
+  "agents": [
+    {
+      "id": "P1",
+      "name": "Priya",
+      "role": "Non-tech biz PM",
+      "level": "foundation"
+    },
+    {
+      "id": "P2",
+      "name": "Arjun",
+      "role": "Ex-engineer PM",
+      "level": "strategic"
+    },
+    {
+      "id": "P3",
+      "name": "Sofia",
+      "role": "MBA PM",
+      "level": "foundation"
+    },
+    {
+      "id": "P4",
+      "name": "Rahul",
+      "role": "Aspiring PM / SDE",
+      "level": "foundation"
+    },
+    {
+      "id": "P5",
+      "name": "Meera",
+      "role": "Growth / Data PM",
+      "level": "working"
+    },
+    {
+      "id": "P6",
+      "name": "Lena",
+      "role": "Designer \u2192 PM",
+      "level": "foundation"
+    },
+    {
+      "id": "P7",
+      "name": "Vikram",
+      "role": "Enterprise B2B PM",
+      "level": "working"
+    },
+    {
+      "id": "P8",
+      "name": "Anya",
+      "role": "Consumer startup PM",
+      "level": "working"
+    },
+    {
+      "id": "P9",
+      "name": "Zain",
+      "role": "Gen-Z AI-native PM",
+      "level": "strategic"
+    },
+    {
+      "id": "P10",
+      "name": "Deepa",
+      "role": "Senior PM / HoP",
+      "level": "strategic"
+    },
+    {
+      "id": "D1",
+      "name": "Nadia",
+      "role": "Senior product designer",
+      "level": "working"
+    },
+    {
+      "id": "SYN",
+      "name": "Synthesizer",
+      "role": "Cross-agent synthesis",
+      "level": "all"
+    },
+    {
+      "id": "FMT",
+      "name": "Formatter",
+      "role": "Markdown formatter",
+      "level": "all"
+    }
+  ]
+}

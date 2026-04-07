@@ -739,6 +739,15 @@ def write_report(lesson_path: Path, reviews: list, synthesis: dict) -> Path:
         lines.append("")
 
     report_path.write_text("\n".join(lines), encoding="utf-8")
+
+    # Auto-update mission control data after each swarm run
+    _ctrl = Path(__file__).parent / 'control' / 'data.py'
+    if _ctrl.exists():
+        import subprocess
+        result = subprocess.run(['python3', str(_ctrl)], capture_output=True)
+        if result.returncode == 0:
+            print("  ✓ Mission control data updated.")
+
     return report_path
 
 
