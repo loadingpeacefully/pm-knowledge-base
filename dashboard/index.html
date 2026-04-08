@@ -400,7 +400,6 @@ function getBasePath() {
 }
 const BASE = getBasePath();
 
-const MANIFEST = BASE + '/concept-library/_CONCEPT_INDEX.md';
 const WRITER = {
   'staff-engineer-pm': 'Staff Engineer turned PM',
   'senior-pm':         'Senior PM',
@@ -410,16 +409,16 @@ const WRITER = {
 
 /* ── MANIFEST ── */
 async function loadManifest() {
-  let text;
+  let data;
   try {
-    const r = await fetch(MANIFEST + '?t=' + Date.now());
+    const r = await fetch('lessons.json?t=' + Date.now());
     if (!r.ok) throw new Error('HTTP ' + r.status);
-    text = await r.text();
+    data = await r.json();
   } catch (e) {
     setContent(`<div class="empty-state"><h3>Could not load manifest</h3><p>${esc(e.message)}<br><br>Start the server:<br><code>python3 -m http.server 8080</code></p></div>`);
     return;
   }
-  parseManifest(text);
+  parseManifest(data.lessons);
   renderSidebar();
   updateProgressBtn();
   const first = Object.values(S.byId).find(l => l.status === 'ready');
@@ -427,35 +426,21 @@ async function loadManifest() {
   else setContent(`<div class="empty-state"><h3>No lessons written yet.</h3><br><p>In Claude Code, run:<br><code>write the next lesson</code></p><br><p>Then refresh this page.</p></div>`);
 }
 
-function parseManifest(text) {
+function parseManifest(lessons) {
   const modMap = {};
-  for (const raw of text.split('\n')) {
-    const line = raw.trim();
-    if (!line) continue;
-    if (/^## Pipeline/i.test(line)) break;
-
-    const mh = line.match(/^## Module (\d{2})\s*[—\-–]\s*(.+)$/);
-    if (mh) {
-      const [, num, name] = mh;
-      if (!modMap[num]) modMap[num] = { id: num, name: name.trim(), lessons: [] };
-      continue;
-    }
-
-    if (!line.startsWith('|')) continue;
-    const cells = line.split('|').slice(1, -1).map(c => c.trim());
-    const id = cells[0];
-    if (!id || !/^\d{2}\.\d{2}$/.test(id)) continue;
-
-    const title  = cells[1] || '';
-    const file   = cells[2] || '';
-    const rawSt  = (cells[3] || '').toLowerCase().replace(/[—–]/g, '').trim();
-    const writer = cells[4] || '';
-    const modNum = id.slice(0, 2);
-    const norm   = rawSt === 'ready' ? 'ready' : rawSt === 'draft' ? 'draft' : 'none';
-
-    const lesson = { id, title, file, status: norm, writer, modNum };
-    S.byId[id] = lesson;
-    if (!modMap[modNum]) modMap[modNum] = { id: modNum, name: 'Module ' + modNum, lessons: [] };
+  for (const raw of lessons) {
+    const modNum = raw.module_id;
+    if (!modMap[modNum]) modMap[modNum] = { id: modNum, name: raw.module_title || 'Module ' + modNum, lessons: [] };
+    const lesson = {
+      id:      raw.id,
+      title:   raw.title,
+      file:    raw.file,
+      status:  raw.status === 'ready' ? 'ready' : raw.status === 'draft' ? 'draft' : 'none',
+      writer:  raw.writer || '',
+      modNum,
+      content: raw.content || null,
+    };
+    S.byId[raw.id] = lesson;
     modMap[modNum].lessons.push(lesson);
   }
   S.modules = Object.values(modMap).sort((a, b) => a.id.localeCompare(b.id));
@@ -534,9 +519,14 @@ async function selectLesson(id) {
   document.getElementById('content').scrollTop = 0;
 
   try {
-    const r = await fetch(`${BASE}/concept-library/${lesson.file}?t=${Date.now()}`);
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    const mdText = await r.text();
+    let mdText;
+    if (lesson.content) {
+      mdText = lesson.content;
+    } else {
+      const r = await fetch(`${BASE}/concept-library/${lesson.file}?t=${Date.now()}`);
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      mdText = await r.text();
+    }
     try {
       renderLesson(lesson, mdText);
     } catch (renderErr) {

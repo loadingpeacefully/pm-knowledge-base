@@ -783,6 +783,13 @@ def write_report(lesson_path: Path, reviews: list, synthesis: dict) -> Path:
         if result.returncode == 0:
             print("  ✓ Mission control data updated.")
 
+    # Rebuild dashboard/lessons.json so GitHub Pages stays current
+    _builder = Path(__file__).parent / 'control' / 'build_lessons_json.py'
+    if _builder.exists():
+        result = subprocess.run(['python3', str(_builder)], capture_output=True)
+        if result.returncode == 0:
+            print("  ✓ lessons.json rebuilt.")
+
     return report_path
 
 
