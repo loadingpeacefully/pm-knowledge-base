@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-08T17:32:53.015532+00:00",
+  "generated_at": "2026-04-08T18:16:35.743376+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 55,
+    "lessons_scored": 56,
     "avg_score": 6.8,
-    "total_critical": 296,
-    "feedback_reports": 55,
+    "total_critical": 308,
+    "feedback_reports": 56,
     "modules_total": 9
   },
   "modules": [
@@ -411,7 +411,7 @@
           "id": "06.03",
           "title": "Cohort Analysis",
           "file": "06-metrics-and-analytics/cohort-analysis.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "senior-pm"
         },
         {
@@ -1831,9 +1831,9 @@
       "module_id": "06",
       "module_title": "Metrics & Analytics",
       "file": "06-metrics-and-analytics/cohort-analysis.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "senior-pm",
-      "word_count": 4853,
+      "word_count": 5260,
       "score": 6.2,
       "health": "NEEDS_WORK",
       "criticals": 7,
@@ -1855,7 +1855,19 @@
       "file": "06-metrics-and-analytics/dau-mau-and-engagement-ratios.md",
       "status": "\u2014",
       "writer": "senior-pm",
-      "word_count": 0
+      "word_count": 4490,
+      "score": 6.1,
+      "health": "NEEDS_WORK",
+      "criticals": 12,
+      "highs": 43,
+      "mediums": 59,
+      "run_formatter": true,
+      "last_run": "2026-04-08T18:16:35.595562+00:00",
+      "scores_by_level": {
+        "foundation": 7.0,
+        "working": 6.0,
+        "strategic": 5.0
+      }
     },
     {
       "id": "06.05",
