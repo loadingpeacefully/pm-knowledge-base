@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-08T17:08:54.378116+00:00",
+  "generated_at": "2026-04-08T17:17:27.947319+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 52,
-    "avg_score": 6.9,
-    "total_critical": 277,
-    "feedback_reports": 52,
+    "lessons_scored": 53,
+    "avg_score": 6.8,
+    "total_critical": 283,
+    "feedback_reports": 53,
     "modules_total": 9
   },
   "modules": [
@@ -377,7 +377,7 @@
           "id": "05.09",
           "title": "System Design Thinking",
           "file": "05-product-fundamentals/system-design-thinking.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "senior-pm"
         },
         {
@@ -1743,9 +1743,9 @@
       "module_id": "05",
       "module_title": "Product Fundamentals",
       "file": "05-product-fundamentals/system-design-thinking.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "senior-pm",
-      "word_count": 3815,
+      "word_count": 4834,
       "score": 6.1,
       "health": "NEEDS_WORK",
       "criticals": 10,
@@ -1767,7 +1767,19 @@
       "file": "05-product-fundamentals/release-management.md",
       "status": "\u2014",
       "writer": "senior-pm",
-      "word_count": 0
+      "word_count": 4564,
+      "score": 6.4,
+      "health": "NEEDS_WORK",
+      "criticals": 6,
+      "highs": 29,
+      "mediums": 38,
+      "run_formatter": true,
+      "last_run": "2026-04-08T17:17:27.804986+00:00",
+      "scores_by_level": {
+        "foundation": 6.8,
+        "working": 6.0,
+        "strategic": 6.0
+      }
     },
     {
       "id": "06.01",
