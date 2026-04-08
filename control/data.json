@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-08T18:56:41.091242+00:00",
+  "generated_at": "2026-04-08T19:05:17.275732+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 61,
-    "avg_score": 6.8,
-    "total_critical": 352,
-    "feedback_reports": 61,
+    "lessons_scored": 62,
+    "avg_score": 6.7,
+    "total_critical": 365,
+    "feedback_reports": 62,
     "modules_total": 9
   },
   "modules": [
@@ -453,7 +453,7 @@
           "id": "06.09",
           "title": "Counter Metrics",
           "file": "06-metrics-and-analytics/counter-metrics.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "senior-pm"
         },
         {
@@ -1963,9 +1963,9 @@
       "module_id": "06",
       "module_title": "Metrics & Analytics",
       "file": "06-metrics-and-analytics/counter-metrics.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "senior-pm",
-      "word_count": 4750,
+      "word_count": 5470,
       "score": 6.8,
       "health": "GOOD",
       "criticals": 6,
@@ -1987,7 +1987,19 @@
       "file": "06-metrics-and-analytics/data-quality-and-pipelines.md",
       "status": "\u2014",
       "writer": "senior-pm",
-      "word_count": 0
+      "word_count": 5213,
+      "score": 5.8,
+      "health": "NEEDS_WORK",
+      "criticals": 13,
+      "highs": 38,
+      "mediums": 48,
+      "run_formatter": true,
+      "last_run": "2026-04-08T19:05:17.143076+00:00",
+      "scores_by_level": {
+        "foundation": 6.3,
+        "working": 6.3,
+        "strategic": 4.5
+      }
     },
     {
       "id": "07.01",
