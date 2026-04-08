@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-08T20:57:44.116959+00:00",
+  "generated_at": "2026-04-08T21:06:50.374959+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 74,
+    "lessons_scored": 75,
     "avg_score": 6.6,
-    "total_critical": 471,
-    "feedback_reports": 74,
+    "total_critical": 478,
+    "feedback_reports": 75,
     "modules_total": 9
   },
   "modules": [
@@ -570,7 +570,7 @@
           "id": "08.04",
           "title": "User Onboarding Design",
           "file": "08-gtm-and-growth/user-onboarding-design.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "gtm-lead"
         },
         {
@@ -2293,9 +2293,9 @@
       "module_id": "08",
       "module_title": "GTM & Growth",
       "file": "08-gtm-and-growth/user-onboarding-design.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "gtm-lead",
-      "word_count": 5832,
+      "word_count": 6009,
       "score": 5.8,
       "health": "NEEDS_WORK",
       "criticals": 10,
@@ -2317,7 +2317,19 @@
       "file": "08-gtm-and-growth/referral-and-virality-mechanics.md",
       "status": "\u2014",
       "writer": "gtm-lead",
-      "word_count": 0
+      "word_count": 6004,
+      "score": 6.2,
+      "health": "NEEDS_WORK",
+      "criticals": 7,
+      "highs": 26,
+      "mediums": 39,
+      "run_formatter": true,
+      "last_run": "2026-04-08T21:06:50.202476+00:00",
+      "scores_by_level": {
+        "foundation": 7.0,
+        "working": 6.0,
+        "strategic": 5.0
+      }
     },
     {
       "id": "08.06",
