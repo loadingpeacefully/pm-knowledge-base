@@ -24,6 +24,41 @@ from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import anthropic
 
+# ── SWARM STATUS (live ops) ────────────────────────────────────────────────────
+
+SWARM_STATUS_FILE = Path(__file__).parent / 'control' / 'swarm_status.json'
+
+def write_swarm_status(status: str, lesson: str = '', agents_active: list = [],
+                        agents_done: list = [], agents_queued: list = []):
+    """Write current swarm status for the dashboard to read."""
+    try:
+        SWARM_STATUS_FILE.write_text(json.dumps({
+            'status': status,
+            'lesson': lesson,
+            'started_at': __import__('datetime').datetime.now(__import__('datetime').timezone.utc).isoformat(),
+            'agents_active': agents_active,
+            'agents_done': agents_done,
+            'agents_queued': agents_queued,
+            'log': []
+        }, indent=2))
+    except Exception:
+        pass
+
+def append_swarm_log(entry: str):
+    """Append a log entry to swarm_status.json."""
+    try:
+        d = json.loads(SWARM_STATUS_FILE.read_text())
+        d['log'].append({
+            'time': __import__('datetime').datetime.now(__import__('datetime').timezone.utc).isoformat(),
+            'msg': entry
+        })
+        SWARM_STATUS_FILE.write_text(json.dumps(d, indent=2))
+    except Exception:
+        pass
+
+if not SWARM_STATUS_FILE.exists():
+    write_swarm_status('idle')
+
 # Load .env from repo root
 _env_path = Path(__file__).parent / '.env'
 if _env_path.exists():
@@ -795,8 +830,16 @@ def main():
     print(f"Agents: {len(AGENTS)} | Parallel workers: {PARALLEL_WORKERS}")
     print(f"{'='*60}\n")
 
+    # Write initial running status
+    write_swarm_status(
+        'running',
+        lesson['title'],
+        agents_queued=[a['id'] for a in AGENTS]
+    )
+
     # Run agents in parallel batches
     reviews = []
+    done_ids = []
     with ThreadPoolExecutor(max_workers=PARALLEL_WORKERS) as executor:
         futures = {
             executor.submit(run_agent, client, agent, lesson): agent
@@ -810,6 +853,15 @@ def main():
             verdict = result.get("verdict", "ERROR")
             flags = len(result.get("flags", []))
             print(f"  [{i+1:2d}/{len(AGENTS)}] {agent['id']} {agent['name']:8s} ({agent['role'][:30]:30s}) → {score}/10 {verdict} | {flags} flags")
+            done_ids.append(agent['id'])
+            remaining_ids = [a['id'] for a in AGENTS if a['id'] not in done_ids]
+            append_swarm_log(f"{agent['id']} {agent['name']} → {score}/10")
+            write_swarm_status(
+                'running',
+                lesson['title'],
+                agents_done=list(done_ids),
+                agents_queued=remaining_ids
+            )
 
     # Sort reviews by agent ID for consistent output
     reviews.sort(key=lambda r: r.get("agent_id", "P0"))
@@ -840,6 +892,9 @@ def main():
         for fix in criticals:
             print(f"  → [{fix.get('section')}] {fix.get('issue', '')[:80]}")
         print()
+
+    write_swarm_status('done', lesson['title'], agents_done=[a['id'] for a in AGENTS])
+    write_swarm_status('idle')
 
 
 if __name__ == "__main__":

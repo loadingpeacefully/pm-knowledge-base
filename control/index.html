@@ -130,6 +130,112 @@ html,body{height:100vh;overflow:hidden;background:var(--bg);color:var(--text);fo
 .insight-value{font-size:11px;font-weight:600;color:var(--text)}
 
 .note-text{font-size:10px;color:var(--hint);padding:8px 14px;font-style:italic}
+
+/* Drawer */
+.drawer-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 100;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.2s;
+}
+.drawer-overlay.open { opacity: 1; pointer-events: all; }
+
+.drawer {
+  position: fixed; top: 0; right: 0;
+  width: 440px; height: 100vh;
+  background: var(--surface);
+  border-left: 1px solid var(--border2);
+  z-index: 101;
+  transform: translateX(100%);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.drawer.open { transform: translateX(0); }
+
+.drawer-header {
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: flex-start;
+  justify-content: space-between; gap: 12px;
+  flex-shrink: 0;
+}
+.drawer-close {
+  background: none; border: none;
+  color: var(--muted); cursor: pointer;
+  font-size: 18px; padding: 0 4px;
+  font-family: var(--mono);
+  flex-shrink: 0; margin-top: 2px;
+}
+.drawer-close:hover { color: var(--text); }
+.drawer-body {
+  flex: 1; overflow-y: auto; padding: 16px 20px;
+}
+.drawer-body::-webkit-scrollbar { width: 3px; }
+.drawer-body::-webkit-scrollbar-thumb { background: var(--hint); border-radius: 99px; }
+
+.drawer-section { margin-bottom: 20px; }
+.drawer-section-label {
+  font-size: 9px; text-transform: uppercase;
+  letter-spacing: 0.12em; color: var(--hint);
+  margin-bottom: 8px;
+}
+
+/* Score delta flash */
+@keyframes flash-up {
+  0%   { background: rgba(0,229,160,0.35); color: var(--green); }
+  100% { background: transparent; }
+}
+@keyframes flash-down {
+  0%   { background: rgba(255,77,109,0.35); color: var(--red); }
+  100% { background: transparent; }
+}
+.score-flash-up   { animation: flash-up   1.5s ease-out forwards; }
+.score-flash-down { animation: flash-down 1.5s ease-out forwards; }
+
+/* Live log stream */
+.log-stream {
+  border-top: 1px solid var(--border);
+  background: rgba(0,0,0,0.3);
+  height: 72px;
+  overflow-y: auto;
+  padding: 6px 16px;
+  flex-shrink: 0;
+}
+.log-stream::-webkit-scrollbar { width: 2px; }
+.log-stream::-webkit-scrollbar-thumb { background: var(--hint); }
+.log-entry {
+  font-size: 10px; color: var(--muted);
+  line-height: 1.6; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis;
+}
+.log-entry .hi { color: var(--text); }
+.log-entry .g  { color: var(--green); }
+.log-entry .a  { color: var(--amber); }
+.log-entry .r  { color: var(--red); }
+
+/* Agent active pulse */
+@keyframes agent-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 6px var(--green); }
+  50%       { opacity: 0.4; box-shadow: 0 0 2px var(--green); }
+}
+.agent-dot.active {
+  background: var(--green) !important;
+  animation: agent-pulse 1.2s ease-in-out infinite;
+}
+.agent-dot.queued  { background: var(--amber) !important; }
+.agent-dot.done    { background: var(--blue)  !important; }
+.agent-dot.idle    { background: var(--hint)  !important; }
+
+/* Clickable rows */
+.lesson-row, .agent-row {
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.lesson-row:hover, .agent-row:hover {
+  background: var(--surface2);
+}
 </style>
 </head>
 <body>
@@ -178,19 +284,19 @@ html,body{height:100vh;overflow:hidden;background:var(--bg);color:var(--text);fo
     </div>
     <div class="panel-body">
       <div class="tab-pane visible" id="pane-agents-main">
-        <div class="agent-row"><span class="dot idle"></span><span class="agent-id">P1</span><span class="agent-name">Priya</span><span class="agent-role">Non-tech biz PM</span><span class="agent-last" style="display:none"></span><span class="level-badge foundation">foundation</span></div>
-        <div class="agent-row"><span class="dot idle"></span><span class="agent-id">P2</span><span class="agent-name">Arjun</span><span class="agent-role">Ex-engineer PM</span><span class="agent-last" style="display:none"></span><span class="level-badge strategic">strategic</span></div>
-        <div class="agent-row"><span class="dot idle"></span><span class="agent-id">P3</span><span class="agent-name">Sofia</span><span class="agent-role">MBA PM</span><span class="agent-last" style="display:none"></span><span class="level-badge foundation">foundation</span></div>
-        <div class="agent-row"><span class="dot idle"></span><span class="agent-id">P4</span><span class="agent-name">Rahul</span><span class="agent-role">Aspiring PM / SDE</span><span class="agent-last" style="display:none"></span><span class="level-badge foundation">foundation</span></div>
-        <div class="agent-row"><span class="dot idle"></span><span class="agent-id">P5</span><span class="agent-name">Meera</span><span class="agent-role">Growth / Data PM</span><span class="agent-last" style="display:none"></span><span class="level-badge working">working</span></div>
-        <div class="agent-row"><span class="dot idle"></span><span class="agent-id">P6</span><span class="agent-name">Lena</span><span class="agent-role">Designer → PM</span><span class="agent-last" style="display:none"></span><span class="level-badge foundation">foundation</span></div>
-        <div class="agent-row"><span class="dot idle"></span><span class="agent-id">P7</span><span class="agent-name">Vikram</span><span class="agent-role">Enterprise B2B PM</span><span class="agent-last" style="display:none"></span><span class="level-badge working">working</span></div>
-        <div class="agent-row"><span class="dot idle"></span><span class="agent-id">P8</span><span class="agent-name">Anya</span><span class="agent-role">Consumer startup PM</span><span class="agent-last" style="display:none"></span><span class="level-badge working">working</span></div>
-        <div class="agent-row"><span class="dot idle"></span><span class="agent-id">P9</span><span class="agent-name">Zain</span><span class="agent-role">Gen-Z AI-native PM</span><span class="agent-last" style="display:none"></span><span class="level-badge strategic">strategic</span></div>
-        <div class="agent-row"><span class="dot idle"></span><span class="agent-id">P10</span><span class="agent-name">Deepa</span><span class="agent-role">Senior PM / HoP</span><span class="agent-last" style="display:none"></span><span class="level-badge strategic">strategic</span></div>
-        <div class="agent-row"><span class="dot idle"></span><span class="agent-id">D1</span><span class="agent-name">Nadia</span><span class="agent-role">Senior product designer</span><span class="agent-last" style="display:none"></span><span class="level-badge working">working</span></div>
-        <div class="agent-row"><span class="dot idle"></span><span class="agent-id">SYN</span><span class="agent-name">Synthesizer</span><span class="agent-role">Cross-agent synthesis</span><span class="agent-last" style="display:none"></span><span class="level-badge all">all</span></div>
-        <div class="agent-row"><span class="dot idle"></span><span class="agent-id">FMT</span><span class="agent-name">Formatter</span><span class="agent-role">Markdown formatter</span><span class="agent-last" style="display:none"></span><span class="level-badge all">all</span></div>
+        <div class="agent-row" data-agent-id="P1" onclick="openAgentDrawer(window._agentMap['P1'])"><span class="dot agent-dot idle"></span><span class="agent-id">P1</span><span class="agent-name">Priya</span><span class="agent-role">Non-tech biz PM</span><span class="agent-last" style="display:none"></span><span class="level-badge foundation">foundation</span></div>
+        <div class="agent-row" data-agent-id="P2" onclick="openAgentDrawer(window._agentMap['P2'])"><span class="dot agent-dot idle"></span><span class="agent-id">P2</span><span class="agent-name">Arjun</span><span class="agent-role">Ex-engineer PM</span><span class="agent-last" style="display:none"></span><span class="level-badge strategic">strategic</span></div>
+        <div class="agent-row" data-agent-id="P3" onclick="openAgentDrawer(window._agentMap['P3'])"><span class="dot agent-dot idle"></span><span class="agent-id">P3</span><span class="agent-name">Sofia</span><span class="agent-role">MBA PM</span><span class="agent-last" style="display:none"></span><span class="level-badge foundation">foundation</span></div>
+        <div class="agent-row" data-agent-id="P4" onclick="openAgentDrawer(window._agentMap['P4'])"><span class="dot agent-dot idle"></span><span class="agent-id">P4</span><span class="agent-name">Rahul</span><span class="agent-role">Aspiring PM / SDE</span><span class="agent-last" style="display:none"></span><span class="level-badge foundation">foundation</span></div>
+        <div class="agent-row" data-agent-id="P5" onclick="openAgentDrawer(window._agentMap['P5'])"><span class="dot agent-dot idle"></span><span class="agent-id">P5</span><span class="agent-name">Meera</span><span class="agent-role">Growth / Data PM</span><span class="agent-last" style="display:none"></span><span class="level-badge working">working</span></div>
+        <div class="agent-row" data-agent-id="P6" onclick="openAgentDrawer(window._agentMap['P6'])"><span class="dot agent-dot idle"></span><span class="agent-id">P6</span><span class="agent-name">Lena</span><span class="agent-role">Designer → PM</span><span class="agent-last" style="display:none"></span><span class="level-badge foundation">foundation</span></div>
+        <div class="agent-row" data-agent-id="P7" onclick="openAgentDrawer(window._agentMap['P7'])"><span class="dot agent-dot idle"></span><span class="agent-id">P7</span><span class="agent-name">Vikram</span><span class="agent-role">Enterprise B2B PM</span><span class="agent-last" style="display:none"></span><span class="level-badge working">working</span></div>
+        <div class="agent-row" data-agent-id="P8" onclick="openAgentDrawer(window._agentMap['P8'])"><span class="dot agent-dot idle"></span><span class="agent-id">P8</span><span class="agent-name">Anya</span><span class="agent-role">Consumer startup PM</span><span class="agent-last" style="display:none"></span><span class="level-badge working">working</span></div>
+        <div class="agent-row" data-agent-id="P9" onclick="openAgentDrawer(window._agentMap['P9'])"><span class="dot agent-dot idle"></span><span class="agent-id">P9</span><span class="agent-name">Zain</span><span class="agent-role">Gen-Z AI-native PM</span><span class="agent-last" style="display:none"></span><span class="level-badge strategic">strategic</span></div>
+        <div class="agent-row" data-agent-id="P10" onclick="openAgentDrawer(window._agentMap['P10'])"><span class="dot agent-dot idle"></span><span class="agent-id">P10</span><span class="agent-name">Deepa</span><span class="agent-role">Senior PM / HoP</span><span class="agent-last" style="display:none"></span><span class="level-badge strategic">strategic</span></div>
+        <div class="agent-row" data-agent-id="D1" onclick="openAgentDrawer(window._agentMap['D1'])"><span class="dot agent-dot idle"></span><span class="agent-id">D1</span><span class="agent-name">Nadia</span><span class="agent-role">Senior product designer</span><span class="agent-last" style="display:none"></span><span class="level-badge working">working</span></div>
+        <div class="agent-row" data-agent-id="SYN" onclick="openAgentDrawer(window._agentMap['SYN'])"><span class="dot agent-dot idle"></span><span class="agent-id">SYN</span><span class="agent-name">Synthesizer</span><span class="agent-role">Cross-agent synthesis</span><span class="agent-last" style="display:none"></span><span class="level-badge all">all</span></div>
+        <div class="agent-row" data-agent-id="FMT" onclick="openAgentDrawer(window._agentMap['FMT'])"><span class="dot agent-dot idle"></span><span class="agent-id">FMT</span><span class="agent-name">Formatter</span><span class="agent-role">Markdown formatter</span><span class="agent-last" style="display:none"></span><span class="level-badge all">all</span></div>
       </div>
     </div>
     <div class="panel-feed">
@@ -361,6 +467,27 @@ html,body{height:100vh;overflow:hidden;background:var(--bg);color:var(--text);fo
 </div><!-- /panels -->
 </div><!-- /root -->
 
+<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-header">
+    <div>
+      <div id="drawer-title" style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--text)"></div>
+      <div id="drawer-subtitle" style="font-size:11px;color:var(--muted);margin-top:3px"></div>
+    </div>
+    <button class="drawer-close" onclick="closeDrawer()">✕</button>
+  </div>
+  <div class="drawer-body" id="drawer-body"></div>
+</div>
+
+<div style="border-top:1px solid var(--border);background:rgba(0,0,0,0.4);padding:0;flex-shrink:0;">
+  <div style="padding:4px 16px;font-size:9px;color:var(--hint);text-transform:uppercase;letter-spacing:.1em;border-bottom:1px solid var(--border);">
+    Live swarm log
+  </div>
+  <div class="log-stream" id="log-stream">
+    <div class="log-entry" style="color:var(--hint)">Waiting for swarm activity...</div>
+  </div>
+</div>
+
 <script>
 function updateClock(){
   const ist=new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Kolkata'}));
@@ -399,6 +526,248 @@ function switchTab(btn){
   if(tabId==='trend'&&window._lastData)drawTrend(document.getElementById('trend-canvas'),window._lastData.lessons);
 }
 
+// ── STATE ────────────────────────────────────────────────────────────────────
+let lastUpdated   = null;
+let lastScores    = {};
+let swarmStatus   = null;
+let currentData   = null;
+
+window._lessonMap = {};
+window._agentMap  = {};
+
+// ── DRAWER ───────────────────────────────────────────────────────────────────
+function openDrawer(title, subtitle, bodyHTML) {
+  document.getElementById('drawer-title').textContent    = title;
+  document.getElementById('drawer-subtitle').textContent = subtitle;
+  document.getElementById('drawer-body').innerHTML       = bodyHTML;
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('drawer-overlay').classList.add('open');
+}
+function closeDrawer() {
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('drawer-overlay').classList.remove('open');
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+
+// ── LESSON DRAWER ────────────────────────────────────────────────────────────
+function openLessonDrawer(lesson) {
+  if (!lesson) return;
+  const sc = s =>
+    !s ? 'var(--blue)' : s >= 7.5 ? 'var(--green)' : s >= 6.5 ? 'var(--amber)' : 'var(--red)';
+
+  const flagRow = (count, label, color) =>
+    count > 0 ? `<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:.5px solid var(--border);font-size:12px;">
+      <span style="color:${color}">${count} ${label}</span>
+    </div>` : '';
+
+  const levelBar = (label, score) => score ? `
+    <div style="display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:.5px solid var(--border);">
+      <span style="font-size:11px;color:var(--muted);width:90px;flex-shrink:0">${label}</span>
+      <div style="flex:1;height:3px;background:var(--hint);border-radius:99px;overflow:hidden;">
+        <div style="height:100%;width:${(score/10)*100}%;background:${sc(score)};border-radius:99px;"></div>
+      </div>
+      <span style="font-size:12px;font-weight:500;color:${sc(score)};width:28px;text-align:right">${score}</span>
+    </div>` : '';
+
+  const levels = lesson.scores_by_level || {};
+  const lastRun = lesson.last_run
+    ? new Date(lesson.last_run).toLocaleString('en-IN', {timeZone:'Asia/Kolkata'})
+    : 'Never';
+
+  const body = `
+    <div class="drawer-section">
+      <div class="drawer-section-label">Overall score</div>
+      <div style="font-family:'Syne',sans-serif;font-size:36px;font-weight:700;color:${sc(lesson.score)};line-height:1">
+        ${lesson.score ?? '—'}
+        <span style="font-size:14px;color:var(--muted);font-family:'JetBrains Mono',monospace">/10</span>
+      </div>
+      <div style="font-size:11px;color:var(--muted);margin-top:4px">${lesson.health ?? 'Not scored'}</div>
+    </div>
+
+    <div class="drawer-section">
+      <div class="drawer-section-label">By level</div>
+      ${levelBar('Foundation',   levels.foundation)}
+      ${levelBar('Working',      levels.working)}
+      ${levelBar('Strategic',    levels.strategic)}
+    </div>
+
+    <div class="drawer-section">
+      <div class="drawer-section-label">Flags</div>
+      ${flagRow(lesson.criticals, 'critical', 'var(--red)')}
+      ${flagRow(lesson.highs,     'high',     'var(--amber)')}
+      ${flagRow(lesson.mediums,   'medium',   'var(--muted)')}
+      ${(!lesson.criticals && !lesson.highs && !lesson.mediums)
+        ? '<div style="font-size:12px;color:var(--green)">Clean — no flags</div>' : ''}
+    </div>
+
+    <div class="drawer-section">
+      <div class="drawer-section-label">Metadata</div>
+      ${[
+        ['Module',      lesson.module_title || lesson.module_id],
+        ['Status',      lesson.status],
+        ['Writer',      lesson.writer || '—'],
+        ['Word count',  lesson.word_count ? lesson.word_count.toLocaleString() + ' words' : '—'],
+        ['Last scored', lastRun],
+        ['File',        lesson.file || '—'],
+      ].map(([k,v]) => `
+        <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:.5px solid var(--border);font-size:12px;">
+          <span style="color:var(--muted)">${k}</span>
+          <span style="color:var(--text);text-align:right;max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${v}</span>
+        </div>`).join('')}
+    </div>
+
+    ${lesson.run_formatter ? `
+    <div style="background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.25);border-radius:6px;padding:10px 12px;font-size:11px;color:var(--amber);">
+      ⚠ Formatter flagged — run pm_format.py on this lesson
+    </div>` : ''}
+  `;
+
+  openDrawer(lesson.title, `${lesson.id} · Module ${lesson.module_id}`, body);
+}
+
+// ── AGENT DRAWER ─────────────────────────────────────────────────────────────
+function openAgentDrawer(agent) {
+  if (!agent || !currentData) return;
+
+  const reviewed = currentData.lessons
+    .filter(l => l.score)
+    .sort((a, b) => new Date(b.last_run||0) - new Date(a.last_run||0))
+    .slice(0, 15);
+
+  const sc = s =>
+    !s ? 'var(--blue)' : s >= 7.5 ? 'var(--green)' : s >= 6.5 ? 'var(--amber)' : 'var(--red)';
+
+  const body = `
+    <div class="drawer-section">
+      <div class="drawer-section-label">Agent profile</div>
+      ${[
+        ['Role',  agent.role],
+        ['Level focus', agent.level],
+        ['Persona lens', agent.level === 'foundation' ? 'Reads F1–F3 sections primarily'
+                       : agent.level === 'working'    ? 'Reads W1–W4 sections primarily'
+                       : agent.level === 'strategic'  ? 'Reads S1–S3 sections primarily'
+                       : 'Synthesizes all agent outputs'],
+      ].map(([k,v]) => `
+        <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:.5px solid var(--border);font-size:12px;">
+          <span style="color:var(--muted)">${k}</span>
+          <span style="color:var(--text)">${v || '—'}</span>
+        </div>`).join('')}
+    </div>
+
+    <div class="drawer-section">
+      <div class="drawer-section-label">Recently reviewed lessons</div>
+      ${reviewed.map(l => `
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:.5px solid var(--border);cursor:pointer;"
+             onclick="closeDrawer();setTimeout(()=>openLessonDrawer(window._lessonMap['${l.id}']),250)">
+          <span style="font-size:11px;font-weight:500;color:${sc(l.score)};min-width:28px">${l.score}</span>
+          <span style="font-size:12px;color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${l.title}</span>
+          <span style="font-size:10px;color:var(--hint)">${l.id}</span>
+        </div>`).join('')}
+    </div>
+  `;
+
+  const statusLabel = swarmStatus?.agents_active?.includes(agent.id) ? '● Active now'
+                    : swarmStatus?.agents_done?.includes(agent.id)   ? '✓ Done this run'
+                    : swarmStatus?.agents_queued?.includes(agent.id) ? '◌ Queued'
+                    : 'Idle';
+
+  openDrawer(agent.name, `${agent.id} · ${statusLabel}`, body);
+}
+
+// ── SCORE DELTA FLASH ────────────────────────────────────────────────────────
+function flashScoreChanges(newLessons) {
+  newLessons.forEach(lesson => {
+    const prev = lastScores[lesson.id];
+    if (prev === undefined || prev === lesson.score) return;
+    const el = document.querySelector(`[data-lesson-id="${lesson.id}"] .score-pill`);
+    if (!el) return;
+    el.classList.remove('score-flash-up', 'score-flash-down');
+    void el.offsetWidth;
+    el.classList.add(lesson.score > prev ? 'score-flash-up' : 'score-flash-down');
+  });
+  newLessons.forEach(l => { if (l.score) lastScores[l.id] = l.score; });
+}
+
+// ── LIVE LOG STREAM ──────────────────────────────────────────────────────────
+async function loadSwarmStatus() {
+  try {
+    const r = await fetch('control/swarm_status.json?t=' + Date.now());
+    if (!r.ok) return null;
+    return await r.json();
+  } catch { return null; }
+}
+
+function updateLogStream(status) {
+  if (!status) return;
+  const container = document.getElementById('log-stream');
+  if (!container) return;
+
+  const entries = [];
+
+  if (status.status === 'running') {
+    entries.push(`<div class="log-entry"><span class="g">● RUNNING</span> — reviewing <span class="hi">${status.lesson}</span></div>`);
+    if (status.agents_active?.length) {
+      entries.push(`<div class="log-entry">Active: <span class="hi">${status.agents_active.join(', ')}</span></div>`);
+    }
+    if (status.agents_done?.length) {
+      entries.push(`<div class="log-entry">Done: <span style="color:var(--blue)">${status.agents_done.join(', ')}</span></div>`);
+    }
+  } else if (status.status === 'done') {
+    entries.push(`<div class="log-entry"><span class="g">✓ DONE</span> — <span class="hi">${status.lesson}</span></div>`);
+  } else {
+    entries.push(`<div class="log-entry" style="color:var(--hint)">Swarm idle — no active run</div>`);
+  }
+
+  if (status.log?.length) {
+    [...status.log].reverse().slice(0, 8).forEach(entry => {
+      const t = timeAgo(entry.time);
+      entries.push(`<div class="log-entry">${t} — ${entry.msg}</div>`);
+    });
+  }
+
+  container.innerHTML = entries.join('');
+}
+
+function updateAgentDots(status) {
+  if (!status) return;
+  document.querySelectorAll('.agent-row').forEach(row => {
+    const agentId = row.dataset.agentId;
+    if (!agentId) return;
+    const dot = row.querySelector('.agent-dot');
+    if (!dot) return;
+    dot.className = 'dot agent-dot ' + (
+      status.agents_active?.includes(agentId) ? 'active'  :
+      status.agents_queued?.includes(agentId) ? 'queued'  :
+      status.agents_done?.includes(agentId)   ? 'done'    : 'idle'
+    );
+  });
+}
+
+// ── POLLING ──────────────────────────────────────────────────────────────────
+async function poll() {
+  const newStatus = await loadSwarmStatus();
+  swarmStatus = newStatus;
+  updateLogStream(newStatus);
+  updateAgentDots(newStatus);
+
+  const data = await loadData();
+  if (!data) return;
+
+  if (data.generated_at !== lastUpdated) {
+    if (lastUpdated !== null) {
+      flashScoreChanges(data.lessons);
+    }
+    currentData = data;
+    lastUpdated = data.generated_at;
+    render(data);
+    document.getElementById('last-updated').textContent =
+      'Updated ' + timeAgo(data.generated_at);
+  } else {
+    document.getElementById('last-updated').textContent =
+      'Updated ' + timeAgo(data.generated_at);
+  }
+}
+
 function renderStats(data){
   const s=data.summary;
   document.getElementById('stat-agents').textContent='13';
@@ -410,12 +779,29 @@ function renderStats(data){
 }
 
 function renderAgents(data){
+  // Populate agent map for static rows
+  const staticAgents = [
+    {id:'P1',name:'Priya',role:'Non-technical Business PM',level:'foundation'},
+    {id:'P2',name:'Arjun',role:'Ex-Engineer PM',level:'strategic'},
+    {id:'P3',name:'Sofia',role:'MBA PM',level:'foundation'},
+    {id:'P4',name:'Rahul',role:'Aspiring PM (SDE transitioning)',level:'foundation'},
+    {id:'P5',name:'Meera',role:'Growth / Data PM',level:'working'},
+    {id:'P6',name:'Lena',role:'UX Designer transitioning to PM',level:'foundation'},
+    {id:'P7',name:'Vikram',role:'Enterprise B2B PM',level:'working'},
+    {id:'P8',name:'Anya',role:'Consumer Startup PM',level:'working'},
+    {id:'P9',name:'Zain',role:'Gen-Z AI-native PM',level:'strategic'},
+    {id:'P10',name:'Deepa',role:'Senior PM / Head of Product',level:'strategic'},
+    {id:'D1',name:'Nadia',role:'Senior Product Designer',level:'working'},
+    {id:'SYN',name:'Synthesizer',role:'Cross-agent synthesis',level:'all'},
+    {id:'FMT',name:'Formatter',role:'Markdown formatter',level:'all'},
+  ];
+  staticAgents.forEach(a => { window._agentMap[a.id] = a; });
+
   const recent=[...data.lessons].filter(l=>l.last_run&&l.score).sort((a,b)=>new Date(b.last_run)-new Date(a.last_run)).slice(0,4);
   const feed=document.getElementById('agents-feed');
   feed.innerHTML=recent.map(l=>
     `<div class="feed-line"><span class="feed-time">${timeAgo(l.last_run)}</span><span class="feed-msg">Swarm completed <b>${l.title}</b> · ${l.score}</span></div>`
   ).join('')||'<div class="feed-line feed-empty">No swarm runs yet</div>';
-  document.getElementById('last-updated').textContent=data.generated_at?'Updated '+timeAgo(data.generated_at):'';
 }
 
 function renderLessons(data){
@@ -424,6 +810,7 @@ function renderLessons(data){
     if(a.score==null)return 1;if(b.score==null)return -1;
     return b.score-a.score;
   });
+  lessons.forEach(l => { window._lessonMap[l.id] = l; });
   document.getElementById('lessons-list').innerHTML=lessons.map(l=>{
     const sc=l.score;const col=scoreColor(sc);const bg=scoreBg(sc);
     const scoreText=sc!=null?sc.toFixed(1):'—';
@@ -441,7 +828,7 @@ function renderLessons(data){
       const v=sbl[lvl];const h=v?Math.round(((v-5)/4)*16):2;const c=v?scoreColor(v):'var(--hint)';
       return `<div style="width:5px;height:${h}px;background:${c};border-radius:1px;align-self:flex-end"></div>`;
     }).join('');
-    return `<div class="lesson-row">
+    return `<div class="lesson-row" data-lesson-id="${l.id}" onclick="openLessonDrawer(window._lessonMap['${l.id}'])">
       <span class="score-pill" style="color:${col};background:${bg}">${scoreText}</span>
       <span class="lesson-title" title="${l.title}">${l.title}</span>
       <span class="module-badge">${l.module_id}</span>
@@ -514,8 +901,8 @@ function drawTrend(canvas,lessons){
   document.getElementById('trend-stats').textContent=`avg ${avg}  ·  high ${Math.max(...allS).toFixed(1)}  ·  low ${Math.min(...allS).toFixed(1)}  ·  ${allS.length} runs`;
 }
 
-async function render(){
-  const data=await loadData();if(!data)return;
+function render(data){
+  if(!data)return;
   window._lastData=data;
   renderStats(data);renderAgents(data);renderLessons(data);renderModules(data);
   const tc=document.getElementById('trend-canvas');
@@ -525,13 +912,23 @@ async function render(){
 document.getElementById('refresh-btn').onclick=async()=>{
   const btn=document.getElementById('refresh-btn');
   btn.textContent='↺ refreshing…';btn.disabled=true;
-  await render();btn.textContent='↺ refresh';btn.disabled=false;
+  await poll();btn.textContent='↺ refresh';btn.disabled=false;
 };
 
-window.addEventListener('load',render);
 window.addEventListener('resize',()=>{
   if(window._lastData){const tc=document.getElementById('trend-canvas');if(tc&&tc.closest('.tab-pane.visible'))drawTrend(tc,window._lastData.lessons);}
 });
+
+(async () => {
+  const data = await loadData();
+  currentData = data;
+  if (data) {
+    lastUpdated = data.generated_at;
+    data.lessons.forEach(l => { if (l.score) lastScores[l.id] = l.score; });
+    render(data);
+  }
+  setInterval(poll, 15000);
+})();
 </script>
 </body>
 </html>

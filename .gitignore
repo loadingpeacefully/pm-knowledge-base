@@ -5,3 +5,4 @@ node_modules/
 *.log
 *.bak
 FEEDBACK_*.md
+control/swarm_status.json
