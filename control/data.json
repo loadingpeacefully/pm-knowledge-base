@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-08T18:24:50.419659+00:00",
+  "generated_at": "2026-04-08T18:32:27.719225+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 57,
+    "lessons_scored": 58,
     "avg_score": 6.8,
-    "total_critical": 317,
-    "feedback_reports": 57,
+    "total_critical": 326,
+    "feedback_reports": 58,
     "modules_total": 9
   },
   "modules": [
@@ -425,7 +425,7 @@
           "id": "06.05",
           "title": "Event Tracking & Instrumentation",
           "file": "06-metrics-and-analytics/event-tracking-and-instrumentation.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "senior-pm"
         },
         {
@@ -1875,9 +1875,9 @@
       "module_id": "06",
       "module_title": "Metrics & Analytics",
       "file": "06-metrics-and-analytics/event-tracking-and-instrumentation.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "senior-pm",
-      "word_count": 4563,
+      "word_count": 4809,
       "score": 6.0,
       "health": "NEEDS_WORK",
       "criticals": 9,
@@ -1899,7 +1899,19 @@
       "file": "06-metrics-and-analytics/statistical-significance.md",
       "status": "\u2014",
       "writer": "senior-pm",
-      "word_count": 0
+      "word_count": 4842,
+      "score": 6.1,
+      "health": "NEEDS_WORK",
+      "criticals": 9,
+      "highs": 39,
+      "mediums": 49,
+      "run_formatter": true,
+      "last_run": "2026-04-08T18:32:27.575987+00:00",
+      "scores_by_level": {
+        "foundation": 6.8,
+        "working": 6.0,
+        "strategic": 3.0
+      }
     },
     {
       "id": "06.07",
