@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-08T20:29:03.464696+00:00",
+  "generated_at": "2026-04-08T20:38:05.104134+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 71,
-    "avg_score": 6.7,
-    "total_critical": 441,
-    "feedback_reports": 71,
+    "lessons_scored": 72,
+    "avg_score": 6.6,
+    "total_critical": 451,
+    "feedback_reports": 72,
     "modules_total": 9
   },
   "modules": [
@@ -536,7 +536,7 @@
           "id": "07.10",
           "title": "Financial Modeling Basics",
           "file": "07-business-and-monetization/financial-modeling-basics.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "cfo-finance"
         }
       ]
@@ -2205,9 +2205,9 @@
       "module_id": "07",
       "module_title": "Business & Monetization",
       "file": "07-business-and-monetization/financial-modeling-basics.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "cfo-finance",
-      "word_count": 5572,
+      "word_count": 5776,
       "score": 6.1,
       "health": "NEEDS_WORK",
       "criticals": 8,
@@ -2251,7 +2251,19 @@
       "file": "08-gtm-and-growth/product-led-growth.md",
       "status": "\u2014",
       "writer": "gtm-lead",
-      "word_count": 0
+      "word_count": 5689,
+      "score": 5.9,
+      "health": "NEEDS_WORK",
+      "criticals": 10,
+      "highs": 41,
+      "mediums": 54,
+      "run_formatter": true,
+      "last_run": "2026-04-08T20:38:04.942263+00:00",
+      "scores_by_level": {
+        "foundation": 7.0,
+        "working": 5.3,
+        "strategic": 4.5
+      }
     },
     {
       "id": "08.03",
