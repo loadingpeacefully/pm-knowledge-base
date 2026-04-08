@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-08T21:23:55.924578+00:00",
+  "generated_at": "2026-04-08T21:34:39.687929+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 77,
+    "lessons_scored": 78,
     "avg_score": 6.6,
-    "total_critical": 496,
-    "feedback_reports": 77,
+    "total_critical": 508,
+    "feedback_reports": 78,
     "modules_total": 9
   },
   "modules": [
@@ -591,7 +591,7 @@
           "id": "08.07",
           "title": "Paid Acquisition Fundamentals",
           "file": "08-gtm-and-growth/paid-acquisition-fundamentals.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "gtm-lead"
         },
         {
@@ -2359,9 +2359,9 @@
       "module_id": "08",
       "module_title": "GTM & Growth",
       "file": "08-gtm-and-growth/paid-acquisition-fundamentals.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "gtm-lead",
-      "word_count": 5929,
+      "word_count": 6925,
       "score": 6.2,
       "health": "NEEDS_WORK",
       "criticals": 7,
@@ -2383,7 +2383,19 @@
       "file": "08-gtm-and-growth/crm-and-sales-pipeline.md",
       "status": "\u2014",
       "writer": "gtm-lead",
-      "word_count": 0
+      "word_count": 6142,
+      "score": 5.1,
+      "health": "NEEDS_WORK",
+      "criticals": 12,
+      "highs": 31,
+      "mediums": 34,
+      "run_formatter": true,
+      "last_run": "2026-04-08T21:34:39.511233+00:00",
+      "scores_by_level": {
+        "foundation": 6.3,
+        "working": 5.0,
+        "strategic": 4.3
+      }
     },
     {
       "id": "08.09",
