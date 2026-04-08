@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-08T19:50:33.534191+00:00",
+  "generated_at": "2026-04-08T19:59:57.207221+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 67,
+    "lessons_scored": 68,
     "avg_score": 6.7,
-    "total_critical": 414,
-    "feedback_reports": 67,
+    "total_critical": 423,
+    "feedback_reports": 68,
     "modules_total": 9
   },
   "modules": [
@@ -508,7 +508,7 @@
           "id": "07.06",
           "title": "Marketplace Economics",
           "file": "07-business-and-monetization/marketplace-economics.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "cfo-finance"
         },
         {
@@ -2117,9 +2117,9 @@
       "module_id": "07",
       "module_title": "Business & Monetization",
       "file": "07-business-and-monetization/marketplace-economics.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "cfo-finance",
-      "word_count": 5383,
+      "word_count": 6740,
       "score": 6.0,
       "health": "NEEDS_WORK",
       "criticals": 10,
@@ -2141,7 +2141,19 @@
       "file": "07-business-and-monetization/churn-and-retention-economics.md",
       "status": "\u2014",
       "writer": "cfo-finance",
-      "word_count": 0
+      "word_count": 5542,
+      "score": 6.1,
+      "health": "NEEDS_WORK",
+      "criticals": 9,
+      "highs": 33,
+      "mediums": 41,
+      "run_formatter": true,
+      "last_run": "2026-04-08T19:59:57.045234+00:00",
+      "scores_by_level": {
+        "foundation": 6.5,
+        "working": 6.2,
+        "strategic": 4.5
+      }
     },
     {
       "id": "07.08",
