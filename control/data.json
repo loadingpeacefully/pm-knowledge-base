@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-08T20:20:43.901424+00:00",
+  "generated_at": "2026-04-08T20:29:03.464696+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 70,
+    "lessons_scored": 71,
     "avg_score": 6.7,
-    "total_critical": 433,
-    "feedback_reports": 70,
+    "total_critical": 441,
+    "feedback_reports": 71,
     "modules_total": 9
   },
   "modules": [
@@ -529,7 +529,7 @@
           "id": "07.09",
           "title": "Virtual Currency & Rewards",
           "file": "07-business-and-monetization/virtual-currency-and-rewards.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "cfo-finance"
         },
         {
@@ -2183,9 +2183,9 @@
       "module_id": "07",
       "module_title": "Business & Monetization",
       "file": "07-business-and-monetization/virtual-currency-and-rewards.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "cfo-finance",
-      "word_count": 5360,
+      "word_count": 5626,
       "score": 6.4,
       "health": "NEEDS_WORK",
       "criticals": 5,
@@ -2207,7 +2207,19 @@
       "file": "07-business-and-monetization/financial-modeling-basics.md",
       "status": "\u2014",
       "writer": "cfo-finance",
-      "word_count": 0
+      "word_count": 5572,
+      "score": 6.1,
+      "health": "NEEDS_WORK",
+      "criticals": 8,
+      "highs": 40,
+      "mediums": 59,
+      "run_formatter": true,
+      "last_run": "2026-04-08T20:29:03.300849+00:00",
+      "scores_by_level": {
+        "foundation": 6.8,
+        "working": 6.3,
+        "strategic": 4.5
+      }
     },
     {
       "id": "08.01",
