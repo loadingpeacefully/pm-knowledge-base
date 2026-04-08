@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-08T16:08:49.726561+00:00",
+  "generated_at": "2026-04-08T16:15:54.221572+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 44,
+    "lessons_scored": 45,
     "avg_score": 7.0,
-    "total_critical": 204,
-    "feedback_reports": 44,
+    "total_critical": 209,
+    "feedback_reports": 45,
     "modules_total": 9
   },
   "modules": [
@@ -321,7 +321,7 @@
           "id": "05.01",
           "title": "PRD Writing",
           "file": "05-product-fundamentals/prd-writing.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "senior-pm"
         },
         {
@@ -1567,9 +1567,9 @@
       "module_id": "05",
       "module_title": "Product Fundamentals",
       "file": "05-product-fundamentals/prd-writing.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "senior-pm",
-      "word_count": 4259,
+      "word_count": 4772,
       "score": 6.9,
       "health": "GOOD",
       "criticals": 3,
@@ -1591,7 +1591,19 @@
       "file": "05-product-fundamentals/jobs-to-be-done.md",
       "status": "\u2014",
       "writer": "senior-pm",
-      "word_count": 0
+      "word_count": 4391,
+      "score": 6.9,
+      "health": "GOOD",
+      "criticals": 5,
+      "highs": 24,
+      "mediums": 39,
+      "run_formatter": true,
+      "last_run": "2026-04-08T16:15:54.088387+00:00",
+      "scores_by_level": {
+        "foundation": 7.2,
+        "working": 6.0,
+        "strategic": 7.0
+      }
     },
     {
       "id": "05.03",
