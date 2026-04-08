@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-08T19:13:25.604182+00:00",
+  "generated_at": "2026-04-08T19:21:50.841933+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 63,
+    "lessons_scored": 64,
     "avg_score": 6.7,
-    "total_critical": 376,
-    "feedback_reports": 63,
+    "total_critical": 381,
+    "feedback_reports": 64,
     "modules_total": 9
   },
   "modules": [
@@ -480,7 +480,7 @@
           "id": "07.02",
           "title": "Pricing Models",
           "file": "07-business-and-monetization/pricing-models.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "cfo-finance"
         },
         {
@@ -2029,9 +2029,9 @@
       "module_id": "07",
       "module_title": "Business & Monetization",
       "file": "07-business-and-monetization/pricing-models.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "cfo-finance",
-      "word_count": 5234,
+      "word_count": 5732,
       "score": 6.3,
       "health": "NEEDS_WORK",
       "criticals": 11,
@@ -2053,7 +2053,19 @@
       "file": "07-business-and-monetization/gross-margin-and-cogs.md",
       "status": "\u2014",
       "writer": "cfo-finance",
-      "word_count": 0
+      "word_count": 5052,
+      "score": 6.1,
+      "health": "NEEDS_WORK",
+      "criticals": 5,
+      "highs": 30,
+      "mediums": 39,
+      "run_formatter": true,
+      "last_run": "2026-04-08T19:21:50.688347+00:00",
+      "scores_by_level": {
+        "foundation": 6.7,
+        "working": 6.0,
+        "strategic": 5.0
+      }
     },
     {
       "id": "07.04",
