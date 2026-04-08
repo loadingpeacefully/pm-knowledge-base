@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-07T18:16:02.178365+00:00",
+  "generated_at": "2026-04-08T09:44:54.642082+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 29,
-    "avg_score": 6.9,
-    "total_critical": 143,
-    "feedback_reports": 29,
+    "lessons_scored": 32,
+    "avg_score": 7.0,
+    "total_critical": 156,
+    "feedback_reports": 32,
     "modules_total": 9
   },
   "modules": [
@@ -211,21 +211,21 @@
           "id": "03.07",
           "title": "CDN & Edge Caching",
           "file": "03-infrastructure-and-devops/cdn-and-edge-caching.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "staff-engineer-pm"
         },
         {
           "id": "03.08",
           "title": "Load Balancing",
           "file": "03-infrastructure-and-devops/load-balancing.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "staff-engineer-pm"
         },
         {
           "id": "03.09",
           "title": "Monitoring & Alerting",
           "file": "03-infrastructure-and-devops/monitoring-and-alerting.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "staff-engineer-pm"
         },
         {
@@ -910,16 +910,16 @@
       "status": "ready",
       "writer": "staff-engineer-pm",
       "word_count": 5058,
-      "score": 6.7,
+      "score": 7.1,
       "health": "GOOD",
-      "criticals": 5,
-      "highs": 22,
-      "mediums": 41,
+      "criticals": 6,
+      "highs": 23,
+      "mediums": 44,
       "run_formatter": true,
-      "last_run": "2026-04-07T12:36:00.883295+00:00",
+      "last_run": "2026-04-08T09:44:54.525555+00:00",
       "scores_by_level": {
         "foundation": 7.2,
-        "working": 5.0,
+        "working": 7.0,
         "strategic": 7.0
       }
     },
@@ -1259,9 +1259,21 @@
       "module_id": "03",
       "module_title": "Infrastructure & DevOps",
       "file": "03-infrastructure-and-devops/cdn-and-edge-caching.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "staff-engineer-pm",
-      "word_count": 0
+      "word_count": 5848,
+      "score": 6.9,
+      "health": "GOOD",
+      "criticals": 4,
+      "highs": 23,
+      "mediums": 36,
+      "run_formatter": true,
+      "last_run": "2026-04-07T18:32:39.852489+00:00",
+      "scores_by_level": {
+        "foundation": 7.2,
+        "working": 6.5,
+        "strategic": 6.7
+      }
     },
     {
       "id": "03.08",
@@ -1269,9 +1281,21 @@
       "module_id": "03",
       "module_title": "Infrastructure & DevOps",
       "file": "03-infrastructure-and-devops/load-balancing.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "staff-engineer-pm",
-      "word_count": 0
+      "word_count": 6001,
+      "score": 6.9,
+      "health": "GOOD",
+      "criticals": 5,
+      "highs": 23,
+      "mediums": 50,
+      "run_formatter": true,
+      "last_run": "2026-04-07T18:46:36.727544+00:00",
+      "scores_by_level": {
+        "foundation": 6.8,
+        "working": 6.5,
+        "strategic": 7.3
+      }
     },
     {
       "id": "03.09",
@@ -1279,9 +1303,21 @@
       "module_id": "03",
       "module_title": "Infrastructure & DevOps",
       "file": "03-infrastructure-and-devops/monitoring-and-alerting.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "staff-engineer-pm",
-      "word_count": 0
+      "word_count": 6529,
+      "score": 7.0,
+      "health": "GOOD",
+      "criticals": 3,
+      "highs": 23,
+      "mediums": 38,
+      "run_formatter": true,
+      "last_run": "2026-04-07T18:58:59.975831+00:00",
+      "scores_by_level": {
+        "foundation": 7.2,
+        "working": 7.0,
+        "strategic": 7.3
+      }
     },
     {
       "id": "03.10",
