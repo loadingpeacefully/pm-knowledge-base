@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-08T09:44:54.642082+00:00",
+  "generated_at": "2026-04-08T10:12:50.293930+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 32,
+    "lessons_scored": 33,
     "avg_score": 7.0,
-    "total_critical": 156,
-    "feedback_reports": 32,
+    "total_critical": 159,
+    "feedback_reports": 33,
     "modules_total": 9
   },
   "modules": [
@@ -909,7 +909,7 @@
       "file": "02-databases-and-data/sql-vs-nosql.md",
       "status": "ready",
       "writer": "staff-engineer-pm",
-      "word_count": 5058,
+      "word_count": 5878,
       "score": 7.1,
       "health": "GOOD",
       "criticals": 6,
@@ -1327,7 +1327,19 @@
       "file": "03-infrastructure-and-devops/feature-flags.md",
       "status": "\u2014",
       "writer": "staff-engineer-pm",
-      "word_count": 0
+      "word_count": 4823,
+      "score": 6.9,
+      "health": "GOOD",
+      "criticals": 3,
+      "highs": 21,
+      "mediums": 49,
+      "run_formatter": true,
+      "last_run": "2026-04-08T10:12:50.179456+00:00",
+      "scores_by_level": {
+        "foundation": 7.6,
+        "working": 6.3,
+        "strategic": 6.0
+      }
     },
     {
       "id": "04.01",
