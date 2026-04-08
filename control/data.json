@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-08T17:25:17.078356+00:00",
+  "generated_at": "2026-04-08T17:32:53.015532+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 54,
+    "lessons_scored": 55,
     "avg_score": 6.8,
-    "total_critical": 289,
-    "feedback_reports": 54,
+    "total_critical": 296,
+    "feedback_reports": 55,
     "modules_total": 9
   },
   "modules": [
@@ -404,7 +404,7 @@
           "id": "06.02",
           "title": "Funnel Analysis",
           "file": "06-metrics-and-analytics/funnel-analysis.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "senior-pm"
         },
         {
@@ -1809,9 +1809,9 @@
       "module_id": "06",
       "module_title": "Metrics & Analytics",
       "file": "06-metrics-and-analytics/funnel-analysis.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "senior-pm",
-      "word_count": 4545,
+      "word_count": 5384,
       "score": 6.0,
       "health": "NEEDS_WORK",
       "criticals": 6,
@@ -1833,7 +1833,19 @@
       "file": "06-metrics-and-analytics/cohort-analysis.md",
       "status": "\u2014",
       "writer": "senior-pm",
-      "word_count": 0
+      "word_count": 4853,
+      "score": 6.2,
+      "health": "NEEDS_WORK",
+      "criticals": 7,
+      "highs": 26,
+      "mediums": 35,
+      "run_formatter": true,
+      "last_run": "2026-04-08T17:32:52.865595+00:00",
+      "scores_by_level": {
+        "foundation": 6.7,
+        "working": 6.0,
+        "strategic": 5.0
+      }
     },
     {
       "id": "06.04",
