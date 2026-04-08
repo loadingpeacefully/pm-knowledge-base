@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-08T10:59:25.417097+00:00",
+  "generated_at": "2026-04-08T11:32:47.059141+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 35,
+    "lessons_scored": 36,
     "avg_score": 7.0,
-    "total_critical": 166,
-    "feedback_reports": 35,
+    "total_critical": 174,
+    "feedback_reports": 36,
     "modules_total": 9
   },
   "modules": [
@@ -252,7 +252,7 @@
           "id": "04.02",
           "title": "Prompt Engineering Basics",
           "file": "04-ai-and-ml-systems/prompt-engineering-basics.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "staff-engineer-pm"
         },
         {
@@ -1369,9 +1369,9 @@
       "module_id": "04",
       "module_title": "AI & ML Systems",
       "file": "04-ai-and-ml-systems/prompt-engineering-basics.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "staff-engineer-pm",
-      "word_count": 5114,
+      "word_count": 5926,
       "score": 7.4,
       "health": "GOOD",
       "criticals": 4,
@@ -1393,7 +1393,19 @@
       "file": "04-ai-and-ml-systems/rag-retrieval-augmented-generation.md",
       "status": "\u2014",
       "writer": "staff-engineer-pm",
-      "word_count": 0
+      "word_count": 5507,
+      "score": 6.8,
+      "health": "GOOD",
+      "criticals": 8,
+      "highs": 31,
+      "mediums": 72,
+      "run_formatter": true,
+      "last_run": "2026-04-08T11:32:46.928358+00:00",
+      "scores_by_level": {
+        "foundation": 7.3,
+        "working": 6.3,
+        "strategic": 7.3
+      }
     },
     {
       "id": "04.04",
