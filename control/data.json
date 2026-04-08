@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-08T16:15:54.221572+00:00",
+  "generated_at": "2026-04-08T16:22:28.728661+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 45,
+    "lessons_scored": 46,
     "avg_score": 7.0,
-    "total_critical": 209,
-    "feedback_reports": 45,
+    "total_critical": 214,
+    "feedback_reports": 46,
     "modules_total": 9
   },
   "modules": [
@@ -328,7 +328,7 @@
           "id": "05.02",
           "title": "Jobs to Be Done",
           "file": "05-product-fundamentals/jobs-to-be-done.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "senior-pm"
         },
         {
@@ -1589,9 +1589,9 @@
       "module_id": "05",
       "module_title": "Product Fundamentals",
       "file": "05-product-fundamentals/jobs-to-be-done.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "senior-pm",
-      "word_count": 4391,
+      "word_count": 4688,
       "score": 6.9,
       "health": "GOOD",
       "criticals": 5,
@@ -1613,7 +1613,19 @@
       "file": "05-product-fundamentals/prioritization-frameworks.md",
       "status": "\u2014",
       "writer": "senior-pm",
-      "word_count": 0
+      "word_count": 4264,
+      "score": 6.7,
+      "health": "GOOD",
+      "criticals": 5,
+      "highs": 32,
+      "mediums": 43,
+      "run_formatter": true,
+      "last_run": "2026-04-08T16:22:28.602851+00:00",
+      "scores_by_level": {
+        "foundation": 6.8,
+        "working": 6.5,
+        "strategic": 7.0
+      }
     },
     {
       "id": "05.04",
