@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-08T19:31:53.277503+00:00",
+  "generated_at": "2026-04-08T19:41:48.591795+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 65,
+    "lessons_scored": 66,
     "avg_score": 6.7,
-    "total_critical": 394,
-    "feedback_reports": 65,
+    "total_critical": 404,
+    "feedback_reports": 66,
     "modules_total": 9
   },
   "modules": [
@@ -494,7 +494,7 @@
           "id": "07.04",
           "title": "Monetization Design",
           "file": "07-business-and-monetization/monetization-design.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "cfo-finance"
         },
         {
@@ -2073,9 +2073,9 @@
       "module_id": "07",
       "module_title": "Business & Monetization",
       "file": "07-business-and-monetization/monetization-design.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "cfo-finance",
-      "word_count": 5269,
+      "word_count": 5879,
       "score": 6.1,
       "health": "NEEDS_WORK",
       "criticals": 13,
@@ -2097,7 +2097,19 @@
       "file": "07-business-and-monetization/payment-infrastructure.md",
       "status": "\u2014",
       "writer": "cfo-finance",
-      "word_count": 0
+      "word_count": 4997,
+      "score": 5.9,
+      "health": "NEEDS_WORK",
+      "criticals": 10,
+      "highs": 37,
+      "mediums": 41,
+      "run_formatter": true,
+      "last_run": "2026-04-08T19:41:48.430952+00:00",
+      "scores_by_level": {
+        "foundation": 6.5,
+        "working": 6.0,
+        "strategic": 5.0
+      }
     },
     {
       "id": "07.06",
