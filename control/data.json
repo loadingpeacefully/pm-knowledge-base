@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-08T19:41:48.591795+00:00",
+  "generated_at": "2026-04-08T19:50:33.534191+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 66,
+    "lessons_scored": 67,
     "avg_score": 6.7,
-    "total_critical": 404,
-    "feedback_reports": 66,
+    "total_critical": 414,
+    "feedback_reports": 67,
     "modules_total": 9
   },
   "modules": [
@@ -501,7 +501,7 @@
           "id": "07.05",
           "title": "Payment Infrastructure",
           "file": "07-business-and-monetization/payment-infrastructure.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "cfo-finance"
         },
         {
@@ -2095,9 +2095,9 @@
       "module_id": "07",
       "module_title": "Business & Monetization",
       "file": "07-business-and-monetization/payment-infrastructure.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "cfo-finance",
-      "word_count": 4997,
+      "word_count": 6049,
       "score": 5.9,
       "health": "NEEDS_WORK",
       "criticals": 10,
@@ -2119,7 +2119,19 @@
       "file": "07-business-and-monetization/marketplace-economics.md",
       "status": "\u2014",
       "writer": "cfo-finance",
-      "word_count": 0
+      "word_count": 5383,
+      "score": 6.0,
+      "health": "NEEDS_WORK",
+      "criticals": 10,
+      "highs": 34,
+      "mediums": 40,
+      "run_formatter": true,
+      "last_run": "2026-04-08T19:50:33.369820+00:00",
+      "scores_by_level": {
+        "foundation": 6.5,
+        "working": 6.0,
+        "strategic": 5.0
+      }
     },
     {
       "id": "07.07",
