@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-08T19:59:57.207221+00:00",
+  "generated_at": "2026-04-08T20:10:26.749960+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 68,
+    "lessons_scored": 69,
     "avg_score": 6.7,
-    "total_critical": 423,
-    "feedback_reports": 68,
+    "total_critical": 428,
+    "feedback_reports": 69,
     "modules_total": 9
   },
   "modules": [
@@ -515,7 +515,7 @@
           "id": "07.07",
           "title": "Churn & Retention Economics",
           "file": "07-business-and-monetization/churn-and-retention-economics.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "cfo-finance"
         },
         {
@@ -2139,9 +2139,9 @@
       "module_id": "07",
       "module_title": "Business & Monetization",
       "file": "07-business-and-monetization/churn-and-retention-economics.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "cfo-finance",
-      "word_count": 5542,
+      "word_count": 5674,
       "score": 6.1,
       "health": "NEEDS_WORK",
       "criticals": 9,
@@ -2163,7 +2163,19 @@
       "file": "07-business-and-monetization/subscription-mechanics.md",
       "status": "\u2014",
       "writer": "cfo-finance",
-      "word_count": 0
+      "word_count": 6063,
+      "score": 6.2,
+      "health": "NEEDS_WORK",
+      "criticals": 5,
+      "highs": 32,
+      "mediums": 49,
+      "run_formatter": true,
+      "last_run": "2026-04-08T20:10:26.581449+00:00",
+      "scores_by_level": {
+        "foundation": 7.0,
+        "working": 6.4,
+        "strategic": 3.0
+      }
     },
     {
       "id": "07.09",
