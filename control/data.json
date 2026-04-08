@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-08T19:05:17.275732+00:00",
+  "generated_at": "2026-04-08T19:13:25.604182+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 62,
+    "lessons_scored": 63,
     "avg_score": 6.7,
-    "total_critical": 365,
-    "feedback_reports": 62,
+    "total_critical": 376,
+    "feedback_reports": 63,
     "modules_total": 9
   },
   "modules": [
@@ -460,7 +460,7 @@
           "id": "06.10",
           "title": "Data Quality & Pipelines",
           "file": "06-metrics-and-analytics/data-quality-and-pipelines.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "senior-pm"
         }
       ]
@@ -1985,9 +1985,9 @@
       "module_id": "06",
       "module_title": "Metrics & Analytics",
       "file": "06-metrics-and-analytics/data-quality-and-pipelines.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "senior-pm",
-      "word_count": 5213,
+      "word_count": 5762,
       "score": 5.8,
       "health": "NEEDS_WORK",
       "criticals": 13,
@@ -2031,7 +2031,19 @@
       "file": "07-business-and-monetization/pricing-models.md",
       "status": "\u2014",
       "writer": "cfo-finance",
-      "word_count": 0
+      "word_count": 5234,
+      "score": 6.3,
+      "health": "NEEDS_WORK",
+      "criticals": 11,
+      "highs": 36,
+      "mediums": 51,
+      "run_formatter": true,
+      "last_run": "2026-04-08T19:13:25.446967+00:00",
+      "scores_by_level": {
+        "foundation": 7.0,
+        "working": 6.3,
+        "strategic": 5.0
+      }
     },
     {
       "id": "07.03",
