@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-08T20:10:26.749960+00:00",
+  "generated_at": "2026-04-08T20:20:43.901424+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 69,
+    "lessons_scored": 70,
     "avg_score": 6.7,
-    "total_critical": 428,
-    "feedback_reports": 69,
+    "total_critical": 433,
+    "feedback_reports": 70,
     "modules_total": 9
   },
   "modules": [
@@ -522,7 +522,7 @@
           "id": "07.08",
           "title": "Subscription Mechanics",
           "file": "07-business-and-monetization/subscription-mechanics.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "cfo-finance"
         },
         {
@@ -2161,9 +2161,9 @@
       "module_id": "07",
       "module_title": "Business & Monetization",
       "file": "07-business-and-monetization/subscription-mechanics.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "cfo-finance",
-      "word_count": 6063,
+      "word_count": 6701,
       "score": 6.2,
       "health": "NEEDS_WORK",
       "criticals": 5,
@@ -2185,7 +2185,19 @@
       "file": "07-business-and-monetization/virtual-currency-and-rewards.md",
       "status": "\u2014",
       "writer": "cfo-finance",
-      "word_count": 0
+      "word_count": 5360,
+      "score": 6.4,
+      "health": "NEEDS_WORK",
+      "criticals": 5,
+      "highs": 37,
+      "mediums": 52,
+      "run_formatter": true,
+      "last_run": "2026-04-08T20:20:43.733802+00:00",
+      "scores_by_level": {
+        "foundation": 7.0,
+        "working": 6.0,
+        "strategic": 6.0
+      }
     },
     {
       "id": "07.10",
