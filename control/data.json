@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-08T18:16:35.743376+00:00",
+  "generated_at": "2026-04-08T18:24:50.419659+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 56,
+    "lessons_scored": 57,
     "avg_score": 6.8,
-    "total_critical": 308,
-    "feedback_reports": 56,
+    "total_critical": 317,
+    "feedback_reports": 57,
     "modules_total": 9
   },
   "modules": [
@@ -418,7 +418,7 @@
           "id": "06.04",
           "title": "DAU/MAU & Engagement Ratios",
           "file": "06-metrics-and-analytics/dau-mau-and-engagement-ratios.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "senior-pm"
         },
         {
@@ -1853,9 +1853,9 @@
       "module_id": "06",
       "module_title": "Metrics & Analytics",
       "file": "06-metrics-and-analytics/dau-mau-and-engagement-ratios.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "senior-pm",
-      "word_count": 4490,
+      "word_count": 4817,
       "score": 6.1,
       "health": "NEEDS_WORK",
       "criticals": 12,
@@ -1877,7 +1877,19 @@
       "file": "06-metrics-and-analytics/event-tracking-and-instrumentation.md",
       "status": "\u2014",
       "writer": "senior-pm",
-      "word_count": 0
+      "word_count": 4563,
+      "score": 6.0,
+      "health": "NEEDS_WORK",
+      "criticals": 9,
+      "highs": 30,
+      "mediums": 53,
+      "run_formatter": true,
+      "last_run": "2026-04-08T18:24:50.276459+00:00",
+      "scores_by_level": {
+        "foundation": 7.0,
+        "working": 6.0,
+        "strategic": 4.5
+      }
     },
     {
       "id": "06.06",
