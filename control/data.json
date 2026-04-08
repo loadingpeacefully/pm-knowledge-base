@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-08T16:30:23.660947+00:00",
+  "generated_at": "2026-04-08T16:38:52.501012+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 47,
+    "lessons_scored": 48,
     "avg_score": 6.9,
-    "total_critical": 222,
-    "feedback_reports": 47,
+    "total_critical": 233,
+    "feedback_reports": 48,
     "modules_total": 9
   },
   "modules": [
@@ -342,7 +342,7 @@
           "id": "05.04",
           "title": "User Story Writing",
           "file": "05-product-fundamentals/user-story-writing.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "senior-pm"
         },
         {
@@ -1633,9 +1633,9 @@
       "module_id": "05",
       "module_title": "Product Fundamentals",
       "file": "05-product-fundamentals/user-story-writing.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "senior-pm",
-      "word_count": 4414,
+      "word_count": 4513,
       "score": 5.9,
       "health": "NEEDS_WORK",
       "criticals": 8,
@@ -1657,7 +1657,19 @@
       "file": "05-product-fundamentals/roadmapping.md",
       "status": "\u2014",
       "writer": "senior-pm",
-      "word_count": 0
+      "word_count": 4288,
+      "score": 6.1,
+      "health": "NEEDS_WORK",
+      "criticals": 11,
+      "highs": 35,
+      "mediums": 45,
+      "run_formatter": true,
+      "last_run": "2026-04-08T16:38:52.362569+00:00",
+      "scores_by_level": {
+        "foundation": 7.0,
+        "working": 5.7,
+        "strategic": 5.0
+      }
     },
     {
       "id": "05.06",
