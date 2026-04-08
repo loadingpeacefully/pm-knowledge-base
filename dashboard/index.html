@@ -392,7 +392,15 @@ const S = {
   levelContent: null,  // { foundation, working, strategic, profiles } parsed from v2 lesson
 };
 
-const MANIFEST = '../concept-library/_CONCEPT_INDEX.md';
+function getBasePath() {
+  const host = window.location.hostname;
+  if (host === 'localhost' || host === '127.0.0.1') return '..';
+  const parts = window.location.pathname.split('/');
+  return '/' + parts[1];
+}
+const BASE = getBasePath();
+
+const MANIFEST = BASE + '/concept-library/_CONCEPT_INDEX.md';
 const WRITER = {
   'staff-engineer-pm': 'Staff Engineer turned PM',
   'senior-pm':         'Senior PM',
@@ -526,7 +534,7 @@ async function selectLesson(id) {
   document.getElementById('content').scrollTop = 0;
 
   try {
-    const r = await fetch(`../concept-library/${lesson.file}?t=${Date.now()}`);
+    const r = await fetch(`${BASE}/concept-library/${lesson.file}?t=${Date.now()}`);
     if (!r.ok) throw new Error('HTTP ' + r.status);
     const mdText = await r.text();
     try {
