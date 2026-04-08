@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-08T13:06:53.373714+00:00",
+  "generated_at": "2026-04-08T13:17:43.859273+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 37,
+    "lessons_scored": 38,
     "avg_score": 7.0,
-    "total_critical": 177,
-    "feedback_reports": 37,
+    "total_critical": 182,
+    "feedback_reports": 38,
     "modules_total": 9
   },
   "modules": [
@@ -266,7 +266,7 @@
           "id": "04.04",
           "title": "Embeddings & Vector Databases",
           "file": "04-ai-and-ml-systems/embeddings-and-vector-databases.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "staff-engineer-pm"
         },
         {
@@ -1413,9 +1413,9 @@
       "module_id": "04",
       "module_title": "AI & ML Systems",
       "file": "04-ai-and-ml-systems/embeddings-and-vector-databases.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "staff-engineer-pm",
-      "word_count": 5122,
+      "word_count": 5259,
       "score": 7.0,
       "health": "GOOD",
       "criticals": 3,
@@ -1437,7 +1437,19 @@
       "file": "04-ai-and-ml-systems/fine-tuning-vs-prompting.md",
       "status": "\u2014",
       "writer": "staff-engineer-pm",
-      "word_count": 0
+      "word_count": 5610,
+      "score": 6.8,
+      "health": "GOOD",
+      "criticals": 5,
+      "highs": 23,
+      "mediums": 42,
+      "run_formatter": true,
+      "last_run": "2026-04-08T13:17:43.735323+00:00",
+      "scores_by_level": {
+        "foundation": 6.7,
+        "working": 6.7,
+        "strategic": 7.3
+      }
     },
     {
       "id": "04.06",
