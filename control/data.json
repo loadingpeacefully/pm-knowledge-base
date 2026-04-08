@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-08T15:48:09.188127+00:00",
+  "generated_at": "2026-04-08T16:00:16.419642+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 42,
+    "lessons_scored": 43,
     "avg_score": 7.0,
-    "total_critical": 198,
-    "feedback_reports": 42,
+    "total_critical": 201,
+    "feedback_reports": 43,
     "modules_total": 9
   },
   "modules": [
@@ -301,7 +301,7 @@
           "id": "04.09",
           "title": "AI Agent Patterns",
           "file": "04-ai-and-ml-systems/ai-agent-patterns.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "staff-engineer-pm"
         },
         {
@@ -1523,9 +1523,9 @@
       "module_id": "04",
       "module_title": "AI & ML Systems",
       "file": "04-ai-and-ml-systems/ai-agent-patterns.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "staff-engineer-pm",
-      "word_count": 5336,
+      "word_count": 5474,
       "score": 7.0,
       "health": "GOOD",
       "criticals": 3,
@@ -1547,7 +1547,19 @@
       "file": "04-ai-and-ml-systems/ai-cost-and-latency-tradeoffs.md",
       "status": "\u2014",
       "writer": "staff-engineer-pm",
-      "word_count": 0
+      "word_count": 4872,
+      "score": 7.1,
+      "health": "GOOD",
+      "criticals": 3,
+      "highs": 22,
+      "mediums": 40,
+      "run_formatter": true,
+      "last_run": "2026-04-08T16:00:16.294132+00:00",
+      "scores_by_level": {
+        "foundation": 7.2,
+        "working": 7.0,
+        "strategic": 7.0
+      }
     },
     {
       "id": "05.01",
