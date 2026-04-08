@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-08T13:45:39.647240+00:00",
+  "generated_at": "2026-04-08T15:40:26.695539+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 40,
+    "lessons_scored": 41,
     "avg_score": 7.0,
-    "total_critical": 190,
-    "feedback_reports": 40,
+    "total_critical": 195,
+    "feedback_reports": 41,
     "modules_total": 9
   },
   "modules": [
@@ -287,7 +287,7 @@
           "id": "04.07",
           "title": "Classification Models",
           "file": "04-ai-and-ml-systems/classification-models.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "staff-engineer-pm"
         },
         {
@@ -1479,9 +1479,9 @@
       "module_id": "04",
       "module_title": "AI & ML Systems",
       "file": "04-ai-and-ml-systems/classification-models.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "staff-engineer-pm",
-      "word_count": 4475,
+      "word_count": 4876,
       "score": 7.1,
       "health": "GOOD",
       "criticals": 3,
@@ -1503,7 +1503,19 @@
       "file": "04-ai-and-ml-systems/recommendation-systems.md",
       "status": "\u2014",
       "writer": "staff-engineer-pm",
-      "word_count": 0
+      "word_count": 5089,
+      "score": 6.8,
+      "health": "GOOD",
+      "criticals": 5,
+      "highs": 31,
+      "mediums": 49,
+      "run_formatter": true,
+      "last_run": "2026-04-08T15:40:26.569230+00:00",
+      "scores_by_level": {
+        "foundation": 7.0,
+        "working": 6.8,
+        "strategic": 6.7
+      }
     },
     {
       "id": "04.09",
