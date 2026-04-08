@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-08T13:17:43.859273+00:00",
+  "generated_at": "2026-04-08T13:33:04.022165+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 38,
+    "lessons_scored": 39,
     "avg_score": 7.0,
-    "total_critical": 182,
-    "feedback_reports": 38,
+    "total_critical": 187,
+    "feedback_reports": 39,
     "modules_total": 9
   },
   "modules": [
@@ -273,7 +273,7 @@
           "id": "04.05",
           "title": "Fine-tuning vs Prompting",
           "file": "04-ai-and-ml-systems/fine-tuning-vs-prompting.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "staff-engineer-pm"
         },
         {
@@ -1435,9 +1435,9 @@
       "module_id": "04",
       "module_title": "AI & ML Systems",
       "file": "04-ai-and-ml-systems/fine-tuning-vs-prompting.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "staff-engineer-pm",
-      "word_count": 5610,
+      "word_count": 6080,
       "score": 6.8,
       "health": "GOOD",
       "criticals": 5,
@@ -1459,7 +1459,19 @@
       "file": "04-ai-and-ml-systems/ai-evals-and-quality-scoring.md",
       "status": "\u2014",
       "writer": "staff-engineer-pm",
-      "word_count": 0
+      "word_count": 4004,
+      "score": 6.9,
+      "health": "GOOD",
+      "criticals": 5,
+      "highs": 22,
+      "mediums": 35,
+      "run_formatter": true,
+      "last_run": "2026-04-08T13:33:03.906499+00:00",
+      "scores_by_level": {
+        "foundation": 7.0,
+        "working": 6.5,
+        "strategic": 7.0
+      }
     },
     {
       "id": "04.07",
