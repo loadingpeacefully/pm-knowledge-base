@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-08T21:06:50.374959+00:00",
+  "generated_at": "2026-04-08T21:15:16.241532+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 75,
+    "lessons_scored": 76,
     "avg_score": 6.6,
-    "total_critical": 478,
-    "feedback_reports": 75,
+    "total_critical": 489,
+    "feedback_reports": 76,
     "modules_total": 9
   },
   "modules": [
@@ -577,7 +577,7 @@
           "id": "08.05",
           "title": "Referral & Virality Mechanics",
           "file": "08-gtm-and-growth/referral-and-virality-mechanics.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "gtm-lead"
         },
         {
@@ -2315,9 +2315,9 @@
       "module_id": "08",
       "module_title": "GTM & Growth",
       "file": "08-gtm-and-growth/referral-and-virality-mechanics.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "gtm-lead",
-      "word_count": 6004,
+      "word_count": 6133,
       "score": 6.2,
       "health": "NEEDS_WORK",
       "criticals": 7,
@@ -2339,7 +2339,19 @@
       "file": "08-gtm-and-growth/seo-basics-for-pms.md",
       "status": "\u2014",
       "writer": "gtm-lead",
-      "word_count": 0
+      "word_count": 6237,
+      "score": 5.9,
+      "health": "NEEDS_WORK",
+      "criticals": 11,
+      "highs": 32,
+      "mediums": 44,
+      "run_formatter": true,
+      "last_run": "2026-04-08T21:15:16.074547+00:00",
+      "scores_by_level": {
+        "foundation": 6.5,
+        "working": 5.2,
+        "strategic": 5.0
+      }
     },
     {
       "id": "08.07",
