@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-08T21:15:16.241532+00:00",
+  "generated_at": "2026-04-08T21:23:55.924578+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 76,
+    "lessons_scored": 77,
     "avg_score": 6.6,
-    "total_critical": 489,
-    "feedback_reports": 76,
+    "total_critical": 496,
+    "feedback_reports": 77,
     "modules_total": 9
   },
   "modules": [
@@ -584,7 +584,7 @@
           "id": "08.06",
           "title": "SEO Basics for PMs",
           "file": "08-gtm-and-growth/seo-basics-for-pms.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "gtm-lead"
         },
         {
@@ -2337,9 +2337,9 @@
       "module_id": "08",
       "module_title": "GTM & Growth",
       "file": "08-gtm-and-growth/seo-basics-for-pms.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "gtm-lead",
-      "word_count": 6237,
+      "word_count": 6508,
       "score": 5.9,
       "health": "NEEDS_WORK",
       "criticals": 11,
@@ -2361,7 +2361,19 @@
       "file": "08-gtm-and-growth/paid-acquisition-fundamentals.md",
       "status": "\u2014",
       "writer": "gtm-lead",
-      "word_count": 0
+      "word_count": 5929,
+      "score": 6.2,
+      "health": "NEEDS_WORK",
+      "criticals": 7,
+      "highs": 26,
+      "mediums": 39,
+      "run_formatter": true,
+      "last_run": "2026-04-08T21:23:55.754184+00:00",
+      "scores_by_level": {
+        "foundation": 6.7,
+        "working": 6.5,
+        "strategic": 4.0
+      }
     },
     {
       "id": "08.08",
