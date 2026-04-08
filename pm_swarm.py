@@ -790,6 +790,23 @@ def write_report(lesson_path: Path, reviews: list, synthesis: dict) -> Path:
         if result.returncode == 0:
             print("  ✓ lessons.json rebuilt.")
 
+    # Auto-commit and push updated data files to GitHub Pages
+    _title = synthesis.get('lesson_title', lesson_stem)
+    try:
+        subprocess.run(['git', 'add',
+                        'control/data.json',
+                        'dashboard/lessons.json'],
+                       capture_output=True)
+        result = subprocess.run(['git', 'commit', '-m',
+                                 f'data: swarm update — {_title}'],
+                                capture_output=True, text=True)
+        if 'nothing to commit' not in result.stdout:
+            subprocess.run(['git', 'push', 'origin', 'main'],
+                           capture_output=True)
+            print("  ✓ GitHub Pages updated.")
+    except Exception as e:
+        print(f"  Git push skipped: {e}")
+
     return report_path
 
 
