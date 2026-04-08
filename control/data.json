@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-08T16:52:31.507429+00:00",
+  "generated_at": "2026-04-08T16:59:59.621874+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 50,
+    "lessons_scored": 51,
     "avg_score": 6.9,
-    "total_critical": 256,
-    "feedback_reports": 50,
+    "total_critical": 267,
+    "feedback_reports": 51,
     "modules_total": 9
   },
   "modules": [
@@ -363,7 +363,7 @@
           "id": "05.07",
           "title": "Experimentation & A/B Testing",
           "file": "05-product-fundamentals/experimentation-and-ab-testing.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "senior-pm"
         },
         {
@@ -1699,9 +1699,9 @@
       "module_id": "05",
       "module_title": "Product Fundamentals",
       "file": "05-product-fundamentals/experimentation-and-ab-testing.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "senior-pm",
-      "word_count": 4820,
+      "word_count": 4973,
       "score": 6.2,
       "health": "NEEDS_WORK",
       "criticals": 13,
@@ -1723,7 +1723,19 @@
       "file": "05-product-fundamentals/technical-debt-for-pms.md",
       "status": "\u2014",
       "writer": "senior-pm",
-      "word_count": 0
+      "word_count": 4632,
+      "score": 5.8,
+      "health": "NEEDS_WORK",
+      "criticals": 11,
+      "highs": 33,
+      "mediums": 47,
+      "run_formatter": true,
+      "last_run": "2026-04-08T16:59:59.478517+00:00",
+      "scores_by_level": {
+        "foundation": 7.0,
+        "working": 5.3,
+        "strategic": 6.3
+      }
     },
     {
       "id": "05.09",
