@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-08T20:38:05.104134+00:00",
+  "generated_at": "2026-04-08T20:48:09.230858+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 72,
+    "lessons_scored": 73,
     "avg_score": 6.6,
-    "total_critical": 451,
-    "feedback_reports": 72,
+    "total_critical": 461,
+    "feedback_reports": 73,
     "modules_total": 9
   },
   "modules": [
@@ -556,7 +556,7 @@
           "id": "08.02",
           "title": "Product-Led Growth",
           "file": "08-gtm-and-growth/product-led-growth.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "gtm-lead"
         },
         {
@@ -2249,9 +2249,9 @@
       "module_id": "08",
       "module_title": "GTM & Growth",
       "file": "08-gtm-and-growth/product-led-growth.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "gtm-lead",
-      "word_count": 5689,
+      "word_count": 6042,
       "score": 5.9,
       "health": "NEEDS_WORK",
       "criticals": 10,
@@ -2273,7 +2273,19 @@
       "file": "08-gtm-and-growth/growth-loops.md",
       "status": "\u2014",
       "writer": "gtm-lead",
-      "word_count": 0
+      "word_count": 5847,
+      "score": 5.8,
+      "health": "NEEDS_WORK",
+      "criticals": 10,
+      "highs": 40,
+      "mediums": 52,
+      "run_formatter": true,
+      "last_run": "2026-04-08T20:48:09.057760+00:00",
+      "scores_by_level": {
+        "foundation": 6.7,
+        "working": 5.8,
+        "strategic": 5.3
+      }
     },
     {
       "id": "08.04",
