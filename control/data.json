@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-08T13:33:04.022165+00:00",
+  "generated_at": "2026-04-08T13:45:39.647240+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 39,
+    "lessons_scored": 40,
     "avg_score": 7.0,
-    "total_critical": 187,
-    "feedback_reports": 39,
+    "total_critical": 190,
+    "feedback_reports": 40,
     "modules_total": 9
   },
   "modules": [
@@ -280,7 +280,7 @@
           "id": "04.06",
           "title": "AI Evals & Quality Scoring",
           "file": "04-ai-and-ml-systems/ai-evals-and-quality-scoring.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "staff-engineer-pm"
         },
         {
@@ -1457,9 +1457,9 @@
       "module_id": "04",
       "module_title": "AI & ML Systems",
       "file": "04-ai-and-ml-systems/ai-evals-and-quality-scoring.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "staff-engineer-pm",
-      "word_count": 4004,
+      "word_count": 4662,
       "score": 6.9,
       "health": "GOOD",
       "criticals": 5,
@@ -1481,7 +1481,19 @@
       "file": "04-ai-and-ml-systems/classification-models.md",
       "status": "\u2014",
       "writer": "staff-engineer-pm",
-      "word_count": 0
+      "word_count": 4475,
+      "score": 7.1,
+      "health": "GOOD",
+      "criticals": 3,
+      "highs": 15,
+      "mediums": 36,
+      "run_formatter": true,
+      "last_run": "2026-04-08T13:45:39.516695+00:00",
+      "scores_by_level": {
+        "foundation": 7.3,
+        "working": 7.0,
+        "strategic": 7.0
+      }
     },
     {
       "id": "04.08",
