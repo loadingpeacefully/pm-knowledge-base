@@ -62,6 +62,13 @@ dashboard/index.html Lesson reader (3 levels, AI notes, search)
 
 **Mission control** — live ops view. Agent swarm panel shows which agents are active/queued/done with animated status. Content health panel shows all lesson scores with sparklines, sortable by score or module. Score delta flash when data updates. Lesson rows are clickable — full score breakdown, flags, and metadata slide in from the right.
 
+**Live (public):**
+→ https://loadingpeacefully.github.io/pm-knowledge-base/control/
+
+**Local only (lesson reader requires local server):**
+→ `python3 -m http.server 8080`
+→ `http://localhost:8080/dashboard/`
+
 ---
 
 ## What's coming next
