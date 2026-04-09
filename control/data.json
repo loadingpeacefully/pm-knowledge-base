@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-08T21:34:39.687929+00:00",
+  "generated_at": "2026-04-09T06:39:37.339055+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 78,
+    "lessons_scored": 79,
     "avg_score": 6.6,
-    "total_critical": 508,
-    "feedback_reports": 78,
+    "total_critical": 516,
+    "feedback_reports": 79,
     "modules_total": 9
   },
   "modules": [
@@ -598,7 +598,7 @@
           "id": "08.08",
           "title": "CRM & Sales Pipeline",
           "file": "08-gtm-and-growth/crm-and-sales-pipeline.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "gtm-lead"
         },
         {
@@ -2381,9 +2381,9 @@
       "module_id": "08",
       "module_title": "GTM & Growth",
       "file": "08-gtm-and-growth/crm-and-sales-pipeline.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "gtm-lead",
-      "word_count": 6142,
+      "word_count": 6309,
       "score": 5.1,
       "health": "NEEDS_WORK",
       "criticals": 12,
@@ -2405,7 +2405,19 @@
       "file": "08-gtm-and-growth/internationalization-and-localization.md",
       "status": "\u2014",
       "writer": "gtm-lead",
-      "word_count": 0
+      "word_count": 5020,
+      "score": 6.2,
+      "health": "NEEDS_WORK",
+      "criticals": 8,
+      "highs": 36,
+      "mediums": 50,
+      "run_formatter": true,
+      "last_run": "2026-04-09T06:39:37.157055+00:00",
+      "scores_by_level": {
+        "foundation": 7.0,
+        "working": 6.0,
+        "strategic": 5.3
+      }
     },
     {
       "id": "08.10",
