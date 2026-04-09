@@ -45,9 +45,9 @@ Getting it wrong has severe consequences. If a multi-tenant system has a bug in 
 
 ## F2 — What it is, and a way to think about it
 
-> **Multi-tenancy:** An architecture where a single instance of a software application serves multiple customers (tenants) simultaneously. Tenants share the same infrastructure (servers, database, application code) but their data is logically separated and inaccessible to each other.
-
 > **Tenant:** A customer, organization, or distinct user group that is a logical unit of isolation in the system. In B2B SaaS, each company is a tenant. In consumer apps with enterprise licensing, each company account is a tenant. In BrightChamps's Hub system, each geographic hub is effectively a tenant — with its own groups, teachers, and students that shouldn't be accessible to other hub administrators.
+
+> **Multi-tenancy:** An architecture where a single instance of a software application serves multiple tenants simultaneously. Tenants share the same infrastructure (servers, database, application code) but their data is logically separated and inaccessible to each other.
 
 > **Tenant isolation:** The set of controls that prevent one tenant from accessing another's data. In a correctly implemented multi-tenant system, every data access operation is checked against tenant identity: "does this user's tenant match the tenant of the resource they're requesting?"
 
@@ -69,7 +69,7 @@ Think of multi-tenancy like an apartment building:
 - **Tenants can only access their own unit** = tenant-scoped access
 - **A visitor to Apartment 5 can't enter Apartment 3** = shared infrastructure doesn't grant cross-tenant access
 
-The alternative — individual houses, one per tenant — achieves isolation through physical separation, but is **10x more expensive to maintain**.
+**The trade-off:** Individual houses (one per tenant) achieve isolation through physical separation, but cost **10x more to maintain**.
 
 ## F3 — When you'll encounter this as a PM
 
@@ -77,7 +77,10 @@ The alternative — individual houses, one per tenant — achieves isolation thr
 
 **The scenario:** Any product where organizations sign up and have internal members sharing data needs multi-tenancy.
 
-**Why it matters:** This determines the data model from day one — every table holding customer-specific data needs a tenant identifier, and every query needs to filter by that identifier.
+**Why it matters:** 
+- Determines the data model from day one
+- Every table holding customer-specific data needs a tenant identifier
+- Every query needs to filter by that identifier
 
 **The PM risk:** Adding a "share with team" feature to a product not designed for multi-tenancy may require engineering to retrofit tenant isolation into an existing data model — an expensive rework.
 
@@ -90,7 +93,7 @@ The alternative — individual houses, one per tenant — achieves isolation thr
 | Isolation Type | Answer | Who requires it |
 |---|---|---|
 | Row-level isolation | Shared database, filtered by tenant | Most B2B customers |
-| Physical separation | Isolated database per tenant | Many enterprise/regulated industries |
+| Physical separation | Isolated database per tenant | Enterprise/regulated industries |
 
 **The PM responsibility:** You must know your current architecture to answer accurately — the answer determines whether the customer signs.
 
@@ -101,20 +104,22 @@ The alternative — individual houses, one per tenant — achieves isolation thr
 ⚠️ **Critical scenario:** A bug in the authorization layer causes one tenant to see another's data.
 
 **What this means:**
-- This is not just a bug — it's a multi-tenancy failure
+- Not just a bug — it's a multi-tenancy failure
 - Specific type: Broken Access Control (OWASP #1)
-- It's a potential data breach for every tenant whose data was exposed
+- A potential data breach for every tenant whose data was exposed
 - **Associated consequences:** GDPR notification requirements
 
 ---
 
 ### Building hub or region-based product features
 
-**The example:** BrightChamps's Hub system is a multi-tenancy implementation where each physical or virtual hub is an isolated organizational unit.
+### BrightChamps — Hub-based multi-tenancy
 
-**Tenant isolation rule:** Hub-level admins can only access groups within their assigned hub scope.
+**What:** BrightChamps's Hub system is a multi-tenancy implementation where each physical or virtual hub is an isolated organizational unit.
 
-**The PM responsibility:** When adding features to the Hub system, ensure new data entities (new tables, new APIs) are scoped to a `hub_id` — otherwise you break tenant isolation.
+**Why:** Hub-level admins can only access groups within their assigned hub scope.
+
+**Takeaway:** When adding features to the Hub system, ensure new data entities (new tables, new APIs) are scoped to a `hub_id` — otherwise you break tenant isolation.
 # ═══════════════════════════════════
 # LEVEL 2 — WORKING KNOWLEDGE
 # ═══════════════════════════════════
@@ -141,7 +146,13 @@ SELECT * FROM students WHERE id = ?
 | Lowest cost per tenant | Every query must include the tenant filter — miss once and you've created cross-tenant data exposure |
 | Simplest to scale horizontally | Most vulnerable to authorization bugs |
 
-**BrightChamps example:** The Hub system uses this model. The `hubs` table has a `country_id` FK and hub-level admin scope — all hub data is associated with a hub entity, and admin access is restricted to assigned hubs. The `Group`, `Group-student-mapping`, and `GroupClassBalance` tables all chain back through `group_id → hub_id`. A query that returns group data must be scoped to the admin's assigned hub to maintain isolation.
+### Company — BrightChamps
+
+**What:** The Hub system uses this model with `tenant_id` equivalent through hub-level scope. The `hubs` table has a `country_id` FK and hub-level admin scope — all hub data is associated with a hub entity, and admin access is restricted to assigned hubs.
+
+**Why:** Chaining allows simple data association without complex schema design.
+
+**Takeaway:** `Group`, `Group-student-mapping`, and `GroupClassBalance` tables all chain back through `group_id → hub_id`. A query that returns group data must be scoped to the admin's assigned hub to maintain isolation.
 
 ---
 
@@ -169,6 +180,7 @@ Each tenant has their own physical database instance. Maximum isolation — one 
 | One tenant's database performance issues don't affect others | |
 
 **When this is required:**
+
 - HIPAA (healthcare data)
 - Financial services regulators in certain jurisdictions
 - Enterprise contracts with explicit data residency requirements
@@ -181,14 +193,20 @@ Each tenant has their own physical database instance. Maximum isolation — one 
 
 This happens more than engineers expect because:
 
-- **Complex JOINs** have more places to add (and forget) tenant filters
-- **Ad-hoc queries** written for a new feature may not go through the ORM that automatically adds tenant filters
-- **Background jobs** that process data across tenants may inadvertently expose cross-tenant data if not carefully scoped
-- **Resource ID parameters** (`GET /groups/{groupId}`) must verify the requesting user's hub matches the group's hub — not just that the user is authenticated
+- **Complex JOINs** — more places to add (and forget) tenant filters
+- **Ad-hoc queries** — written for a new feature may not go through the ORM that automatically adds tenant filters
+- **Background jobs** — that process data across tenants may inadvertently expose cross-tenant data if not carefully scoped
+- **Resource ID parameters** — (`GET /groups/{groupId}`) must verify the requesting user's hub matches the group's hub — not just that the user is authenticated
 
 > **Authorization in multi-tenancy:** Admin can only access resources within their assigned scope. This is not assumed — it must be tested and enforced.
 
-**BrightChamps Hub system example:** The security test scenario explicitly flags this: "Admin can only access hub groups within their assigned scope." This is a mandatory authorization requirement for the multi-tenant hub model.
+### Company — BrightChamps Hub system
+
+**What:** Security test explicitly requires: "Admin can only access hub groups within their assigned scope."
+
+**Why:** This is the critical authorization check for the multi-tenant hub model.
+
+**Takeaway:** This is a mandatory authorization requirement — not a nice-to-have feature.
 
 ---
 
@@ -217,7 +235,13 @@ The architecture overview KB describes BrightChamps as a single-tenant applicati
 | **Dronacharya** (Teacher service) | Teachers are assigned to hubs |
 | **Prashahak BE** (Admin backend) | Admin scope is hub-specific |
 
-**Multi-country deployment layer:** The India, Vietnam, Thailand deployment adds a second layer of isolation — each country's operations are effectively isolated at the Hub level, with `country_id` FK and `timezone_id` FK enabling per-hub configuration. This is multi-tenancy in practice — not separate installations per country, but logical isolation within a shared application.
+**Multi-country deployment layer:**
+
+The India, Vietnam, Thailand deployment adds a second layer of isolation — each country's operations are effectively isolated at the Hub level, with `country_id` FK and `timezone_id` FK enabling per-hub configuration. This is multi-tenancy in practice:
+
+- Not separate installations per country
+- Logical isolation within a shared application
+- Hub-level configuration enables region-specific behavior
 
 ## W2 — The decisions this forces
 
@@ -234,10 +258,16 @@ The choice of isolation model is one of the most consequential architectural dec
 
 ⚠️ **Migration cost warning:** Retrofitting shared-schema to per-tenant database typically takes 6–18 months and requires careful data migration with zero-downtime approaches.
 
-**Recommendation:** 
+**Recommendation:**
 - Start with shared schema if initial customer base is SMB/mid-market
 - Build a clear migration path to per-tenant schemas for future enterprise requirements
 - Document explicitly that the current model is shared-schema so sales doesn't overpromise isolation
+
+> **When to upgrade isolation model — concrete triggers:**
+> - ACV (annual contract value) per customer crosses **$50K** — enterprises at this price point typically expect contractual isolation
+> - You win a deal with explicit **HIPAA, SOC 2 Type II, or GDPR data residency** requirement
+> - Any single tenant's data volume exceeds **10% of total database size** — performance isolation becomes necessary
+> - A security audit flags **co-tenancy risk** in your compliance questionnaire
 
 ---
 
@@ -280,9 +310,11 @@ A shared-schema multi-tenant system has an advantage that isolated databases don
 - All access must be logged
 
 **Tenant admin vs super admin permissions**
-- **Hub-level admins:** See only their hub
-- **Platform admins:** See all hubs
-- Clear boundary prevents accidental cross-tenant exposure at the admin level
+
+| Permission Level | Scope | Notes |
+|---|---|---|
+| **Hub-level admin** | See only their hub | Prevents accidental cross-tenant exposure |
+| **Platform admin** | See all hubs | Clear boundary required for security |
 
 ## W3 — Questions to ask your engineering team
 
@@ -299,18 +331,22 @@ A shared-schema multi-tenant system has an advantage that isolated databases don
 
 ---
 
-**1. What is our multi-tenancy model — row-level shared schema, per-tenant schema, or per-tenant database — and is this documented?**
+### Question 1: Multi-tenancy model
 
-*What the answer reveals:* Whether the team has made a deliberate architectural decision.
+**What is our multi-tenancy model — row-level shared schema, per-tenant schema, or per-tenant database — and is this documented?**
+
+*What this reveals:* Whether the team has made a deliberate architectural decision.
 
 - ✅ **"We add tenant_id to tables"** → Row-level shared schema chosen intentionally
 - ⚠️ **"I'm not sure"** → Model evolved organically; tenant isolation may be inconsistently implemented across the codebase
 
 ---
 
-**2. How do we prevent a missing tenant filter from causing cross-tenant data exposure — is there a code-level control or is it purely code review discipline?**
+### Question 2: Tenant filter enforcement
 
-*What the answer reveals:* The reliability of tenant isolation.
+**How do we prevent a missing tenant filter from causing cross-tenant data exposure — is there a code-level control or is it purely code review discipline?**
+
+*What this reveals:* The reliability of tenant isolation.
 
 | Approach | Safety Level | Notes |
 |----------|--------------|-------|
@@ -319,22 +355,26 @@ A shared-schema multi-tenant system has an advantage that isolated databases don
 
 ---
 
-**3. Can you show me the test coverage for cross-tenant access scenarios — specifically tests that verify a user from tenant A cannot access tenant B's data?**
+### Question 3: Cross-tenant test coverage
 
-*What the answer reveals:* Whether tenant isolation is actively verified.
+**Can you show me the test coverage for cross-tenant access scenarios — specifically tests that verify a user from tenant A cannot access tenant B's data?**
+
+*What this reveals:* Whether tenant isolation is actively verified.
 
 ⚠️ **This is one of the most important test categories in a multi-tenant system and is often thin or absent.**
 
-Correct answer includes:
+**Correct answer includes:**
 - Specific test suites named
 - Two tenants created in test setup
 - Verification that data from one tenant cannot be accessed via the other's authenticated session
 
 ---
 
-**4. What happens when an admin at the hub level queries the API — is the tenant scope enforced server-side or client-side?**
+### Question 4: Admin query scope enforcement
 
-*What the answer reveals:* Server-side vs. client-side tenant enforcement.
+**What happens when an admin at the hub level queries the API — is the tenant scope enforced server-side or client-side?**
+
+*What this reveals:* Server-side vs. client-side tenant enforcement.
 
 | Enforcement Type | Security Level | Risk |
 |------------------|-----------------|------|
@@ -343,9 +383,11 @@ Correct answer includes:
 
 ---
 
-**5. For enterprise prospects asking about data isolation — what is the honest answer we give them about where their data lives relative to other customers' data?**
+### Question 5: Enterprise data isolation messaging
 
-*What the answer reveals:* Whether sales and engineering teams are aligned on the current isolation model.
+**For enterprise prospects asking about data isolation — what is the honest answer we give them about where their data lives relative to other customers' data?**
+
+*What this reveals:* Whether sales and engineering teams are aligned on the current isolation model.
 
 > **Principle:** Answer must be consistent, accurate, and not overpromise.
 
@@ -358,9 +400,11 @@ Correct answer includes:
 
 ---
 
-**6. Do we have per-tenant configuration — different features, limits, or compliance settings per hub or customer — and how is this managed?**
+### Question 6: Per-tenant configuration
 
-*What the answer reveals:* The maturity of the multi-tenancy implementation.
+**Do we have per-tenant configuration — different features, limits, or compliance settings per hub or customer — and how is this managed?**
+
+*What this reveals:* The maturity of the multi-tenancy implementation.
 
 **Mature implementation:**
 - References Hub_package vs otm_package (different class balance logic per tenant)
@@ -374,9 +418,11 @@ Correct answer includes:
 
 ---
 
-**7. If we needed to give an enterprise customer their own isolated database, how long would that migration take and what's the data migration path?**
+### Question 7: Isolated database migration path
 
-*What the answer reveals:* Future architectural flexibility.
+**If we needed to give an enterprise customer their own isolated database, how long would that migration take and what's the data migration path?**
+
+*What this reveals:* Future architectural flexibility.
 
 | Response | Interpretation |
 |----------|-----------------|
@@ -448,7 +494,7 @@ Correct answer includes:
 
 > **Cross-tenant leakage:** Unauthorized access to another tenant's data due to bypassed query scoping
 
-**For PMs:**
+**⚠️ For PMs:**
 - Tenant isolation must be caught by **testing, not customers**
 - Security tests verifying tenant isolation are non-negotiable parts of test suites
 
@@ -468,7 +514,7 @@ Correct answer includes:
 | 1,000 tenants | Monitoring 1,000 databases | Ongoing operational overhead |
 | 1,000 tenants | Backup infrastructure across isolated instances | Scaling complexity |
 
-**For PMs:**
+**⚠️ For PMs:**
 - Per-tenant database isolation is a competitive commitment with a long operational tail
 - **Size your infrastructure team before making the commitment**
 
@@ -490,28 +536,33 @@ Correct answer includes:
 
 > **Tenant-level resource isolation:** Guaranteed resource allocation per tenant to prevent single-tenant overuse from affecting platform performance
 
-**For PMs:**
+**⚠️ For PMs:**
 - Shared multi-tenant infrastructure **requires per-tenant resource isolation controls**
 - These controls belong in product specs for enterprise SLA guarantees
 
 ## S2 — How this connects to the bigger system
 
 ### Authentication vs Authorization (09.01)
-Tenant isolation is an **authorization problem**: every data access must verify the requesting user's tenant matches the resource's tenant.
+
+> **Tenant isolation:** An authorization problem where every data access must verify the requesting user's tenant matches the resource's tenant.
 
 ⚠️ **Critical Risk:** OWASP #1 (Broken Access Control) failure mode in multi-tenant systems is a missing tenant check in an authorization path — exactly the type of authorization failure described in 09.01.
 
 ---
 
 ### Schema Design Basics (02.07)
-Multi-tenancy is implemented at the **schema level**: every entity table needs a `tenant_id` FK, and foreign key chains must be scoped to the same tenant.
 
-> **Tenant-scoped schema design** is the most important application of schema design principles in B2B products.
+Multi-tenancy is implemented at the **schema level**:
+- Every entity table needs a `tenant_id` foreign key
+- Foreign key chains must be scoped to the same tenant
+
+> **Tenant-scoped schema design:** The most important application of schema design principles in B2B products.
 
 ---
 
 ### Feature Flags (03.10)
-**Per-tenant feature gates** — enabling or disabling features for specific tenants — are the primary customization mechanism in multi-tenant SaaS.
+
+> **Per-tenant feature gates:** Enabling or disabling features for specific tenants — the primary customization mechanism in multi-tenant SaaS.
 
 | Use Case | Benefit |
 |---|---|
@@ -521,21 +572,26 @@ Multi-tenancy is implemented at the **schema level**: every entity table needs a
 ---
 
 ### GDPR & Data Privacy (09.02)
+
 Multi-tenancy isolation enables two critical regulatory requirements:
 
-1. **Per-tenant data residency** — EU customers' data stays in EU
-2. **Right to erasure** — Delete one tenant's data without affecting others
+| Requirement | What it means |
+|---|---|
+| **Per-tenant data residency** | EU customers' data stays in EU |
+| **Right to erasure** | Delete one tenant's data without affecting others |
 
 ⚠️ **Compliance Requirement:** GDPR's accountability principle requires PMs to demonstrate tenant data isolation to regulators.
 
 ---
 
 ### Caching (Redis) (02.04)
+
 Caching in multi-tenant systems requires **tenant-scoped cache keys**.
 
 | ❌ Wrong | ✅ Right |
 |---|---|
-| `user_profile:{userId}` (returns same data to all tenants) | `user_profile:{tenantId}:{userId}` (tenant-isolated) |
+| `user_profile:{userId}` | `user_profile:{tenantId}:{userId}` |
+| Returns same data to all tenants | Tenant-isolated |
 
 ⚠️ **Common Leak Vector:** Cross-tenant data leakage occurs in systems that add caching to existing queries without considering tenant scoping.
 
@@ -548,13 +604,15 @@ Caching in multi-tenant systems requires **tenant-scoped cache keys**.
 | **Per-tenant database isolation** | "Your data is in its own database" | High operational overhead; strong barrier to entry | Salesforce, Microsoft Azure SaaS products |
 | **Logical isolation + certifications** | SOC 2 Type II compliance signals appropriate controls | Lower overhead; security-first positioning | Notion, Figma, Linear |
 
-> **The core tension:** Enterprise procurement teams specifically ask about physical data separation on security questionnaires. Per-tenant isolation closes deals that logical isolation cannot—but at what operational cost?
+> **Data isolation:** The degree to which one customer's data is physically or logically separated from another customer's data within a multi-tenant system.
 
-**For senior PMs:** This is fundamentally a *market positioning question disguised as an infrastructure question.* 
+**The core tension:** Enterprise procurement teams specifically ask about physical data separation on security questionnaires. Per-tenant isolation closes deals that logical isolation cannot—but at what operational cost?
 
-1. Define which enterprise segments you're targeting
-2. Work backwards to the isolation model that closes *those specific deals*
-3. Recognize that infrastructure choices become competitive moats (or millstones)
+**For senior PMs:**
+- This is fundamentally a *market positioning question disguised as an infrastructure question*
+- Define which enterprise segments you're targeting
+- Work backwards to the isolation model that closes *those specific deals*
+- Recognize that infrastructure choices become competitive moats (or millstones)
 
 ---
 
@@ -575,7 +633,7 @@ Caching in multi-tenant systems requires **tenant-scoped cache keys**.
 
 **Current market reality:** Regulated industries (healthcare, legal, financial services) are *already requiring per-tenant model training for AI features* as a condition of enterprise deals.
 
-> **What this reveals:** AI-native products face the 2024–2026 frontier of multi-tenancy design. This is not hypothetical—it's a deal blocker *now* in regulated verticals.
+*What this reveals:* AI-native products face the 2024–2026 frontier of multi-tenancy design. This is not hypothetical—it's a deal blocker *now* in regulated verticals.
 
 ---
 
@@ -591,7 +649,13 @@ Caching in multi-tenant systems requires **tenant-scoped cache keys**.
 
 **The critical clarification for sales:** "White-label" means *very different things* in sales conversations.
 
-- **Custom branding** = achievable through tenant-level CSS configuration
-- **True product isolation** = separate tenant layer requiring substantial engineering
+**Custom branding**
+- Achievable through tenant-level CSS configuration
+- Lower implementation cost
 
-These look identical to channel partners but have dramatically different implementation costs.
+**True product isolation**
+- Separate tenant layer requiring substantial engineering
+- Separate domain, separate branding, no visible platform connection
+- Higher implementation cost
+
+*What this reveals:* These look identical to channel partners but have dramatically different implementation costs. Clarifying which definition applies saves months of misalignment.
