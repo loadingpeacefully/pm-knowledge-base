@@ -152,3 +152,13 @@ _Updated: 2026-04-09 (session 6). Update at end of every session._
 - [x] Architecture v2 migration — all config files, 4 lesson rewrites, dashboard update (2026-04-06)
 - [x] Write: Idempotency (01.05) — v2, ready, 0 Critical/High (2026-04-06)
 - [x] Write: API Versioning (01.06) — v2, ready, 0 Critical/High (2026-04-06)
+
+
+## TODO: Split CRM lesson
+- Split 08.X CRM & Sales Pipeline (857 lines) at W1 boundary
+- Lesson A: CRM Fundamentals (F1-W1) — concepts, PM encounters, mechanism
+- Lesson B: Sales Pipeline Integration (W2-S3) — decisions, eng questions, company cards
+- Update _CONCEPT_INDEX.md with two new IDs
+- Delete original, run swarm on both
+- Expected score: 6.5+ on both without artifact depression
+Date flagged: April 9, 2026
