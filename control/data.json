@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-09T10:33:31.093155+00:00",
+  "generated_at": "2026-04-09T10:40:45.320011+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 87,
+    "lessons_scored": 88,
     "avg_score": 6.5,
-    "total_critical": 590,
-    "feedback_reports": 87,
+    "total_critical": 598,
+    "feedback_reports": 88,
     "modules_total": 9
   },
   "modules": [
@@ -667,7 +667,7 @@
           "id": "09.07",
           "title": "Penetration Testing & Bug Bounty",
           "file": "09-security-and-scale/penetration-testing-and-bug-bounty.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "staff-engineer-pm"
         },
         {
@@ -2579,9 +2579,9 @@
       "module_id": "09",
       "module_title": "Security, Compliance & Scale",
       "file": "09-security-and-scale/penetration-testing-and-bug-bounty.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "staff-engineer-pm",
-      "word_count": 4571,
+      "word_count": 4463,
       "score": 5.8,
       "health": "NEEDS_WORK",
       "criticals": 6,
@@ -2603,7 +2603,19 @@
       "file": "09-security-and-scale/accessibility.md",
       "status": "\u2014",
       "writer": "staff-engineer-pm",
-      "word_count": 0
+      "word_count": 4804,
+      "score": 6.1,
+      "health": "NEEDS_WORK",
+      "criticals": 8,
+      "highs": 37,
+      "mediums": 55,
+      "run_formatter": true,
+      "last_run": "2026-04-09T10:40:45.122926+00:00",
+      "scores_by_level": {
+        "foundation": 7.0,
+        "working": 6.0,
+        "strategic": 5.0
+      }
     }
   ],
   "agents": [
