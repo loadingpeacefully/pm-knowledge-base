@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-09T06:46:26.703179+00:00",
+  "generated_at": "2026-04-09T06:53:41.577947+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 80,
+    "lessons_scored": 81,
     "avg_score": 6.6,
-    "total_critical": 526,
-    "feedback_reports": 80,
+    "total_critical": 535,
+    "feedback_reports": 81,
     "modules_total": 9
   },
   "modules": [
@@ -612,7 +612,7 @@
           "id": "08.10",
           "title": "Competitive Benchmarking",
           "file": "08-gtm-and-growth/competitive-benchmarking.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "gtm-lead"
         }
       ]
@@ -2425,9 +2425,9 @@
       "module_id": "08",
       "module_title": "GTM & Growth",
       "file": "08-gtm-and-growth/competitive-benchmarking.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "gtm-lead",
-      "word_count": 4717,
+      "word_count": 5133,
       "score": 6.0,
       "health": "NEEDS_WORK",
       "criticals": 10,
@@ -2449,7 +2449,19 @@
       "file": "09-security-and-scale/authentication-vs-authorization.md",
       "status": "\u2014",
       "writer": "staff-engineer-pm",
-      "word_count": 0
+      "word_count": 4913,
+      "score": 6.0,
+      "health": "NEEDS_WORK",
+      "criticals": 9,
+      "highs": 48,
+      "mediums": 65,
+      "run_formatter": true,
+      "last_run": "2026-04-09T06:53:41.393947+00:00",
+      "scores_by_level": {
+        "foundation": 7.0,
+        "working": 6.0,
+        "strategic": 5.0
+      }
     },
     {
       "id": "09.02",
