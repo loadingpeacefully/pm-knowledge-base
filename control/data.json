@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-09T10:20:33.980123+00:00",
+  "generated_at": "2026-04-09T10:27:18.611353+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 85,
+    "lessons_scored": 86,
     "avg_score": 6.5,
-    "total_critical": 579,
-    "feedback_reports": 85,
+    "total_critical": 588,
+    "feedback_reports": 86,
     "modules_total": 9
   },
   "modules": [
@@ -653,7 +653,7 @@
           "id": "09.05",
           "title": "Incident Management",
           "file": "09-security-and-scale/incident-management.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "staff-engineer-pm"
         },
         {
@@ -2535,9 +2535,9 @@
       "module_id": "09",
       "module_title": "Security, Compliance & Scale",
       "file": "09-security-and-scale/incident-management.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "staff-engineer-pm",
-      "word_count": 4701,
+      "word_count": 4826,
       "score": 5.4,
       "health": "NEEDS_WORK",
       "criticals": 13,
@@ -2559,7 +2559,19 @@
       "file": "09-security-and-scale/multi-tenancy.md",
       "status": "\u2014",
       "writer": "staff-engineer-pm",
-      "word_count": 0
+      "word_count": 4777,
+      "score": 5.7,
+      "health": "NEEDS_WORK",
+      "criticals": 9,
+      "highs": 30,
+      "mediums": 42,
+      "run_formatter": true,
+      "last_run": "2026-04-09T10:27:18.409420+00:00",
+      "scores_by_level": {
+        "foundation": 6.7,
+        "working": 5.0,
+        "strategic": 4.5
+      }
     },
     {
       "id": "09.07",
