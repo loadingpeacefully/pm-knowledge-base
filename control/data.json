@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-09T06:53:41.577947+00:00",
+  "generated_at": "2026-04-09T07:01:27.840772+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 81,
+    "lessons_scored": 82,
     "avg_score": 6.6,
-    "total_critical": 535,
-    "feedback_reports": 81,
+    "total_critical": 545,
+    "feedback_reports": 82,
     "modules_total": 9
   },
   "modules": [
@@ -625,7 +625,7 @@
           "id": "09.01",
           "title": "Authentication vs Authorization",
           "file": "09-security-and-scale/authentication-vs-authorization.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "staff-engineer-pm"
         },
         {
@@ -2447,9 +2447,9 @@
       "module_id": "09",
       "module_title": "Security, Compliance & Scale",
       "file": "09-security-and-scale/authentication-vs-authorization.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "staff-engineer-pm",
-      "word_count": 4913,
+      "word_count": 5344,
       "score": 6.0,
       "health": "NEEDS_WORK",
       "criticals": 9,
@@ -2471,7 +2471,19 @@
       "file": "09-security-and-scale/gdpr-and-data-privacy.md",
       "status": "\u2014",
       "writer": "staff-engineer-pm",
-      "word_count": 0
+      "word_count": 4958,
+      "score": 6.0,
+      "health": "NEEDS_WORK",
+      "criticals": 10,
+      "highs": 34,
+      "mediums": 39,
+      "run_formatter": true,
+      "last_run": "2026-04-09T07:01:27.655077+00:00",
+      "scores_by_level": {
+        "foundation": 6.7,
+        "working": 6.0,
+        "strategic": 4.5
+      }
     },
     {
       "id": "09.03",
