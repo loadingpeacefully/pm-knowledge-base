@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-04-09T11:50:25.267935+00:00",
+  "generated_at": "2026-04-09T11:54:47.640097+00:00",
   "summary": {
     "total_lessons": 88,
     "lessons_scored": 88,
     "avg_score": 6.5,
-    "total_critical": 599,
+    "total_critical": 596,
     "feedback_reports": 88,
     "modules_total": 9
   },
@@ -2515,18 +2515,18 @@
       "file": "09-security-and-scale/scalability-patterns.md",
       "status": "ready",
       "writer": "staff-engineer-pm",
-      "word_count": 4849,
-      "score": 5.6,
+      "word_count": 5145,
+      "score": 6.0,
       "health": "NEEDS_WORK",
-      "criticals": 13,
-      "highs": 41,
-      "mediums": 86,
+      "criticals": 10,
+      "highs": 37,
+      "mediums": 53,
       "run_formatter": true,
-      "last_run": "2026-04-09T09:59:12.021909+00:00",
+      "last_run": "2026-04-09T11:54:47.421735+00:00",
       "scores_by_level": {
-        "foundation": 6.3,
+        "foundation": 6.7,
         "working": 6.0,
-        "strategic": 4.7
+        "strategic": 4.5
       }
     },
     {
