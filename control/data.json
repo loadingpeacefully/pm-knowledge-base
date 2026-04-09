@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-09T09:59:12.209492+00:00",
+  "generated_at": "2026-04-09T10:20:33.980123+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 84,
+    "lessons_scored": 85,
     "avg_score": 6.5,
-    "total_critical": 566,
-    "feedback_reports": 84,
+    "total_critical": 579,
+    "feedback_reports": 85,
     "modules_total": 9
   },
   "modules": [
@@ -646,7 +646,7 @@
           "id": "09.04",
           "title": "Scalability Patterns",
           "file": "09-security-and-scale/scalability-patterns.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "staff-engineer-pm"
         },
         {
@@ -2513,9 +2513,9 @@
       "module_id": "09",
       "module_title": "Security, Compliance & Scale",
       "file": "09-security-and-scale/scalability-patterns.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "staff-engineer-pm",
-      "word_count": 4546,
+      "word_count": 4849,
       "score": 5.6,
       "health": "NEEDS_WORK",
       "criticals": 13,
@@ -2537,7 +2537,19 @@
       "file": "09-security-and-scale/incident-management.md",
       "status": "\u2014",
       "writer": "staff-engineer-pm",
-      "word_count": 0
+      "word_count": 4701,
+      "score": 5.4,
+      "health": "NEEDS_WORK",
+      "criticals": 13,
+      "highs": 37,
+      "mediums": 43,
+      "run_formatter": true,
+      "last_run": "2026-04-09T10:20:33.792766+00:00",
+      "scores_by_level": {
+        "foundation": 6.0,
+        "working": 5.0,
+        "strategic": 5.0
+      }
     },
     {
       "id": "09.06",
