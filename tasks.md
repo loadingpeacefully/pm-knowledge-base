@@ -182,3 +182,14 @@ context that makes W2 decisions legible. Without it, Lesson B
 opens cold on 'Decision 1: Build vs Buy' with no grounding.
 
 Date: April 9, 2026
+## CRM Split — Lesson B orientation header
+Add at top of W1 in Lesson B (Sales Pipeline Integration):
+
+> **Before this lesson:** Covers W2–S3 decisions and integrations.
+> If you haven't read CRM Fundamentals (08.09), start there —
+> it covers how CRM data flows, which W2 decisions assume.
+
+Keep it one callout block, not a summary. The goal is a redirect
+pointer, not duplicate Foundation content.
+
+Date: April 9, 2026
