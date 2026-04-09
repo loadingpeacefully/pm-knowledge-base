@@ -56,7 +56,9 @@ For product managers, the CRM can seem like a sales team's tool — not product'
 >
 > *Example: A parent who books a demo class at BrightChamps is a lead — they've expressed interest but haven't yet paid.*
 
-> **Deal (or Opportunity):** A potential sale that has been qualified and is actively being worked by a sales representative.
+> **Qualification:** The process of confirming a lead is worth pursuing — the sales team has verified the prospect has a genuine need, real budget, and decision-making authority. Unqualified leads waste sales capacity; over-qualifying loses real buyers.
+
+> **Deal (or Opportunity):** A potential sale from a lead who has been qualified and is actively being worked by a sales representative.
 >
 > *Example: After a demo is completed at BrightChamps, the lead is converted to a deal — the sales manager now works to close it.*
 
@@ -102,7 +104,9 @@ When the security line backs up (demo-to-payment conversion is slow), the airpor
 
 ### Building product events that feed the CRM
 
-Every key product moment — a teacher submitting demo feedback, a parent completing payment, a student finishing a class — can automatically update the CRM. Behind the scenes, the product system sends a signal to the CRM when these moments happen. The PM who designs what happens at demo completion or payment is indirectly deciding what data enters the CRM.
+Every key product moment — a teacher submitting demo feedback, a parent completing payment, a student finishing a class — can automatically update the CRM. Behind the scenes, the product system sends a **signal** (an automated data message triggered by a user action) to the CRM when these moments happen. The PM who designs what happens at demo completion or payment is indirectly deciding what data enters the CRM.
+
+> **Signal:** An automated data message triggered by a user action that flows from the product system to the CRM.
 
 #### BrightChamps — Automatic deal creation from product events
 
@@ -388,9 +392,11 @@ The renewal trigger timing is one of the highest-leverage PM decisions in the re
 
 > **Testable hypothesis:** The 30-day subscription window directly affects renewal rate. A/B test different windows (45 days vs. 30 days vs. 21 days) to measure Closed Won rate impact. Does earlier triggering help because SMs get more time? Or does later triggering work better because parents feel urgency?
 
+```markdown
 ## W3 — Questions to ask your engineering team
 
 ### Quick Reference: Critical Questions by Risk Area
+
 | Area | Question | Why It Matters |
 |------|----------|----------------|
 | **Data Coverage** | Q1: Event triggers | Silent churn from incomplete automation |
@@ -404,63 +410,65 @@ The renewal trigger timing is one of the highest-leverage PM decisions in the re
 
 ---
 
-### **Q1: Event trigger coverage**
+### Q1: Event trigger coverage
 
-**Question:**  
+**The Question**  
 "What events trigger CRM lead and deal creation — and are there any product events that don't trigger a CRM update?"
 
 *What this reveals:* Whether the CRM automation has gaps (new class types not covered, edge case class completions not handled).
 
-**Why this matters:**  
+**Why this matters**  
 Missing event coverage means silent churn — students or leads falling out of the pipeline without the sales team knowing.
 
 ---
 
-### **Q2: API failure handling**
+### Q2: API failure handling
 
-**Question:**  
+**The Question**  
 "What happens when a Zoho CRM API call fails — is there a retry mechanism, and do we alert on failures?"
 
 *What this reveals:* The reliability of the sales pipeline data.
 
-⚠️ **Known issue:** BrightChamps's technical debt includes no documented retry on Zoho upsert failure. A failed CRM update means the deal is stuck at the wrong stage indefinitely.
+⚠️ **Known Issue**
+BrightChamps's technical debt includes no documented retry on Zoho upsert failure. A failed CRM update means the deal is stuck at the wrong stage indefinitely.
 
 ---
 
-### **Q3: Concurrent lead claiming**
+### Q3: Concurrent lead claiming
 
-**Question:**  
+**The Question**  
 "How does the hot lead routing system handle concurrent claims — can two SMs claim the same lead simultaneously?"
 
 *What this reveals:* Whether concurrency protection is correctly implemented.
 
-**Why this matters:**  
+**Why this matters**  
 Concurrency issues in sales systems create deal ownership conflicts with direct revenue impact.
 
 > **Test case validation:** BrightChamps documentation mentions "two SMs claim simultaneously — only first succeeds." Confirm this is implemented correctly as a product quality issue.
 
 ---
 
-### **Q4: Renewal lead deduplication**
+### Q4: Renewal lead deduplication
 
-**Question:**  
+**The Question**  
 "What is the deduplication logic for renewal leads — and what happens when a student triggers multiple renewal conditions simultaneously (credits ≤ 6 AND subscription ending in 30 days)?"
 
 *What this reveals:* Whether duplicate lead flooding is a risk.
 
-> **BrightChamps deduplication key:** Student × Course × Class Type × Cycle Count  
-> **Expected behavior:** If both triggers fire for the same student in the same cycle, only one renewal lead should be created.
+> **Deduplication Key:** Student × Course × Class Type × Cycle Count
+
+**Expected behavior:** If both triggers fire for the same student in the same cycle, only one renewal lead should be created.
 
 ---
 
-### **Q5: Demo-to-deal latency**
+### Q5: Demo-to-deal latency
 
-**Question:**  
+**The Question**  
 "What is the current latency between a demo completing and the CRM deal being created — and what's the P95 latency?"
 
 *What this reveals:* Tail latency — occasionally slow updates that affect outreach timing.
 
-**Why this matters:**
+**Why this matters**
 
 | Impact | Detail |
 |--------|--------|
@@ -470,43 +478,48 @@ Concurrency issues in sales systems create deal ownership conflicts with direct 
 
 ---
 
-### **Q6: Sales pipeline test coverage**
+### Q6: Sales pipeline test coverage
 
-**Question:**  
+**The Question**  
 "Are there automated tests for the sales pipeline event chain — and when did the tests last pass?"
 
 *What this reveals:* The fragility of this critical revenue path.
 
-⚠️ **Risk:** Complex async event chains (SNS → SQS → Lambda → CRM) are easy to break with infrastructure changes. A Lambda timeout or Zoho API schema change could silently break deal creation for days.
+⚠️ **Risk**
+Complex async event chains (SNS → SQS → Lambda → CRM) are easy to break with infrastructure changes. A Lambda timeout or Zoho API schema change could silently break deal creation for days.
 
 ---
 
-### **Q7: Multi-course renewal leads**
+### Q7: Multi-course renewal leads
 
-**Question:**  
+**The Question**  
 "How does the renewal CRM handle a student with multiple active courses — and does each course get its own renewal lead?"
 
 *What this reveals:* Whether SMs understand their lead structure for complex accounts.
 
-> **BrightChamps design:** Renewal CRM uses "Student × Course" as part of the unique key → separate renewal leads per course  
-> **Implication:** An SM working a multi-course student may have 3 renewal leads for the same parent. This is correct for tracking but requires the SM to understand they're managing the same parent across multiple leads.
+> **Design Pattern:** Renewal CRM uses "Student × Course" as part of the unique key → separate renewal leads per course
+
+**Implication:** An SM working a multi-course student may have 3 renewal leads for the same parent. This is correct for tracking but requires the SM to understand they're managing the same parent across multiple leads.
 
 ---
 
-### **Q8: Zoho API rate limits at scale**
+### Q8: Zoho API rate limits at scale
 
-**Question:**  
+**The Question**  
 "What is our Zoho CRM API rate limit — and what happens during peak renewal processing (end-of-month bulk triggers)?"
 
 *What this reveals:* Bottlenecks during peak processing that delay lead distribution.
 
-⚠️ **Known bottleneck (thundering herd):**
+⚠️ **Known Bottleneck: Thundering Herd**
 
-- **Trigger time:** Renewal cron runs at 07:50 UTC
-- **Batch size:** Processes all students with subscriptions ending in 30 days simultaneously
-- **Example:** 500 students trigger at once = 500 Zoho API calls
-- **Rate limit constraint:** If Zoho rate limit is 100 calls/minute, batch takes 5 minutes minimum
-- **Result:** SMs don't receive renewal leads until the queue clears
+| Factor | Detail |
+|--------|--------|
+| **Trigger time** | Renewal cron runs at 07:50 UTC |
+| **Batch size** | Processes all students with subscriptions ending in 30 days simultaneously |
+| **Example volume** | 500 students trigger at once = 500 Zoho API calls |
+| **Rate limit constraint** | If Zoho rate limit is 100 calls/minute, batch takes 5 minutes minimum |
+| **Result** | SMs don't receive renewal leads until the queue clears |
+```
 
 ## W4 — Real product examples
 
@@ -547,19 +560,16 @@ Concurrency issues in sales systems create deal ownership conflicts with direct 
 
 **What:** Cloud-based CRM (launched 1999) that evolved from sales pipeline tool into $35B revenue platform spanning CRM, marketing automation, analytics, and AI.
 
-**The PM lesson:**
-
-> **Insight:** CRM data is the foundation for a platform, not just a sales tool.
+> **The PM lesson:** CRM data is the foundation for a platform, not just a sales tool.
 
 When every customer interaction is structured and queryable, you unlock:
+
 - **Automated workflows** — triggered by pipeline stage changes
 - **Analytics & forecasting** — pipeline velocity, win rates
 - **AI recommendations** — lead prioritization, messaging
 - **Business integrations** — every downstream tool
 
 **Revenue intelligence questions enabled:**
-
-A well-instrumented CRM unlocks:
 
 - Which course vertical has the highest Closed Won rate?
 - Which SM has the highest conversion rate for hot leads?
@@ -663,7 +673,7 @@ Sales teams discover that pipeline stage advancement affects their visibility wi
 
 ### The Zoho API fragility under load
 
-BrightChamps's renewal CRM processes all 30-day-ending subscriptions in a single daily batch at 07:50 UTC. If 500 students trigger simultaneously, the SQS queue fills with 500 messages. 
+BrightChamps's renewal CRM processes all 30-day-ending subscriptions in a single daily batch at 07:50 UTC. If 500 students trigger simultaneously, the SQS queue fills with 500 messages.
 
 **Current bottleneck:**
 
@@ -716,6 +726,8 @@ Implement **quarterly audits** of dialer integration completeness. The BrightCha
 - Trigger investigation and remediation
 
 ## S2 — How this connects to the bigger system
+
+### System connections at a glance
 
 | Concept | Connection |
 |---|---|
@@ -787,6 +799,8 @@ Without CRM data, this hypothesis cannot be tested or proven.
 2. **Predictive accuracy** — AI-driven lead scoring and close probability outperforms rule-based systems
 
 #### EdTech example
+
+### EdTech — AI engagement scoring
 
 **What:** AI listens to demo class recordings and automatically scores parent engagement (sentiment analysis, questions asked, voice enthusiasm) → replaces/augments teacher's manual "hot lead" flag
 
