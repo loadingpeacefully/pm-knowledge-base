@@ -162,3 +162,23 @@ _Updated: 2026-04-09 (session 6). Update at end of every session._
 - Delete original, run swarm on both
 - Expected score: 6.5+ on both without artifact depression
 Date flagged: April 9, 2026
+## CRM Split — Architecture Notes
+When splitting 08.X CRM & Sales Pipeline:
+
+Lesson A (CRM Fundamentals):
+- Contains: F1, F2, F3, W1 (mechanism — how CRM data flows)
+- Prereqs: none
+- ID: 08.09 (or next available in module 08)
+
+Lesson B (Sales Pipeline Integration):  
+- Contains: W2, W3, W4, S1, S2, S3
+- Prereqs: 08.09 CRM Fundamentals
+- Add to frontmatter: prereqs: [08.09]
+- F1/F2/F3 not duplicated — readers come from Lesson A
+
+Boundary decision: W1 stays in Lesson A because the mechanism
+(how CRM actually stores and retrieves data) is foundational
+context that makes W2 decisions legible. Without it, Lesson B
+opens cold on 'Decision 1: Build vs Buy' with no grounding.
+
+Date: April 9, 2026
