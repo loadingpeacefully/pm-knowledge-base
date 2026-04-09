@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-04-09T16:06:20.227626+00:00",
+  "generated_at": "2026-04-09T16:09:50.216551+00:00",
   "summary": {
     "total_lessons": 88,
     "lessons_scored": 88,
     "avg_score": 6.5,
-    "total_critical": 598,
+    "total_critical": 597,
     "feedback_reports": 88,
     "modules_total": 9
   },
@@ -2273,18 +2273,18 @@
       "file": "08-gtm-and-growth/growth-loops.md",
       "status": "ready",
       "writer": "gtm-lead",
-      "word_count": 6965,
-      "score": 5.8,
+      "word_count": 7192,
+      "score": 6.2,
       "health": "NEEDS_WORK",
-      "criticals": 10,
-      "highs": 40,
-      "mediums": 52,
+      "criticals": 9,
+      "highs": 36,
+      "mediums": 46,
       "run_formatter": true,
-      "last_run": "2026-04-08T20:48:09.057760+00:00",
+      "last_run": "2026-04-09T16:09:50.013706+00:00",
       "scores_by_level": {
-        "foundation": 6.7,
-        "working": 5.8,
-        "strategic": 5.3
+        "foundation": 7.0,
+        "working": 6.3,
+        "strategic": 4.5
       }
     },
     {
