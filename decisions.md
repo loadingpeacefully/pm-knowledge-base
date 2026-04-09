@@ -81,3 +81,36 @@ not a template failure — it reflects honest domain differences. Threshold for 
 **Structural anomaly fixed in record:** `api-versioning.md` has duplicate F3 headings
 (analogy given its own F3 instead of living in F2). Not worth fixing in the file — it renders
 correctly in dashboard. But the template now explicitly says: analogy belongs inside F2.
+
+## 2026-04-09 — Swarm scoring artifact on long lessons (>600 lines)
+
+**Finding:** Lessons with 6 level markers and >600 lines show systematically depressed Strategic
+scores. Agents hit context limits before reaching S1–S3, so they report "Strategic level missing"
+or "S1/S2/S3 absent" as CRITICAL flags — even when `grep -c "═══"` = 6 confirms the structure
+is complete.
+
+**Verification protocol:** Before treating any Strategic-level critique as a real issue, run:
+```bash
+grep -c "═══" <lesson-file>
+```
+If result = 6, all critiques of "missing S1/S2/S3" or "Strategic sections absent" are 100%
+display artifacts and should be skipped.
+
+**Score interpretation rule:**
+- Foundation scores: reliable (agents always see this level)
+- Working Knowledge scores: partially reliable
+- Strategic scores on lessons >600 lines: depressed by artifact; treat with skepticism
+- Aggregate score on long lessons: artificially low; real quality is higher than measured
+
+**Affected lessons confirmed:** Data Quality & Pipelines (603 lines), CRM & Sales Pipeline
+(824 lines post-formatter), Scalability Patterns, others likely in the 600+ tier.
+
+**Root cause:** pm_swarm.py passes the full lesson to each agent. Haiku's effective context
+window processes Foundation completely and Working partially, leaving Strategic unreached.
+
+**Mitigation options (not yet implemented):**
+1. Run Strategic level as a separate swarm pass (split lesson before passing)
+2. Add a `--level` flag to pm_swarm.py to target specific depth levels
+3. Accept the artifact as a known limitation; use Foundation + Working scores as the quality signal
+
+**Date identified:** 2026-04-09
