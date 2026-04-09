@@ -30,15 +30,16 @@ Write → Review → Score → Fix → Measure → Repeat
 
 | Metric | Value |
 |---|---|
-| Lessons written | 32 |
-| Lessons scored | 32 |
-| Average quality score | 6.9 / 10 |
+| Lessons written | 88 |
+| Lessons scored | 88 |
+| Average quality score | 6.5 / 10 |
 | Highest score | 7.4 / 10 (Error Codes & Response Design) |
-| Lowest score | 6.6 / 10 |
-| Total planned lessons | 88 across 9 modules |
+| Lowest score | 5.1 / 10 (CRM & Sales Pipeline) |
+| Open critical flags | 598 |
+| Total planned lessons | 88 across 9 modules — complete |
 | Agents in the swarm | 13 (11 PM personas + synthesizer + formatter) |
 | Cost per review run | ~$0.04 (Haiku fast mode) |
-| Total API cost to date | ~$1.28 |
+| Total API cost to date | ~$4.50 |
 
 ---
 
@@ -116,17 +117,17 @@ python3 -m http.server 8081   # mission control → localhost:8081/control/
 
 A PM knowledge base covering the technical and strategic concepts product managers encounter but rarely learned formally.
 
-| Module | Topic | Status |
-|---|---|---|
-| 01 | APIs & System Integration | 10/10 complete |
-| 02 | Databases & Data | 10/10 complete |
-| 03 | Infrastructure & DevOps | 6/10 complete |
-| 04 | AI & ML Systems | 0/9 — next |
-| 05 | Product Fundamentals | 0/9 |
-| 06 | Metrics & Analytics | 1/6 |
-| 07 | Business & Monetization | 1/7 |
-| 08 | GTM & Growth | 1/8 |
-| 09 | Security & Scale | 0/8 |
+| Module | Topic | Lessons | Avg Score |
+|---|---|---|---|
+| 01 | APIs & System Integration | 10/10 | 7.1 |
+| 02 | Databases & Data | 10/10 | 6.9 |
+| 03 | Infrastructure & DevOps | 10/10 | 6.8 |
+| 04 | AI & ML Systems | 10/10 | 7.0 |
+| 05 | Product Fundamentals | 10/10 | 6.3 |
+| 06 | Metrics & Analytics | 10/10 | 6.1 |
+| 07 | Business & Monetization | 10/10 | 6.2 |
+| 08 | GTM & Growth | 10/10 | 6.0 |
+| 09 | Security & Scale | 8/8 | 5.9 |
 
 Each lesson has three depth levels so different PMs can read the same content at the right altitude — Foundation for context, Working Knowledge for day-to-day application, Strategic Depth for senior decision-making.
 

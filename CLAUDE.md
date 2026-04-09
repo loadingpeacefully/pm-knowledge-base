@@ -1,6 +1,6 @@
 # PM Knowledge Base — CLAUDE.md
 # Project memory. Read this at the start of every session.
-# Last updated: 2026-04-06 — Architecture v2 migration
+# Last updated: 2026-04-09 — v2 template review after 88 lessons
 
 ---
 
@@ -43,9 +43,13 @@ The dashboard shows one level at a time. Reader selects their level.
 - Length: 1200–2000 words (no cap — as long as the concept requires)
 - Rules:
   - W1: numbered steps, mechanism first. As detailed as needed to build a real mental model.
-  - W2: 3–5 real tradeoffs. Each must end with a recommendation. "It depends" without guidance = fail.
+    - If W1 exceeds ~400 words: include at least one comparison table or summary box.
+    - Long W1 prose with no visual break = D1 critique every time. Don't do it.
+  - W2: 3–5 real tradeoffs. Each must end with a recommendation that includes a specific threshold,
+    number, or condition — not just "it depends on your context." That is a fail.
   - W3: 6–8 specific questions. Each includes what the answer reveals.
-  - W4: 3–5 named companies. At least one hard number (metric, percentage, price, timeframe).
+  - W4: 3–5 named companies. Format: Company | What they did | Hard metric (number, %, timeframe).
+    At least 3 of 5 examples must have a hard number. Narrative-only examples don't pass QA.
 
 ### Level 3: Strategic Depth
 - Who: ex-engineer PM, senior PM, head of product, AI-native PM
@@ -57,6 +61,7 @@ The dashboard shows one level at a time. Reader selects their level.
   - S1: failure modes with mechanism and PM prevention role.
   - S2: explicit links to other curriculum concepts, how understanding compounds.
   - S3: genuine intellectual tension. What changed in last 2 years. What AI is doing to this concept.
+    S3 must include at least one reference to a shift in the last 2 years — if nothing changed, say why.
 
 ---
 
@@ -128,6 +133,21 @@ Full QA rules: `.claude/skills/lesson-qa.md`
 | S1 | What breaks and why | Strategic | Yes |
 | S2 | How this connects to the bigger system | Strategic | Yes |
 | S3 | What senior PMs debate | Strategic | Yes |
+
+### Section heading format (canonical)
+
+Always use em-dash style: `## F1 — [Custom title]`, `## W1 — [Custom title]`, etc.
+The analogy belongs inside F2, not as a separate F3. F3 is always "When you'll encounter this as a PM."
+
+### Known technical debt (early v1→v2 migrations)
+
+These 5 lessons use correct `═══` level markers but bare section names (no F/W/S prefix).
+They render correctly in the dashboard. Lower priority for rewrite unless content is also stale.
+- `01-apis-and-integration/api-authentication.md`
+- `01-apis-and-integration/rate-limiting-and-throttling.md`
+- `01-apis-and-integration/webhooks-vs-polling.md`
+- `01-apis-and-integration/what-is-an-api.md`
+- `03-infrastructure-and-devops/cicd-pipelines.md`
 
 ---
 

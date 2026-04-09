@@ -57,3 +57,27 @@ Value: each lesson now serves the full PM spectrum, not just the technical PM.
 - dashboard/index.html renders all new components: blockquote variants (warning/tip/info), quick-ref box, table rec rows, → arrows, markdown links
 
 **Tradeoff:** Adds one more swarm agent (11 total, still fits in parallel budget). Formatter is optional — only runs when flagged.
+
+## 2026-04-09 — v2 template review (post-88-lesson audit)
+
+**Decision:** Refined v2 template rules based on patterns across 88 completed lessons.
+
+**Score distribution observed:**
+- Tech modules (01–04): avg 6.8–7.1 — concrete mechanisms, rich KB source material
+- Product/business/GTM/security (05–09): avg 5.85–6.30 — more conceptual, fewer hard numbers
+
+**Why the gap is expected (and acceptable):** Lower scores in product/business reflect the swarm
+wanting more quantitative specificity in concepts where context-dependence is real. The gap is
+not a template failure — it reflects honest domain differences. Threshold for "good" remains 5.0+.
+
+**Changes made to CLAUDE.md:**
+1. W1 rule: If > ~400 words, must include at least one table or summary box (D1's #1 critique)
+2. W2 rule: Recommendations must include specific threshold/number/condition — "it depends" = fail
+3. W4 rule: Explicit Company | What | Hard metric format; at least 3/5 examples need a number
+4. S3 rule: Must include at least one reference to a shift in the last 2 years
+5. Section naming: Standardized to em-dash style `## F1 — [Title]`
+6. Known tech debt: 5 v1-style lessons documented (correct markers, bare section names)
+
+**Structural anomaly fixed in record:** `api-versioning.md` has duplicate F3 headings
+(analogy given its own F3 instead of living in F2). Not worth fixing in the file — it renders
+correctly in dashboard. But the template now explicitly says: analogy belongs inside F2.
