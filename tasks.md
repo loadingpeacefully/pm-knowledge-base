@@ -1,6 +1,6 @@
 # Tasks — PM Knowledge Base
 
-_Updated: 2026-04-09 (session 5). Update at end of every session._
+_Updated: 2026-04-09 (session 6). Update at end of every session._
 
 ---
 
@@ -32,17 +32,26 @@ _Updated: 2026-04-09 (session 5). Update at end of every session._
 - [x] Write: Authentication vs Authorization (09.01) — v2, ready, 6.0/10 GOOD (2026-04-09)
 - [x] Write: GDPR & Data Privacy for PMs (09.02) — v2, ready, 6.0/10 GOOD (2026-04-09)
 - [x] Write: OWASP Top 10 for PMs (09.03) — v2, ready, 6.2/10 GOOD (2026-04-09)
-- [x] Write: Scalability Patterns (09.04) — v2, ready, 5.6/10 GOOD (2026-04-09)
+- [x] Write: Scalability Patterns (09.04) — v2, ready, 5.6→6.0/10 (2026-04-09, remediated GOOD (2026-04-09)
 - [x] Write: Incident Management (09.05) — v2, ready, 5.4/10 GOOD (2026-04-09)
-- [x] Write: Multi-Tenancy (09.06) — v2, ready, 5.7/10 GOOD (2026-04-09)
+- [x] Write: Multi-Tenancy (09.06) — v2, ready, 5.7/10 (remediated 2026-04-09) GOOD (2026-04-09)
 - [x] Write: Penetration Testing & Bug Bounty (09.07) — v2, ready, 5.8/10 GOOD (2026-04-09)
 - [x] Write: Accessibility (a11y) (09.08) — v2, ready, 6.1/10 GOOD (2026-04-09)
 
 ### ALL 88 LESSONS COMPLETE — curriculum fully written (2026-04-09)
 
+### Remediation pass — bottom 5 (session 6, 2026-04-09)
+- [x] CRM & Sales Pipeline (5.1 → 5.6): universal framing, cross-CRM table, PM ownership callouts
+- [x] Scalability Patterns (5.6 → 6.0): fixed circular F2 definition, cross-system framing
+- [x] Multi-Tenancy (5.7): fixed definition ordering, concrete upgrade thresholds in W2
+- [x] Data Quality & Pipelines (5.8): F3 action steps, W2 PM/engineer role clarity, hard numbers in W4
+- [x] Technical Debt for PMs (5.8 → 6.0): inline jargon definitions, concrete triage thresholds
+- [x] Committed and pushed all 5 lessons + control/data.json
+
 ### Next priorities
 - [x] Review v2 template — completed post-88-lesson audit; 5 rule refinements logged to decisions.md + CLAUDE.md (2026-04-09)
 - [x] Verify dashboard renders all new markdown components — CSS + JS all confirmed in place (2026-04-09)
+- [ ] Second remediation tier: 5.8–6.1 tier (Growth Loops, User Onboarding, SEO, PLG, Lagging Indicators)
 - [ ] Publish concept-library/ as public GitHub repo or Notion
 
 ## Backlog
@@ -88,7 +97,7 @@ _Updated: 2026-04-09 (session 5). Update at end of every session._
 - [x] Write: Roadmapping (05.05) — v2, ready, 6.1/10 GOOD (2026-04-08)
 - [x] Write: Discovery vs Delivery (05.06) — v2, ready, 6.0/10 GOOD (2026-04-08)
 - [x] Write: Experimentation & A/B Testing (05.07) — v2, ready, 6.2/10 GOOD (2026-04-08)
-- [x] Write: Technical Debt for PMs (05.08) — v2, ready, 5.8/10 GOOD (2026-04-08)
+- [x] Write: Technical Debt for PMs (05.08) — v2, ready, 5.8→6.0/10 GOOD (2026-04-08, remediated 2026-04-09)
 - [x] Write: System Design Thinking (05.09) — v2, ready, 6.1/10 GOOD (2026-04-08)
 - [x] Write: Release Management (05.10) — v2, ready, 6.4/10 GOOD (2026-04-08)
 - [x] Write: Funnel Analysis (06.02) — v2, ready, 6.0/10 GOOD (2026-04-08)
@@ -99,7 +108,7 @@ _Updated: 2026-04-09 (session 5). Update at end of every session._
 - [x] Write: Dashboards & BI Tools (06.07) — v2, ready, 6.1/10 GOOD (2026-04-09)
 - [x] Write: Lagging vs Leading Indicators (06.08) — v2, ready, 5.9/10 GOOD (2026-04-09)
 - [x] Write: Counter Metrics (06.09) — v2, ready, 6.8/10 GOOD (2026-04-09)
-- [x] Write: Data Quality & Pipelines (06.10) — v2, ready, 5.8/10 GOOD (2026-04-09)
+- [x] Write: Data Quality & Pipelines (06.10) — v2, ready, 5.8/10 GOOD (2026-04-09, remediated 2026-04-09)
 - [x] Write: Pricing Models (07.02) — v2, ready, 6.3/10 GOOD (2026-04-09)
 - [x] Write: Gross Margin & COGS (07.03) — v2, ready, 6.1/10 GOOD (2026-04-09)
 - [x] Write: Monetization Design (07.04) — v2, ready, 6.1/10 GOOD (2026-04-09)
@@ -115,7 +124,7 @@ _Updated: 2026-04-09 (session 5). Update at end of every session._
 - [x] Write: Referral & Virality Mechanics (08.05) — v2, ready, 6.2/10 GOOD (2026-04-09)
 - [x] Write: SEO Basics for PMs (08.06) — v2, ready, 5.9/10 GOOD (2026-04-09)
 - [x] Write: Paid Acquisition Fundamentals (08.07) — v2, ready, 6.2/10 GOOD (2026-04-09)
-- [x] Write: CRM & Sales Pipeline (08.08) — v2, ready, 5.1/10 GOOD (2026-04-09)
+- [x] Write: CRM & Sales Pipeline (08.08) — v2, ready, 5.1→5.6/10 GOOD (2026-04-09, remediated 2026-04-09)
 - [x] Write: Internationalization & Localization (08.09) — v2, ready, 6.2/10 GOOD (2026-04-09)
 - [x] Write: Competitive Benchmarking (08.10) — v2, ready, 6.0/10 GOOD (2026-04-09)
 - [x] Write: Authentication vs Authorization (09.01) — v2, ready, 6.0/10 GOOD (2026-04-09)
