@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-09T07:01:27.840772+00:00",
+  "generated_at": "2026-04-09T09:51:05.038244+00:00",
   "summary": {
     "total_lessons": 88,
-    "lessons_scored": 82,
+    "lessons_scored": 83,
     "avg_score": 6.6,
-    "total_critical": 545,
-    "feedback_reports": 82,
+    "total_critical": 553,
+    "feedback_reports": 83,
     "modules_total": 9
   },
   "modules": [
@@ -632,7 +632,7 @@
           "id": "09.02",
           "title": "GDPR & Data Privacy for PMs",
           "file": "09-security-and-scale/gdpr-and-data-privacy.md",
-          "status": "\u2014",
+          "status": "ready",
           "writer": "staff-engineer-pm"
         },
         {
@@ -2469,9 +2469,9 @@
       "module_id": "09",
       "module_title": "Security, Compliance & Scale",
       "file": "09-security-and-scale/gdpr-and-data-privacy.md",
-      "status": "\u2014",
+      "status": "ready",
       "writer": "staff-engineer-pm",
-      "word_count": 4958,
+      "word_count": 5335,
       "score": 6.0,
       "health": "NEEDS_WORK",
       "criticals": 10,
@@ -2493,7 +2493,19 @@
       "file": "09-security-and-scale/owasp-top-10-for-pms.md",
       "status": "\u2014",
       "writer": "staff-engineer-pm",
-      "word_count": 0
+      "word_count": 5156,
+      "score": 6.2,
+      "health": "NEEDS_WORK",
+      "criticals": 8,
+      "highs": 29,
+      "mediums": 32,
+      "run_formatter": true,
+      "last_run": "2026-04-09T09:51:04.824357+00:00",
+      "scores_by_level": {
+        "foundation": 6.7,
+        "working": 5.5,
+        "strategic": 6.0
+      }
     },
     {
       "id": "09.04",
