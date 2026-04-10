@@ -293,7 +293,71 @@
 <div id="sb-overlay" onclick="toggleSidebar()"></div>
 
 <!-- SIDEBAR -->
-<aside id="sidebar"><div id="sb-modules"></div></aside>
+<aside id="sidebar">
+
+  <!-- PROFILE BAR -->
+  <div id="gs-profile" style="padding:14px 14px 10px;border-bottom:1px solid #e5e7eb;flex-shrink:0;background:#fff">
+    <div style="display:flex;align-items:center;gap:9px;margin-bottom:10px">
+      <div style="width:34px;height:34px;border-radius:50%;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#1d4ed8;flex-shrink:0">SJ</div>
+      <div>
+        <div style="font-size:13px;font-weight:500">PM Learner</div>
+        <div style="font-size:10px;color:#6b7280;margin-top:1px" id="gs-level-title">Foundation learner</div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:7px;margin-bottom:10px">
+      <div id="gs-streak-block" style="display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:8px;flex:1;background:#fef9c3;border:1px solid #fde68a">
+        <span style="font-size:16px">🔥</span>
+        <div>
+          <div id="gs-streak-num" style="font-size:16px;font-weight:600;color:#b45309;line-height:1">0</div>
+          <div id="gs-streak-sub" style="font-size:9px;color:#b45309;line-height:1.3">day streak</div>
+        </div>
+      </div>
+      <div style="flex:1;background:#f3f4f6;border-radius:8px;padding:6px 9px">
+        <div style="font-size:9px;text-transform:uppercase;letter-spacing:.07em;color:#9ca3af">Today</div>
+        <div id="gs-today-status" style="font-size:11px;font-weight:500;margin-top:2px;color:#6b7280">Read 1 lesson</div>
+        <div id="gs-today-sub" style="font-size:9px;color:#9ca3af;margin-top:1px">streak at risk</div>
+      </div>
+    </div>
+
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px">
+        <span id="gs-xp-val" style="font-size:10px;color:#6b7280">0 XP</span>
+        <span id="gs-xp-unlock" style="font-size:10px;color:#7c3aed;font-weight:500">→ unlocks Strategic Depth</span>
+      </div>
+      <div style="height:5px;background:#e5e7eb;border-radius:99px;overflow:hidden;margin-bottom:3px">
+        <div id="gs-xp-bar" style="height:100%;border-radius:99px;background:#7c3aed;width:0%;transition:width .5s ease"></div>
+      </div>
+      <div id="gs-xp-to-next" style="font-size:9px;color:#9ca3af;text-align:right">500 XP to next unlock</div>
+    </div>
+  </div>
+
+  <!-- NEXT BADGE CARD -->
+  <div id="gs-next-badge" style="margin:8px 12px 4px;background:#f9fafb;border-radius:8px;padding:9px 10px;border:1px solid #e5e7eb;flex-shrink:0">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
+      <div id="gs-badge-icon" style="width:28px;height:28px;border-radius:6px;background:#fef9c3;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">⚡</div>
+      <div style="flex:1;min-width:0">
+        <div id="gs-badge-name" style="font-size:11px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">First quiz pass</div>
+        <div id="gs-badge-sub" style="font-size:10px;color:#6b7280;margin-top:1px">Pass your first level quiz</div>
+      </div>
+    </div>
+    <div style="height:3px;background:#e5e7eb;border-radius:99px;overflow:hidden">
+      <div id="gs-badge-bar" style="height:100%;border-radius:99px;background:#f59e0b;width:0%;transition:width .4s ease"></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-top:3px">
+      <span id="gs-badge-progress" style="font-size:9px;color:#6b7280">Not started</span>
+      <span id="gs-badge-xp" style="font-size:9px;color:#7c3aed;font-weight:500">+50 XP on earn</span>
+    </div>
+  </div>
+
+  <!-- EARNED BADGES SHELF -->
+  <div id="gs-earned-shelf" style="margin:0 12px 8px;display:none">
+    <div style="font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af;margin-bottom:5px">Earned</div>
+    <div id="gs-earned-row" style="display:flex;gap:5px;flex-wrap:wrap"></div>
+  </div>
+
+  <div id="sb-modules"></div>
+</aside>
 
 <!-- CONTENT PANEL -->
 <main id="content">
@@ -380,6 +444,509 @@
 <script>
 'use strict';
 
+/* ═════════════════════════════════════════════════════════════════════════
+   GAMIFICATION LAYER  (v1)
+   ═════════════════════════════════════════════════════════════════════════ */
+
+const GS_KEY = 'pm_gamification_v1';
+
+const GS_DEFAULT = {
+  xp: 0,
+  streak: 0,
+  lastActiveDate: null,
+  todayDone: false,
+  earnedBadges: [],
+  unlockedFeatures: [],
+  lessons: {},
+  quizCache: {},
+  perfectQuizzes: 0,
+};
+
+function gsLoad() {
+  try {
+    const raw = localStorage.getItem(GS_KEY);
+    return raw ? { ...GS_DEFAULT, ...JSON.parse(raw) } : { ...GS_DEFAULT };
+  } catch { return { ...GS_DEFAULT }; }
+}
+
+function gsSave(s) {
+  try { localStorage.setItem(GS_KEY, JSON.stringify(s)); }
+  catch(e) { console.warn('State save failed', e); }
+}
+
+function gsSyncStreak(s) {
+  const today = new Date().toISOString().slice(0, 10);
+  if (!s.lastActiveDate) return { ...s, lastActiveDate: today };
+  const diff = Math.floor((new Date(today) - new Date(s.lastActiveDate)) / 86400000);
+  if (diff === 0) return s;
+  if (diff === 1) return { ...s, todayDone: false, lastActiveDate: today };
+  return { ...s, streak: 0, todayDone: false, lastActiveDate: today };
+}
+
+function gsMarkToday(s) {
+  if (s.todayDone) return s;
+  const today = new Date().toISOString().slice(0, 10);
+  return { ...s, streak: s.streak + 1, todayDone: true, lastActiveDate: today };
+}
+
+function gsAwardXP(s, amount) {
+  const newXP = s.xp + amount;
+  const feats = [...(s.unlockedFeatures || [])];
+  if (s.xp < 500 && newXP >= 500 && !feats.includes('strategic_access'))
+    feats.push('strategic_access');
+  return { ...s, xp: newXP, unlockedFeatures: feats };
+}
+
+function gsMarkLevel(s, lessonId, level) {
+  const ls = s.lessons[lessonId] || {};
+  const fk = level[0]; // 'f' | 'w' | 's'
+  if (ls[fk]) return s;
+  return { ...s, lessons: { ...s.lessons, [lessonId]: { ...ls, [fk]: true } } };
+}
+
+function gsMarkQuiz(s, lessonId, level, passed, perfect) {
+  const ls  = s.lessons[lessonId] || {};
+  const qk  = level[0] + 'Quiz';
+  const perf = perfect ? s.perfectQuizzes + 1 : s.perfectQuizzes;
+  return {
+    ...s,
+    perfectQuizzes: perf,
+    lessons: { ...s.lessons, [lessonId]: { ...ls, [qk]: passed } }
+  };
+}
+
+function gsIsUnlocked(s, lessonId, level) {
+  if (level === 'foundation') return true;
+  if (level === 'working')    return !!(s.lessons[lessonId]?.fQuiz);
+  if (level === 'strategic')  return !!(s.unlockedFeatures?.includes('strategic_access') || s.lessons[lessonId]?.wQuiz);
+  return false;
+}
+
+function gsSidebarState(s, lessonId) {
+  const ls = s.lessons[lessonId] || {};
+  if (ls.fQuiz && ls.wQuiz && ls.sQuiz) return 'done';
+  if (ls.f || ls.w || ls.s)             return 'progress';
+  return 'empty';
+}
+
+function gsLevelTitle(xp) {
+  if (xp >= 2000) return 'Principal PM';
+  if (xp >= 1200) return 'Strategic PM';
+  if (xp >=  700) return 'Technical PM';
+  if (xp >=  300) return 'Working PM';
+  return 'Foundation learner';
+}
+
+function gsNextUnlock(xp) {
+  if (xp < 500)  return { target: 500,  remaining: 500 - xp,  label: 'unlocks Strategic Depth' };
+  if (xp < 1000) return { target: 1000, remaining: 1000 - xp, label: 'unlocks XP Milestone badge' };
+  if (xp < 2000) return { target: 2000, remaining: 2000 - xp, label: 'reaches Principal PM' };
+  return { target: 2000, remaining: 0, label: 'max rank reached' };
+}
+
+const BADGES = [
+  { id: 'first_quiz',   icon: '⚡', name: 'First quiz pass',   sub: 'Pass your first level quiz',        xp: 50  },
+  { id: 'streak_7',     icon: '🔥', name: '7-day streak',      sub: 'Read 7 days in a row',               xp: 100 },
+  { id: 'module_01',    icon: '🏆', name: 'API Master',        sub: 'Complete all Module 01 quizzes',     xp: 200 },
+  { id: 'module_02',    icon: '🗄️', name: 'Database Pro',     sub: 'Complete all Module 02 quizzes',     xp: 200 },
+  { id: 'xp_500',       icon: '💜', name: 'XP 500',            sub: 'Reach 500 XP',                      xp: 0   },
+  { id: 'xp_1000',      icon: '💎', name: 'XP 1000',           sub: 'Reach 1000 XP',                     xp: 0   },
+  { id: 'speed_reader', icon: '📚', name: 'Speed reader',      sub: 'Read 10 lesson levels',             xp: 75  },
+  { id: 'perfect_quiz', icon: '🎯', name: 'Perfect score',     sub: 'Get 3/3 on a quiz',                 xp: 50  },
+  { id: 'streak_30',    icon: '🌟', name: '30-day streak',     sub: 'Read 30 days in a row',              xp: 300 },
+];
+
+function gsCheckBadges(s, allLessons) {
+  const earned = [...(s.earnedBadges || [])];
+  const levelsRead = Object.values(s.lessons).reduce((a,l) => a+(l.f?1:0)+(l.w?1:0)+(l.s?1:0), 0);
+
+  const triggers = {
+    first_quiz:   Object.values(s.lessons).some(l => l.fQuiz || l.wQuiz || l.sQuiz),
+    streak_7:     s.streak >= 7,
+    streak_30:    s.streak >= 30,
+    xp_500:       s.xp >= 500,
+    xp_1000:      s.xp >= 1000,
+    speed_reader: levelsRead >= 10,
+    perfect_quiz: (s.perfectQuizzes || 0) >= 1,
+    module_01:    (allLessons || []).filter(l => l.modNum==='01' || l.module_id==='01').length > 0 && (allLessons || []).filter(l => l.modNum==='01' || l.module_id==='01').every(l => {
+                    const ls = s.lessons[l.id] || {};
+                    return ls.fQuiz && ls.wQuiz && ls.sQuiz;
+                  }),
+    module_02:    (allLessons || []).filter(l => l.modNum==='02' || l.module_id==='02').length > 0 && (allLessons || []).filter(l => l.modNum==='02' || l.module_id==='02').every(l => {
+                    const ls = s.lessons[l.id] || {};
+                    return ls.fQuiz && ls.wQuiz && ls.sQuiz;
+                  }),
+  };
+
+  BADGES.forEach(b => {
+    if (!earned.includes(b.id) && triggers[b.id]) earned.push(b.id);
+  });
+  return earned;
+}
+
+function gsNextBadge(s) {
+  return BADGES.find(b => !s.earnedBadges.includes(b.id)) || null;
+}
+
+const XP_VALUES = { perCorrect: 15, levelBonus: 50, lessonComplete: 100 };
+
+let GS = gsSyncStreak(gsLoad());
+gsSave(GS);
+
+/* ── PROFILE RENDER ── */
+function gsRenderProfile() {
+  const s      = GS;
+  const unlock = gsNextUnlock(s.xp);
+  const pct    = unlock.target ? Math.min(100, Math.round((s.xp / unlock.target) * 100)) : 100;
+  const atRisk = !s.todayDone && s.streak > 0;
+
+  const lt = document.getElementById('gs-level-title');
+  if (lt) lt.textContent = gsLevelTitle(s.xp);
+
+  const sb  = document.getElementById('gs-streak-block');
+  const sn  = document.getElementById('gs-streak-num');
+  const ss  = document.getElementById('gs-streak-sub');
+  if (sn) sn.textContent = s.streak;
+  if (sb && ss) {
+    if (atRisk) {
+      sb.style.background = '#fef2f2'; sb.style.borderColor = '#fca5a5';
+      sn.style.color = '#dc2626'; ss.style.color = '#dc2626';
+      ss.innerHTML = 'day streak<br><b>at risk!</b>';
+    } else if (s.todayDone) {
+      sb.style.background = '#fef9c3'; sb.style.borderColor = '#fde68a';
+      sn.style.color = '#b45309'; ss.style.color = '#b45309';
+      ss.innerHTML = 'day streak<br>safe ✓';
+    } else {
+      sb.style.background = '#f9fafb'; sb.style.borderColor = '#e5e7eb';
+      sn.style.color = '#374151'; ss.style.color = '#6b7280';
+      ss.innerHTML = 'day streak';
+    }
+  }
+
+  const ts = document.getElementById('gs-today-status');
+  const tu = document.getElementById('gs-today-sub');
+  if (ts && tu) {
+    if (s.todayDone) {
+      ts.textContent = '✓ 1 lesson read'; ts.style.color = '#16a34a';
+      tu.textContent = 'streak maintained';
+    } else {
+      ts.textContent = 'Read 1 lesson'; ts.style.color = '#6b7280';
+      tu.textContent = atRisk ? '⚠ streak at risk' : 'keep the streak alive';
+    }
+  }
+
+  const xv = document.getElementById('gs-xp-val');
+  const xb = document.getElementById('gs-xp-bar');
+  const xu = document.getElementById('gs-xp-unlock');
+  const xn = document.getElementById('gs-xp-to-next');
+  if (xv) xv.textContent = s.xp + ' XP';
+  if (xb) xb.style.width = pct + '%';
+  if (xu) xu.textContent = '→ ' + unlock.label;
+  if (xn) xn.textContent = unlock.remaining > 0 ? unlock.remaining + ' XP to next unlock' : 'Max unlock reached';
+
+  const next = gsNextBadge(s);
+  const nextWrap = document.getElementById('gs-next-badge');
+  if (next && nextWrap) {
+    nextWrap.style.display = 'block';
+    const ni = document.getElementById('gs-badge-icon');
+    const nn = document.getElementById('gs-badge-name');
+    const ns = document.getElementById('gs-badge-sub');
+    const nb = document.getElementById('gs-badge-bar');
+    const np = document.getElementById('gs-badge-progress');
+    const nx = document.getElementById('gs-badge-xp');
+    if (ni) ni.textContent = next.icon;
+    if (nn) nn.textContent = next.name;
+    if (ns) ns.textContent = next.sub;
+    if (nx) nx.textContent = next.xp > 0 ? '+' + next.xp + ' XP on earn' : 'milestone badge';
+    let prog = 0, progLabel = 'Not started';
+    if (next.id === 'streak_7') {
+      prog = Math.min(100, Math.round((s.streak/7)*100));
+      progLabel = s.streak + ' / 7 days';
+    } else if (next.id === 'streak_30') {
+      prog = Math.min(100, Math.round((s.streak/30)*100));
+      progLabel = s.streak + ' / 30 days';
+    } else if (next.id === 'xp_500') {
+      prog = Math.min(100, Math.round((s.xp/500)*100));
+      progLabel = s.xp + ' / 500 XP';
+    } else if (next.id === 'xp_1000') {
+      prog = Math.min(100, Math.round((s.xp/1000)*100));
+      progLabel = s.xp + ' / 1000 XP';
+    } else if (next.id === 'speed_reader') {
+      const lvls = Object.values(s.lessons).reduce((a,l) => a+(l.f?1:0)+(l.w?1:0)+(l.s?1:0), 0);
+      prog = Math.min(100, Math.round((lvls/10)*100));
+      progLabel = lvls + ' / 10 levels read';
+    }
+    if (nb) nb.style.width = prog + '%';
+    if (np) np.textContent = progLabel;
+  } else if (nextWrap) {
+    nextWrap.style.display = 'none';
+  }
+
+  const shelf = document.getElementById('gs-earned-shelf');
+  const row   = document.getElementById('gs-earned-row');
+  if (shelf && row) {
+    if (s.earnedBadges.length > 0) {
+      shelf.style.display = 'block';
+      row.innerHTML = s.earnedBadges.map(id => {
+        const b = BADGES.find(x => x.id === id);
+        return b ? `<div title="${b.name}" style="width:30px;height:30px;border-radius:6px;background:#fef9c3;display:flex;align-items:center;justify-content:center;font-size:14px;border:1px solid #fde68a">${b.icon}</div>` : '';
+      }).join('');
+    } else {
+      shelf.style.display = 'none';
+    }
+  }
+}
+
+/* ── SIDEBAR STATE DOTS ── */
+function gsRenderSidebarStates() {
+  document.querySelectorAll('[data-lesson-state]').forEach(el => {
+    const id = el.dataset.lessonId;
+    if (!id) return;
+    const state = gsSidebarState(GS, id);
+    if (state === 'done')
+      el.innerHTML = '<div style="width:18px;height:18px;border-radius:50%;background:#16a34a;display:flex;align-items:center;justify-content:center;font-size:9px;color:#fff;font-weight:600;flex-shrink:0">✓</div>';
+    else if (state === 'progress')
+      el.innerHTML = '<div style="width:18px;height:18px;border-radius:50%;background:#eff6ff;border:1px solid #3b82f6;display:flex;align-items:center;justify-content:center;font-size:9px;color:#3b82f6;font-weight:600;flex-shrink:0">½</div>';
+    else
+      el.innerHTML = '<div style="width:18px;height:18px;border-radius:50%;border:1.5px solid #d1d5db;flex-shrink:0"></div>';
+  });
+}
+
+/* ── QUIZ ENGINE ── */
+let _quiz = { questions:[], current:0, correct:0, lessonId:null, level:null };
+
+async function gsStartQuiz() {
+  if (!S.active) return;
+  const lessonId = S.active.id;
+  const level    = S.activeLevel || 'foundation';
+  const cacheKey = lessonId + '_' + level;
+  const btn      = document.getElementById('gs-finish-btn');
+
+  const qk = level[0] + 'Quiz';
+  if (GS.lessons[lessonId]?.[qk]) {
+    gsShowComplete(lessonId, level, true, 0, 0);
+    return;
+  }
+
+  if (btn) { btn.disabled = true; btn.textContent = 'Generating quiz...'; }
+
+  let questions = GS.quizCache?.[cacheKey];
+  if (!questions || !questions.length) {
+    questions = await gsGenerateQuiz(lessonId, level);
+    GS = { ...GS, quizCache: { ...(GS.quizCache||{}), [cacheKey]: questions } };
+    gsSave(GS);
+  }
+
+  _quiz = { questions, current: 0, correct: 0, lessonId, level };
+  const footer = document.getElementById('gs-level-footer');
+  if (footer) footer.style.display = 'none';
+  gsRenderQuestion();
+}
+
+async function gsGenerateQuiz(lessonId, level) {
+  const lesson = (window.allLessons || []).find(l => l.id === lessonId) || S.byId[lessonId];
+  if (!lesson) return gsFallbackQuestions(level);
+
+  const rawKey = localStorage.getItem('pm_api_key') || window.PM_CONFIG?.ANTHROPIC_API_KEY;
+  const apiKey = (rawKey && rawKey !== 'YOUR_KEY_HERE') ? rawKey : null;
+  if (!apiKey) return gsFallbackQuestions(level);
+
+  const levelName = level === 'foundation' ? 'Foundation' : level === 'working' ? 'Working Knowledge' : 'Strategic Depth';
+  const lessonContent = lesson.content || (S.levelContent && S.levelContent[level]) || '';
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 900,
+        messages: [{
+          role: 'user',
+          content: `Generate 3 multiple-choice quiz questions for a PM curriculum lesson.
+
+Lesson: "${lesson.title}"
+Level: ${levelName}
+Content excerpt: ${(lessonContent || '').slice(0, 2500)}
+
+Rules:
+- Test PM judgment and decision-making, not memorisation of definitions
+- Each question has exactly 4 options, exactly 1 correct answer
+- Wrong options should be plausible things a PM might actually say
+- Difficulty matches ${levelName} level
+
+Return ONLY this JSON, no markdown, no explanation:
+[{"q":"question","opts":["A","B","C","D"],"correct":0},{"q":"question","opts":["A","B","C","D"],"correct":1},{"q":"question","opts":["A","B","C","D"],"correct":2}]`
+        }]
+      })
+    });
+    const data  = await resp.json();
+    const text  = data.content?.[0]?.text || '[]';
+    const clean = text.replace(/```json|```/g,'').trim();
+    const parsed = JSON.parse(clean);
+    return Array.isArray(parsed) && parsed.length ? parsed : gsFallbackQuestions(level);
+  } catch(e) {
+    console.warn('Quiz gen failed:', e);
+    return gsFallbackQuestions(level);
+  }
+}
+
+function gsFallbackQuestions(level) {
+  return [{
+    q: `What is the most important PM skill when applying ${level} knowledge?`,
+    opts: ['Making decisions with incomplete information','Writing perfect specifications','Managing all stakeholders simultaneously','Avoiding technical debt'],
+    correct: 0
+  },{
+    q: 'When should a PM escalate a technical decision to engineering leadership?',
+    opts: ['When it affects system reliability, security, or cost at scale','Whenever they feel uncertain about the approach','Only when the timeline is at risk','After the feature has already shipped'],
+    correct: 0
+  },{
+    q: 'What makes a good PM–engineer relationship on technical questions?',
+    opts: ['PM understands constraints, engineer understands product goals','PM defers entirely to engineering judgment','Engineer defers entirely to PM product decisions','Both avoid discussing technical details'],
+    correct: 0
+  }];
+}
+
+function gsRenderQuestion() {
+  const panel = document.getElementById('gs-quiz-panel');
+  if (!panel) return;
+  const q   = _quiz.questions[_quiz.current];
+  const num = _quiz.current + 1;
+  const tot = _quiz.questions.length;
+  const lvlLabel = _quiz.level === 'foundation' ? 'Foundation' : _quiz.level === 'working' ? 'Working knowledge' : 'Strategic depth';
+
+  panel.innerHTML = `
+    <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:16px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <span style="font-size:10px;font-weight:500;padding:3px 8px;border-radius:99px;background:#eff6ff;color:#1d4ed8">${lvlLabel} check</span>
+        <span style="font-size:10px;color:#9ca3af">Question ${num} of ${tot}</span>
+      </div>
+      <div style="font-size:13px;font-weight:500;line-height:1.5;margin-bottom:12px">${q.q}</div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        ${q.opts.map((opt,i) =>
+          `<div onclick="gsAnswer(${i})" data-idx="${i}" style="padding:9px 12px;border-radius:8px;border:1px solid #e5e7eb;font-size:12px;cursor:pointer;background:#fff;transition:all .15s" onmouseover="if(!this.dataset.answered){this.style.borderColor='#93c5fd';this.style.background='#eff6ff'}" onmouseout="if(!this.dataset.answered){this.style.borderColor='#e5e7eb';this.style.background='#fff'}">${opt}</div>`
+        ).join('')}
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
+        <span id="gs-q-feedback" style="font-size:11px"></span>
+        <button id="gs-q-next" onclick="gsNextQ()" style="display:none;font-size:12px;font-weight:500;padding:7px 16px;border-radius:8px;background:#16a34a;color:#fff;border:none;cursor:pointer">Next →</button>
+      </div>
+    </div>`;
+}
+
+function gsAnswer(idx) {
+  const q    = _quiz.questions[_quiz.current];
+  const opts = document.querySelectorAll('#gs-quiz-panel [data-idx]');
+  const fb   = document.getElementById('gs-q-feedback');
+  const next = document.getElementById('gs-q-next');
+  const isLast = _quiz.current === _quiz.questions.length - 1;
+
+  opts.forEach(o => { o.style.pointerEvents='none'; o.dataset.answered='1'; });
+
+  if (idx === q.correct) {
+    opts[idx].style.background='#f0fdf4'; opts[idx].style.borderColor='#86efac'; opts[idx].style.color='#15803d';
+    fb.textContent = `Correct · +${XP_VALUES.perCorrect} XP`;
+    fb.style.color = '#16a34a';
+    _quiz.correct++;
+  } else {
+    opts[idx].style.background='#fef2f2'; opts[idx].style.borderColor='#fca5a5'; opts[idx].style.color='#dc2626';
+    opts[q.correct].style.background='#f0fdf4'; opts[q.correct].style.borderColor='#86efac'; opts[q.correct].style.color='#15803d';
+    fb.textContent = 'Incorrect — correct answer shown';
+    fb.style.color = '#dc2626';
+  }
+
+  next.style.display = 'inline-block';
+  next.textContent = isLast ? 'Complete level ✓' : 'Next →';
+}
+
+function gsNextQ() {
+  if (_quiz.current < _quiz.questions.length - 1) {
+    _quiz.current++;
+    gsRenderQuestion();
+  } else {
+    gsCompleteLevel();
+  }
+}
+
+function gsCompleteLevel() {
+  const { lessonId, level, correct, questions } = _quiz;
+  const passed  = correct >= Math.ceil(questions.length * 0.67);
+  const perfect = correct === questions.length;
+  const xpGain  = (correct * XP_VALUES.perCorrect) + (passed ? XP_VALUES.levelBonus : 0);
+
+  GS = gsMarkLevel(GS, lessonId, level);
+  GS = gsMarkQuiz(GS, lessonId, level, passed, perfect);
+  GS = gsAwardXP(GS, xpGain);
+  GS = gsMarkToday(GS);
+  GS = { ...GS, earnedBadges: gsCheckBadges(GS, Object.values(S.byId)) };
+  gsSave(GS);
+
+  gsShowComplete(lessonId, level, passed, correct, questions.length);
+  gsRenderProfile();
+  gsRenderSidebarStates();
+  gsRefreshLevelPills();
+}
+
+function gsShowComplete(lessonId, level, passed, correct, total) {
+  const panel = document.getElementById('gs-quiz-panel');
+  const btn   = document.getElementById('gs-finish-btn');
+  const footer = document.getElementById('gs-level-footer');
+  if (footer) footer.style.display = 'flex';
+  if (!panel) return;
+  if (btn) { btn.textContent = '✓ Level complete'; btn.style.background='#16a34a'; btn.disabled=true; btn.style.cursor='default'; btn.onclick=null; }
+
+  const allLessons = Object.values(S.byId);
+  const idx = allLessons.findIndex(l => l.id === lessonId);
+  const nextLesson = allLessons[idx+1];
+
+  panel.innerHTML = `
+    <div style="background:${passed?'#f0fdf4':'#fef9c3'};border:1px solid ${passed?'#86efac':'#fde68a'};border-radius:12px;padding:20px;text-align:center;margin-top:0">
+      <div style="font-size:28px;margin-bottom:6px">${passed?'✓':'→'}</div>
+      <div style="font-size:15px;font-weight:600;margin-bottom:4px;color:${passed?'#15803d':'#92400e'}">${passed?'Level complete!':'Keep going'}</div>
+      <div style="font-size:12px;color:#6b7280;margin-bottom:${nextLesson?'14px':'0'}">${total>0?correct+'/'+total+' correct · ':''}+${(correct*XP_VALUES.perCorrect)+(passed?XP_VALUES.levelBonus:0)} XP earned</div>
+      ${nextLesson && passed ? `<button onclick="selectLesson('${nextLesson.id}')" style="font-size:12px;font-weight:500;padding:8px 18px;border-radius:8px;background:#2563eb;color:#fff;border:none;cursor:pointer">Next: ${esc(nextLesson.title)} →</button>` : ''}
+    </div>`;
+}
+
+function gsRefreshLevelPills() {
+  if (!S.active || !S.levelContent || !S.levelContent.isV2) return;
+  const pills = document.querySelector('#level-selector .level-pills');
+  if (!pills) return;
+  const wUnlocked = gsIsUnlocked(GS, S.active.id, 'working');
+  const sUnlocked = gsIsUnlocked(GS, S.active.id, 'strategic');
+  const lockStyle = 'opacity:.55;cursor:not-allowed';
+  pills.innerHTML = `
+    <button class="level-pill${S.activeLevel === 'foundation' ? ' active' : ''}" onclick="changeLevel('foundation')">Foundation</button>
+    <button class="level-pill${S.activeLevel === 'working' ? ' active' : ''}" onclick="changeLevel('working')" ${wUnlocked ? '' : `style="${lockStyle}"`}>${wUnlocked ? '' : '🔒 '}Working Knowledge</button>
+    <button class="level-pill${S.activeLevel === 'strategic' ? ' active' : ''}" onclick="changeLevel('strategic')" ${sUnlocked ? '' : `style="${lockStyle}"`}>${sUnlocked ? '' : '🔒 '}Strategic Depth</button>
+  `;
+}
+
+function gsShowLockedMessage(level) {
+  const msg = level === 'working'
+    ? 'Complete the Foundation quiz first'
+    : 'Complete Working quiz, or reach 500 XP to unlock early';
+  const hint = document.getElementById('level-hint');
+  if (hint) {
+    const prev = hint.textContent;
+    hint.textContent = '🔒 ' + msg;
+    hint.style.color = '#dc2626';
+    setTimeout(() => {
+      hint.textContent = prev;
+      hint.style.color = '';
+    }, 2400);
+  }
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   END GAMIFICATION LAYER
+   ═════════════════════════════════════════════════════════════════════════ */
+
 /* ── STATE ── */
 const S = {
   modules:  [],
@@ -419,8 +986,11 @@ async function loadManifest() {
     return;
   }
   parseManifest(data.lessons);
+  window.allLessons = Object.values(S.byId);
   renderSidebar();
   updateProgressBtn();
+  gsRenderProfile();
+  gsRenderSidebarStates();
   const first = Object.values(S.byId).find(l => l.status === 'ready');
   if (first) selectLesson(first.id);
   else setContent(`<div class="empty-state"><h3>No lessons written yet.</h3><br><p>In Claude Code, run:<br><code>write the next lesson</code></p><br><p>Then refresh this page.</p></div>`);
@@ -462,11 +1032,10 @@ function renderSidebar(filter) {
     const dots = mod.lessons.map(l => `<span class="dot ${l.status}"></span>`).join('');
     const items = lessons.map(l => {
       const isAct = S.active && S.active.id === l.id;
-      const label = l.status === 'ready' ? 'ready' : l.status === 'draft' ? 'draft' : '——';
       return `<div class="lesson-item${isAct ? ' active' : ''}" onclick="selectLesson('${l.id}')" data-lid="${l.id}">
         <span class="lesson-id">${l.id}</span>
         <span class="lesson-title-sb">${esc(l.title)}</span>
-        <span class="status-pill ${l.status}">${label}</span>
+        <span data-lesson-state data-lesson-id="${l.id}" style="flex-shrink:0;display:flex;align-items:center"></span>
       </div>`;
     }).join('');
 
@@ -486,6 +1055,7 @@ function renderSidebar(filter) {
 
   document.getElementById('sb-modules').innerHTML = html;
   document.getElementById('search-count').textContent = lf && matchCount > 0 ? matchCount : '';
+  if (typeof gsRenderSidebarStates === 'function') gsRenderSidebarStates();
 }
 
 function toggleModule(id) {
@@ -499,6 +1069,12 @@ async function selectLesson(id) {
   if (!lesson) return;
   S.active = lesson;
   S.expanded.add(lesson.modNum);
+
+  // Gamification: opening a lesson counts as today's action
+  GS = gsMarkToday(GS);
+  GS = { ...GS, earnedBadges: gsCheckBadges(GS, Object.values(S.byId)) };
+  gsSave(GS);
+  gsRenderProfile();
 
   if (window.innerWidth < 960) toggleSidebar(false);
   renderSidebar(document.getElementById('search-input').value);
@@ -582,16 +1158,25 @@ function renderLesson(lesson, md) {
     </div>
   </div>`;
 
+  // If current activeLevel is locked, fall back to the highest unlocked one
+  if (levels.isV2 && !gsIsUnlocked(GS, lesson.id, S.activeLevel)) {
+    if (gsIsUnlocked(GS, lesson.id, 'working')) S.activeLevel = 'working';
+    else S.activeLevel = 'foundation';
+  }
+
   // Build level selector if v2
   let levelSelectorHtml = '';
   if (levels.isV2) {
     const profiles = levels.profiles || {};
     const hint = profiles[S.activeLevel] ? `For: ${esc(profiles[S.activeLevel])}` : '';
+    const wUnlocked = gsIsUnlocked(GS, lesson.id, 'working');
+    const sUnlocked = gsIsUnlocked(GS, lesson.id, 'strategic');
+    const lockStyle = 'opacity:.55;cursor:not-allowed';
     levelSelectorHtml = `<div class="level-selector" id="level-selector">
       <div class="level-pills">
         <button class="level-pill${S.activeLevel === 'foundation' ? ' active' : ''}" onclick="changeLevel('foundation')">Foundation</button>
-        <button class="level-pill${S.activeLevel === 'working' ? ' active' : ''}" onclick="changeLevel('working')">Working Knowledge</button>
-        <button class="level-pill${S.activeLevel === 'strategic' ? ' active' : ''}" onclick="changeLevel('strategic')">Strategic Depth</button>
+        <button class="level-pill${S.activeLevel === 'working' ? ' active' : ''}" onclick="changeLevel('working')" ${wUnlocked ? '' : `style="${lockStyle}"`}>${wUnlocked ? '' : '🔒 '}Working Knowledge</button>
+        <button class="level-pill${S.activeLevel === 'strategic' ? ' active' : ''}" onclick="changeLevel('strategic')" ${sUnlocked ? '' : `style="${lockStyle}"`}>${sUnlocked ? '' : '🔒 '}Strategic Depth</button>
       </div>
       <div class="level-hint" id="level-hint">${hint}</div>
     </div>`;
@@ -613,8 +1198,32 @@ function renderLesson(lesson, md) {
   const fullRelIdx = fm.body.lastIndexOf('\n## Prerequisites');
   const fullRelMd  = levels.isV2 && fullRelIdx !== -1 ? fm.body.slice(fullRelIdx) : '';
 
-  setContent(`${hcard}${levelSelectorHtml}<div class="lesson-body" id="lesson-body">${renderMd(mainMd)}</div>${(fullRelMd || relMd) ? renderRelated(fullRelMd || relMd) : ''}`);
+  // Quiz footer — only for v2 lessons with an active level
+  let quizFooterHtml = '';
+  if (levels.isV2 && S.activeLevel) {
+    const qk = S.activeLevel[0] + 'Quiz';
+    const alreadyPassed = !!(GS.lessons[lesson.id]?.[qk]);
+    const btnHtml = alreadyPassed
+      ? `<button id="gs-finish-btn" disabled style="font-size:13px;font-weight:500;padding:9px 20px;border-radius:8px;background:#16a34a;color:#fff;border:none;cursor:default">✓ Level complete</button>`
+      : `<button id="gs-finish-btn" onclick="gsStartQuiz()" style="font-size:13px;font-weight:500;padding:9px 20px;border-radius:8px;background:#2563eb;color:#fff;border:none;cursor:pointer">I've finished reading →</button>`;
+    quizFooterHtml = `
+      <div id="gs-level-footer" style="margin-top:28px;padding-top:16px;border-top:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between">
+        <div id="gs-footer-meta" style="font-size:11px;color:#9ca3af">${alreadyPassed ? 'Pass all three levels to complete this lesson' : 'Quick 3-question check before you move on'}</div>
+        ${btnHtml}
+      </div>
+      <div id="gs-quiz-panel" style="margin-top:16px"></div>`;
+  }
+
+  setContent(`${hcard}${levelSelectorHtml}<div class="lesson-body" id="lesson-body">${renderMd(mainMd)}</div>${quizFooterHtml}${(fullRelMd || relMd) ? renderRelated(fullRelMd || relMd) : ''}`);
   document.getElementById('content').scrollTop = 0;
+
+  // Mark this level as read and refresh gamification UI
+  if (levels.isV2 && S.activeLevel) {
+    GS = gsMarkLevel(GS, lesson.id, S.activeLevel);
+    gsSave(GS);
+    gsRenderProfile();
+    gsRenderSidebarStates();
+  }
 }
 
 /* ── LEVEL PARSER ── */
@@ -676,8 +1285,17 @@ function changeLevel(level) {
   if (!S.levelContent || !S.levelContent.isV2 || !S.levelContent[level]) return;
   if (!S.active) return;
 
+  if (!gsIsUnlocked(GS, S.active.id, level)) {
+    gsShowLockedMessage(level);
+    return;
+  }
+
   S.activeLevel = level;
   localStorage.setItem(`pm_level_${S.active.id}`, level);
+  GS = gsMarkLevel(GS, S.active.id, level);
+  gsSave(GS);
+  gsRenderProfile();
+  gsRenderSidebarStates();
 
   // Update pill active states
   document.querySelectorAll('.level-pill').forEach(btn => {
@@ -703,6 +1321,33 @@ function changeLevel(level) {
   const body = document.getElementById('lesson-body');
   if (body) body.innerHTML = renderMd(mainMd);
   document.getElementById('content').scrollTop = 0;
+
+  // Refresh quiz footer for the newly active level
+  const footer = document.getElementById('gs-level-footer');
+  const panel  = document.getElementById('gs-quiz-panel');
+  if (footer) {
+    const qk = level[0] + 'Quiz';
+    const alreadyPassed = !!(GS.lessons[S.active.id]?.[qk]);
+    const metaEl = document.getElementById('gs-footer-meta');
+    const btnEl  = document.getElementById('gs-finish-btn');
+    if (metaEl) metaEl.textContent = alreadyPassed ? 'Pass all three levels to complete this lesson' : 'Quick 3-question check before you move on';
+    if (btnEl) {
+      if (alreadyPassed) {
+        btnEl.textContent = '✓ Level complete';
+        btnEl.disabled = true;
+        btnEl.style.background = '#16a34a';
+        btnEl.style.cursor = 'default';
+        btnEl.onclick = null;
+      } else {
+        btnEl.textContent = "I've finished reading →";
+        btnEl.disabled = false;
+        btnEl.style.background = '#2563eb';
+        btnEl.style.cursor = 'pointer';
+        btnEl.onclick = gsStartQuiz;
+      }
+    }
+  }
+  if (panel) panel.innerHTML = '';
 }
 
 function parseFm(md) {
