@@ -1132,14 +1132,12 @@ function getActiveModuleId() {
 }
 
 function isModuleExpanded(moduleId) {
-  // Active module is always expanded (cannot collapse)
-  if (moduleId === getActiveModuleId()) return true;
-  // Then honor localStorage
+  // Honor explicit localStorage state for all modules
   const stored = localStorage.getItem('pm_sidebar_' + moduleId);
   if (stored === 'collapsed') return false;
   if (stored === 'expanded')  return true;
-  // Default: collapsed — only the active module is open on first load
-  return false;
+  // Default: only the active module is open on first load
+  return moduleId === getActiveModuleId();
 }
 
 const MODULE_SHORT_TITLES = {
@@ -1206,8 +1204,6 @@ function renderSidebar(filter) {
 }
 
 function toggleModule(id) {
-  // Cannot collapse the active module
-  if (id === getActiveModuleId()) return;
   const key = 'pm_sidebar_' + id;
   // Flip the *effective* state — honors default collapsed for first click
   const currentlyExpanded = isModuleExpanded(id);
