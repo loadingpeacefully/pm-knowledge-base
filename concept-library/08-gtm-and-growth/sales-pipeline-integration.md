@@ -14,6 +14,8 @@ kb_sources:
   - technical-architecture/crm-and-sales/sales-flow.md
   - technical-architecture/crm-and-sales/renewal-crm.md
 profiles:
+  foundation:
+    - (see 08.11 CRM Fundamentals for Foundation-level content)
   working:
     - Growth PM
     - Consumer Startup PM
@@ -27,6 +29,22 @@ last_qa: 2026-04-11
 split: lesson_b
 continues_from: 08.11 — CRM Fundamentals
 ---
+# ═══════════════════════════════════
+# LEVEL 1 — FOUNDATION
+# ═══════════════════════════════════
+
+## F1 — See 08.11 CRM Fundamentals
+
+This lesson is the second half of a split. For the world before CRM existed, how sales tracking worked without it, and why PMs must care about the system, read [08.11 CRM Fundamentals](crm-fundamentals.md) first — it covers the Foundation-level context this lesson assumes.
+
+## F2 — What it is
+
+CRM (Customer Relationship Management) software records every interaction between a company and its customers, and a sales pipeline is the set of stages customers move through from first contact to purchase. Full definitions (lead, deal, qualification, pipeline velocity, hot lead) are in [08.11 CRM Fundamentals](crm-fundamentals.md).
+
+## F3 — When you'll encounter this as a PM
+
+08.11 CRM Fundamentals covers the four encounter points: building product events that feed the CRM, analyzing conversion problems, designing renewal flows, and prioritizing backlog against sales requests. This lesson (08.12) covers what the PM must decide and build once CRM is running — the pipeline integration layer that sits on top of those fundamentals.
+
 # ═══════════════════════════════════
 # LEVEL 2 — WORKING KNOWLEDGE
 # ═══════════════════════════════════
