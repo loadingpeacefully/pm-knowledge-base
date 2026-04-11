@@ -92,14 +92,18 @@ Data flows through several layers before appearing on a dashboard. Each layer ha
 
 > **Data freshness ceiling:** A dashboard is only as fresh as its most recent ETL pipeline run. A booking at 9:00 AM won't appear in Metabase until the pipeline next runs. If the pipeline runs every 3 hours, the maximum data age at any moment is 3 hours.
 
-#### What happens when a pipeline fails
+#### What happens when a pipeline fails (and why it looks normal)
 
-1. **6:00 AM** — Pipeline runs successfully; data current as of 6:00 AM
-2. **9:00 AM** — Run fails silently
-3. **9:00 AM–12:00 PM** — Dashboard continues showing 6:00 AM data while appearing current
-4. **12:00 PM** — Run succeeds; gap filled, but team made 3-hour-old decisions for 3 hours
+| Time | What the pipeline does | What the dashboard shows | What the team thinks |
+|---|---|---|---|
+| 6:00 AM | Runs successfully | Data current as of 6:00 AM | "Numbers look right" |
+| 9:00 AM | Run fails silently | Still shows 6:00 AM data | "Numbers look right" — no visible error |
+| 9:00 AM – 12:00 PM | Next run not yet triggered | Still shows 6:00 AM data, *appearing current* | Team makes decisions on 3-hour-stale data without knowing |
+| 12:00 PM | Run succeeds; gap filled | Jumps from 6 AM to 12 PM data | "Wait, why did DAU spike?" — the jump is the backfill, not a real change |
 
-⚠️ **Risk:** If you're using the demo bookings dashboard to decide whether to run a same-day campaign, you need to know that numbers may be up to 3 hours behind. A booking campaign launched at 10:00 AM might not show results until 1:00 PM — not because the campaign isn't working, but because the pipeline hasn't run yet.
+⚠️ **The deceptive failure mode:** A failed pipeline doesn't make the dashboard look broken — it makes it look *the same as before*. This is why silent pipeline failures get caught late. The team only notices when someone asks "why did the number jump?" *after* the backfill — and by then hours of decisions have been made on stale numbers.
+
+**Practical implication:** If you're using the demo bookings dashboard to decide whether to run a same-day campaign, you need to know numbers may be up to 3 hours behind. A booking campaign launched at 10 AM might not show results until 1 PM — not because the campaign isn't working, but because the pipeline hasn't run yet.
 
 ---
 
@@ -253,22 +257,24 @@ Not every metric needs to be real-time. Getting freshness wrong in either direct
 
 ⚠️ **Common PM mistake:** Treating a number on a screen as fact without understanding what it represents.
 
-> **Dashboard number lifecycle:** Every metric has four components that determine whether it's trustworthy
+> **Dashboard trust checklist:** Every metric on a dashboard has four components that determine whether you can trust it. Before acting on any number, you should be able to answer all four:
 
-Every metric on a dashboard has:
+| Component | What to know | Why it matters |
+|---|---|---|
+| **Definition** | What counts as "active," "revenue," what time zone for timestamps? | Two dashboards with the same label can use different definitions |
+| **Source** | Which ETL, schema, and table does it read from? | Freshness and failure risk depend on the pipeline behind it |
+| **Freshness** | When was it last updated? | A 24-hour-old "live" number is misleading |
+| **Transformation** | What filters, aggregations, or CASE logic were applied? | A silent filter change can make a metric "drop" or "spike" for no real reason |
 
-1. **Definition** — What counts as "active," "revenue," what time zone for timestamps
-2. **Source** — Which ETL, schema, and table
-3. **Freshness** — Last updated when
-4. **Transformation** — What filters, aggregations, or CASE logic was applied
+**When a number drops — ask the data layer first:**
 
-**A drop in demo bookings could signal:**
-- ✓ Actual decline in bookings
-- ✗ ETL pipeline failed overnight
-- ✗ Timezone handling changed in recent deploy
-- ✗ New marketing campaign excluded a country in the CASE logic
+| Signal in the data | Business explanation | Data-layer explanation |
+|---|---|---|
+| Demo bookings ↓ | ✓ Actual decline in bookings | ✗ ETL pipeline failed overnight |
+| Demo bookings ↓ | ✓ Marketing campaign wound down | ✗ Timezone handling changed in recent deploy |
+| Demo bookings ↓ | ✓ Competitor launched | ✗ New marketing campaign excluded a country in the CASE logic |
 
-**→ Always ask:** Did something change in the *data layer* before concluding something changed in the *business*.
+**→ Always ask:** Did something change in the *data layer* before concluding something changed in the *business*. The fastest way to look incompetent in a leadership meeting is to raise an alarm about a metric drop that turns out to be a pipeline bug.
 
 ## W3 — Questions to ask your data team
 

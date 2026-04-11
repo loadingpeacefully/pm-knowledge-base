@@ -37,7 +37,7 @@ Statistical significance is the tool that lets you separate a real effect from a
 
 > **Statistical significance:** A measure of how unlikely it is that the difference you observed between two groups happened by chance. A result is "statistically significant" when the probability that the observed difference occurred by random luck falls below a predetermined threshold (usually 5% or 1%).
 
-> **p-value:** The probability of seeing the observed difference (or a more extreme one) if there were actually no real difference between the two groups. A p-value of 0.05 means: "If the feature had zero effect, there's only a 5% chance we'd see a difference this large by random luck."
+> **p-value:** The probability of seeing the result you got — or a bigger one — if the feature actually had zero effect. A p-value of 0.05 means: "If the feature had no effect at all, we'd see a difference this big (or bigger) just from random noise about 5% of the time." Low p-value → the observed result is hard to explain as random luck.
 
 > **Confidence interval:** The range of plausible values for the true effect size. "We're 95% confident the feature improved completion rates by between 3% and 11%" is more useful than just knowing the p-value.
 
@@ -147,17 +147,16 @@ The 5% significance threshold controls Type I errors: you're saying "I'm willing
 
 > **Confidence interval (CI):** A range of values you're 95% confident contains the true effect size. More useful than a p-value because it shows *how big* the effect likely is, not just whether it's "real."
 
-**Example 1: Wide confidence interval (unreliable)**
-- p = 0.03 — "Statistically significant"
-- 95% CI: +0.1% to +14% completion rate improvement
+**Same p-value, two very different decisions — read the CI, not the stars:**
 
-You're 95% confident the effect is somewhere between "nearly nothing" and "enormous." This is a significant result you shouldn't make major bets on — you need more users to narrow that range.
+| | Wide CI (unreliable) | Narrow CI (actionable) |
+|---|---|---|
+| **p-value** | 0.03 "significant" | 0.03 "significant" |
+| **95% CI** | +0.1% to +14% completion rate | +5% to +8% completion rate |
+| **What it means** | Effect is somewhere between "nearly nothing" and "enormous" | Effect is between 5% and 8% — precise enough to plan around |
+| **PM decision** | Don't make major bets — collect more users to narrow the range | Ship with confidence; the range is large enough to matter *and* tight enough to forecast |
 
-**Example 2: Narrow confidence interval (actionable)**
-- p = 0.03
-- 95% CI: +5% to +8% improvement
-
-You're 95% confident the effect is between 5% and 8% — large enough to matter and precise enough to plan around.
+**Why this matters:** A p-value alone tells you *whether* the effect is likely real. The CI tells you *how big* it probably is. Two experiments with identical p-values can point to wildly different ship decisions — only the CI width reveals which.
 
 ### Minimum Detectable Effect (MDE)
 
@@ -185,13 +184,18 @@ Running an experiment too short produces false positives. Running it too long wa
 
 #### The minimum runtime rule
 
-> **Minimum runtime:** Always run experiments for at least one full business cycle — 7 days minimum for consumer products, longer for products with weekly or monthly natural rhythms.
+> **Minimum runtime rule:** Run experiments for at least one full business cycle — never less. The cycle length depends on your product's natural usage rhythm.
 
-**Why 7 days:** User behavior varies significantly by day of week. An experiment running Monday–Wednesday will over-index on early-week behavior. If the treatment group happens to include more Monday users and Monday users naturally convert better, the experiment appears to show a treatment effect that's actually just day-of-week confounding. Running for a full week ensures each group contains a representative mix of all weekday patterns.
+| Product type | Minimum runtime | Why |
+|---|---|---|
+| Consumer daily-use (social, messaging, news) | 7 days | Captures full weekly behavior cycle — weekday/weekend users differ systematically |
+| Consumer weekly-cadence (education, fitness) | 2–4 weeks | Users only engage 2–5 days per week; short runs miss the rhythm |
+| B2B SaaS | 2 weeks minimum | Weekday vs weekend usage diverges even more; enterprise users skip weekends entirely |
+| Subscription billing / renewal | Full billing cycle | You can't measure renewal until renewal actually happens |
 
-**For longer cycles:** Weekly-cadence products (education, fitness, subscription tools) should run for 2–4 weeks to capture weekly behavioral cycles. For products with monthly billing, run for a full month before measuring renewal or upgrade metrics.
+**Why 7 days minimum:** User behavior varies by day of week. An experiment running Mon–Wed over-indexes on early-week behavior. If the treatment group happens to include more Monday users — and Monday users naturally convert better — you'll see a "treatment effect" that's actually day-of-week confounding. A full week forces each group to contain a representative mix.
 
-**Action:** Calculate required sample size before the experiment, translate to calendar time using your daily traffic, and commit to that duration. If results are "obviously winning" at day 3 of a 14-day experiment, wait until day 14.
+**Action:** Calculate required sample size → translate to calendar time using your daily traffic → commit to that duration. If results "obviously win" on day 3 of a 14-day experiment, wait until day 14. The discipline is the point.
 
 ---
 

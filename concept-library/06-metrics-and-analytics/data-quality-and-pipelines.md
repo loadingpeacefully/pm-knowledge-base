@@ -172,7 +172,7 @@ Data pipelines follow a three-step process:
 
 > **Transform:** Apply business logic to the raw data. This is where calculations happen: join tables, apply CASE statements to derive categories, aggregate by dimensions, handle null values with COALESCE, clean inconsistencies. This is also where most bugs live.
 
-> **Load:** Write the transformed data to the analytics database or data warehouse. This step can be incremental (only new/changed rows) or full (overwrite the entire table). Incremental is faster and better for large tables (less data moved, less risk of table lock). Full load is simpler and always produces a consistent known state — but expensive at scale and slower to recover if something goes wrong mid-run.
+> **Load:** Write the transformed data to the analytics database or data warehouse. This step can be **incremental** (only new/changed rows) or **full** (overwrite the entire table). **Full loads are simpler and safer** — they always produce a consistent known state and are easier to recover because you can just re-run. **Incremental loads are faster and cheaper at scale** — less data moved per run — but require more logic (change-tracking, upsert handling, gap detection) and are riskier when that logic is wrong. The rule: start with full loads until table size forces you to switch; move to incremental only after you've designed a change-detection strategy and a way to audit gaps.
 
 ---
 
@@ -209,12 +209,14 @@ Production databases (PostgreSQL)
 
 | Pipeline | Frequency | Maximum lag | Business impact of failure |
 |---|---|---|---|
-| BAU ETL | Hourly | 1–2 hours | Exec dashboard stale; revenue reporting delayed |
-| PAYMENT ETL | Every 3 hours | 3–6 hours | Payment reconciliation delayed |
-| STUDENT ETL | Every 3 hours | 3–6 hours | Student onboarding metrics delayed |
-| DEMO ETL | Every 3 hours | 3–6 hours | Sales funnel metrics delayed |
-| TEACHER ETL | Daily | 24 hours | Teacher supply metrics 1 day stale |
-| STUDENT CLASS METRICS | Daily | 24 hours | Attendance and learning metrics 1 day stale |
+| BAU ETL | Hourly | ~1 hour (up to 2h on run failures) | Exec dashboard stale; revenue reporting delayed |
+| PAYMENT ETL | Every 3 hours | ~3 hours (up to 6h on run failures) | Payment reconciliation delayed |
+| STUDENT ETL | Every 3 hours | ~3 hours (up to 6h on run failures) | Student onboarding metrics delayed |
+| DEMO ETL | Every 3 hours | ~3 hours (up to 6h on run failures) | Sales funnel metrics delayed |
+| TEACHER ETL | Daily | ~24 hours (up to 48h on run failures) | Teacher supply metrics 1 day stale |
+| STUDENT CLASS METRICS | Daily | ~24 hours (up to 48h on run failures) | Attendance and learning metrics 1 day stale |
+
+**Lag math:** Under normal operation, maximum lag = refresh interval (data is at most that old just before the next run). On a single failed run, lag doubles because the next successful run is 2 × the interval away. A two-run failure triples it, and so on. The "up to" column above assumes one missed run — which is the most common silent failure mode.
 
 ---
 
