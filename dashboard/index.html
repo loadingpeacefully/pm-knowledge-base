@@ -752,7 +752,7 @@ async function gsGenerateQuiz(lessonId, level) {
   if (!apiKey) return gsFallbackQuestions(level);
 
   const levelName = level === 'foundation' ? 'Foundation' : level === 'working' ? 'Working Knowledge' : 'Strategic Depth';
-  const lessonContent = lesson.content || (S.levelContent && S.levelContent[level]) || '';
+  const lessonContent = (S.levelContent && S.levelContent[level]) || lesson.content || '';
 
   try {
     const resp = await fetch('https://api.anthropic.com/v1/messages', {
