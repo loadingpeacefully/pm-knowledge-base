@@ -193,3 +193,40 @@ Keep it one callout block, not a summary. The goal is a redirect
 pointer, not duplicate Foundation content.
 
 Date: April 9, 2026
+
+## Session — CRM Split Prototype (2026-04-11)
+Option B validation test — can splitting a long lesson at the W1 boundary
+break the swarm display-artifact score floor?
+
+- Original: 08.08 CRM & Sales Pipeline — 856 lines, 6999 words, score 5.4
+- Split into:
+  - 08.11 CRM Fundamentals (F1-F3, W1) — 313 lines, 2839 words, score **5.8**
+    - 9 criticals / 33 highs (raw) · 2 criticals / 5 highs (synthesized)
+  - 08.12 Sales Pipeline Integration (W2-S3) — 577 lines, 4132 words, score **6.0**
+    - 11 criticals / 30 highs (raw) · 4 criticals / 5 highs (synthesized)
+- Average of halves: **5.9** (vs 5.4 original)
+- Movement: **+0.5** — not enough to clear 6.5 threshold
+
+### Decision: Option B did NOT validate
+
+Both halves below 6.5. The split moved the score a little but:
+- Lesson B is still 4132 words — above the artifact threshold we hypothesized
+- Lesson A triggers "missing Strategic section" criticals (9 raw)
+- Lesson B triggers "content cuts off" criticals because agents expect F1-F3 first
+- Total critical count roughly doubled (20 vs 9 on original) because each
+  half now complains about the content that lives in the other half
+
+### Why the split didn't work
+
+Splitting redistributes the content but doesn't shrink either half enough
+to beat the artifact ceiling, AND it introduces new criticals for missing
+cross-half sections that agents can't see.
+
+### Next step
+
+Going pure Option A — content-quality fixes on the bottom 15 lessons
+(sub-6.1 tier) — for the remainder of the remediation backlog. Do NOT
+split Multi-Tenancy, Tech Debt for PMs, DAU/MAU, or Experimentation.
+
+The two new split lessons (08.11, 08.12) stay in the curriculum as-is.
+Remediate them via content fixes like any other below-6.5 lesson.
