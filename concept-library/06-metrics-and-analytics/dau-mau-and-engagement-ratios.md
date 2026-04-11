@@ -106,12 +106,22 @@ Each is a more meaningful "active" signal than a raw login.
 
 | Product | DAU/MAU | Period | Notes |
 |---|---|---|---|
-| Facebook | ~65% | 2014–2018 peak | Declined post-2020 as engagement definition tightened |
-| Twitter / X | ~40% | Pre-2022 acquisition | Applied to "monetizable DAU" segment only |
-| Consumer mobile apps | 10–25% | 2023–2024 avg | Median; category varies significantly |
-| Daily habit products (Duolingo, Wordle) | 50%+ | 2022–2024 | Streak mechanics drive daily return |
+| Facebook (historical peak) | ~65% | 2014–2018 | Cited widely in textbooks; reflects old "active = any session" definition |
+| Instagram | ~50–55% | 2022–2024 reported | Meta disclosed in 10-K filings; based on Core Family of Apps metric |
+| TikTok | ~55–65% | 2023–2024 Sensor Tower / third-party estimates | Short-form video with algorithmic feed drives habit |
+| Twitter / X | ~40–45% | Pre-2022 mDAU era | Only counted *monetizable* DAU; true total was higher but diluted |
+| Duolingo | ~65%+ | 2023–2024 10-K | Streak mechanics + daily lesson loop; highest in ed-tech |
+| Consumer mobile apps (median) | 10–20% | 2023–2024 Adjust/Statista | Category varies wildly — dating apps ~25%, shopping ~8% |
+| Daily habit products (Wordle, Strava, Headspace) | 40–60% | 2022–2024 | Single daily action creates habit |
+| B2B SaaS (WAU/MAU, not DAU/MAU) | 40–60% | 2023–2024 OpenView / Pendo | B2B uses weekly, not daily; daily DAU/MAU is rarely meaningful |
 
-⚠️ **Historical benchmarks are not comparable:** Facebook and Twitter changed "active" definitions post-2020. Use category-appropriate 2023–2025 benchmarks where available; treat 2014–2018 figures as directional only.
+⚠️ **Historical benchmarks are not comparable:** Facebook and Twitter changed "active" definitions post-2020. Facebook's 65% peak used "any session" which modern audits would now reject as too loose. Use 2023–2024 benchmarks from SEC filings (Meta, Duolingo, Pinterest, Snap) where available — these are the most reliable public numbers because they're audited. Treat 2014–2018 figures as directional only.
+
+**Data source notes:**
+- Public company numbers come from 10-K filings (Meta, Duolingo, Snap, Pinterest, Reddit) — most reliable
+- Private company numbers come from third-party estimates (Sensor Tower, data.ai, Adjust) — directional only
+- TikTok is private; numbers are estimates and vary 10–15 percentage points across sources
+- Every number above assumes a specific "active" definition; always verify the definition before comparing your product to the benchmark
 
 ---
 
@@ -196,25 +206,40 @@ DAU/MAU is a relevant metric only if daily or near-daily engagement is part of y
 
 ### Decision 2: How to increase DAU/MAU — engagement vs notification abuse
 
-The two most reliable ways to increase DAU/MAU are:
+There are two reliable ways to increase DAU/MAU. They look similar on the dashboard in the first 30 days. They diverge sharply after 60.
 
-**Path A (Sustainable):** Make the product genuinely more valuable so users want to return daily.
+**Path A — Sustainable (the default):** Make the product genuinely more valuable so users want to return daily. Build features that create new reasons to check back (personalized content, social activity, daily challenges, progress tracking).
 
-**Path B (Short-term extraction):** Trigger users to return through notifications and re-engagement campaigns regardless of whether there's new value.
+**Path B — Notification extraction (anti-pattern):** Trigger users to return through push notifications and re-engagement campaigns regardless of whether there's new value waiting when they arrive. This is an **anti-pattern** — it's Path A's cheap impersonator. It inflates the dashboard for a quarter and then collapses.
 
-#### The Path B collapse mechanism
+> ⚠️ Path B is the anti-pattern. If you're debating it, you're losing. Call it out explicitly in planning docs so nobody on your team can later claim they thought it was neutral.
 
-1. Push notifications increase open rate → DAU ticks up
-2. Users who don't find value disengage → notification opt-out rate rises (industry data: aggressive push campaigns can push opt-out **above 50% within 30 days**)
-3. Once notifications are disabled, the product loses its re-engagement channel entirely
-4. 30-day retention for notification-acquired DAU is typically **20–40% lower** than organically returning users
+#### The Path B collapse mechanism (quantified)
 
-#### The product-dependence caveat
+| Stage | What happens | Typical magnitude |
+|---|---|---|
+| **Days 1–14** | Push notifications increase open rate → DAU ticks up visibly | +10–25% DAU lift |
+| **Days 15–45** | Users who don't find value on arrival start disengaging → opt-out rate rises | Airship 2023 mobile engagement report: **19% median push opt-out within 30 days**; aggressive campaigns push it above 50% |
+| **Days 30–90** | Notification-acquired users show materially worse retention than organic returnees | Braze 2023 retention benchmarks: **30-day retention 20–40% lower** for users re-engaged primarily via push; 90-day retention 40–60% lower |
+| **Day 90+** | Opted-out users can't be re-engaged through the primary channel → DAU collapses below pre-campaign baseline | Net DAU **−5% to −15%** vs pre-campaign baseline in affected cohorts |
 
-Some notification-heavy products work because the notifications *are* the value (WhatsApp messages, calendar reminders, real-time sports scores). The test isn't whether notifications trigger the return — it's whether the user finds value after arriving.
+**Research sources:** Airship Push Notification Benchmarks 2023; Braze Customer Engagement Report 2023; Duolingo's own public discussion of their 2019 "passive-aggressive owl" notification experiment (Duolingo engineering blog) — they deliberately tuned their notification cadence down after observing exactly this collapse pattern.
 
-- ✓ **High-quality DAU:** Student gets "your class starts in 10 minutes" reminder and attends class
-- ✗ **Low-quality DAU:** Student gets "check out this leaderboard!" notification and closes the app in 3 seconds
+#### The spectrum — not all notification-heavy products are Path B
+
+The test isn't whether notifications trigger the return. The test is **whether the user finds value after arriving**. Some notification-heavy products work because the notifications *are* the value, not a lure to dashboard-game DAU.
+
+| Notification pattern | Path A or B? | Why |
+|---|---|---|
+| WhatsApp "New message from X" | **A** (value *is* the notification) | The notification delivers the value; tapping opens to the value continuing |
+| Google Calendar "Meeting in 10 minutes" | **A** (utility notification) | The notification is a service; user action follows naturally |
+| Duolingo "Time for your daily lesson" | **A — if the lesson is ready** | Sustainable when streak mechanics align with real daily skill improvement |
+| Retailer "Check out this new arrival!" at 9pm | **B** (dashboard-gaming) | No time-sensitive value; the notification exists to trigger the DAU event |
+| Social app "Your friend just posted!" with algorithmic ranking | **Ambiguous** | Depends on whether "friend posted" is actually relevant to the recipient |
+| News app "Breaking: [mild event] happening now" | **B** (false-urgency manipulation) | Deliberately wraps non-urgent events in urgency framing |
+
+- ✓ **High-quality DAU example:** Student gets "your class starts in 10 minutes" reminder and attends class.
+- ✗ **Low-quality DAU example:** Student gets "check out this leaderboard!" notification at 11pm and closes the app in 3 seconds.
 
 #### Example: Path A in practice
 
@@ -236,13 +261,15 @@ A stable DAU/MAU ratio doesn't mean the product is healthy. Both numbers could b
 
 #### Diagnostic patterns
 
-| Pattern | What it signals | Implication |
-|---|---|---|
-| MAU growing, DAU flat | Acquiring users but not converting them to daily habits | Activation/engagement problem |
-| DAU growing, MAU flat | Existing users becoming more active; few new users | Growth/acquisition problem |
-| Both growing, ratio stable | Healthy scaling | Monitor that ratio doesn't compress as audience grows |
-| Both declining, ratio stable | Product is contracting evenly | Retention or market problem |
-| DAU/MAU declining with both numbers | Product losing its most engaged users fastest | Serious health signal ⚠️ |
+| Pattern | What it signals | Implication | Recommended PM action |
+|---|---|---|---|
+| MAU growing, DAU flat | Acquiring users but not converting them to daily habits | Activation/engagement problem | Investigate activation funnel week 1–4; add a habit-forming primary action to onboarding; audit time-to-first-value |
+| DAU growing, MAU flat | Existing users becoming more active; few new users | Growth/acquisition problem | Shift focus from product to acquisition; run channel audit; don't celebrate engagement gains without topline growth |
+| Both growing, ratio stable | Healthy scaling | Monitor that ratio doesn't compress as audience grows | No intervention needed; set a tripwire alert if ratio compresses >5 points quarter-over-quarter |
+| Both declining, ratio stable | Product is contracting evenly | Retention or market problem | Cohort analysis to find which users are leaving; competitive audit; check for seasonal or macro effects before panicking |
+| DAU/MAU declining with both numbers | Product losing its most engaged users fastest | Serious health signal ⚠️ | Treat as priority incident; exit-survey lapsed power users within 48h; halt any feature work that increases cognitive load until diagnosed |
+| DAU flat, MAU declining | Core users loyal but base eroding | Acquisition + onboarding failure, core product fine | Push acquisition hard; protect the core loop; don't touch the product for engaged users |
+| DAU growing faster than MAU | Existing users deepening habit | Success signal, but watch for burnout | Monitor session length + churn from hyper-engaged segment — over-engaged users sometimes churn abruptly |
 
 > **Dashboard essential:** Add a 4-week trend line to your DAU/MAU dashboard so direction is always visible. A single-period snapshot is nearly useless for decision-making.
 
@@ -277,11 +304,52 @@ DAU/MAU measures **breadth of engagement** (how many users return). It does *not
 
 A product can have excellent DAU/MAU while generating poor revenue — users return daily but never pay. A product can have modest DAU/MAU but extraordinary per-session value — users return less often but each session drives meaningful business outcomes.
 
-#### Real case: Twitter's mDAU
-
-Some users were counted as "active" in ways that couldn't be monetized (bots, embeds, logged-out views). Counting them inflated DAU without actually representing business health. Twitter introduced **mDAU (monetizable DAU)** to solve this.
-
 > **Engagement hierarchy:** Use DAU/MAU as a leading indicator of engagement health, not as a direct business metric. Always pair it with a conversion or revenue metric to distinguish active users who generate value from active users who are just browsing.
+
+---
+
+### Decision 6: When to use mDAU (monetizable DAU) instead of DAU
+
+**mDAU** (monetizable Daily Active Users) was popularized by Twitter in 2019 and has since been adopted by ad-supported products across the industry. It's a filtered DAU that only counts users the business can actually monetize.
+
+> **mDAU:** The subset of DAU that meets monetization criteria for the product — typically logged-in users who saw ads, met ad-targeting requirements, and didn't come from bot, embed, or logged-out traffic.
+
+#### What mDAU excludes (and why)
+
+| Excluded traffic | Why it's not monetizable |
+|---|---|
+| **Bots and scrapers** | No human impression, no ad revenue, no LTV |
+| **Embedded content viewers** | Saw your content on another site, not on your property — no ad inventory control |
+| **Logged-out users** | Can't be targeted, can't be attributed to ad campaigns |
+| **Banned or restricted accounts** | Legally or policy-restricted from receiving ads |
+| **Users below minimum ad-targeting age** (under 13 in US) | COPPA prevents monetization |
+
+#### When to adopt mDAU
+
+| Product type | Use mDAU? | Reason |
+|---|---|---|
+| **Ad-supported social / media** | ✅ Yes — primary metric | DAU without monetization filter overstates business health dramatically |
+| **Subscription SaaS** | ⚠️ Partial — track "paid active" separately | mDAU isn't the standard framing; track paid-seat activity |
+| **E-commerce / transactional** | ❌ No | DAU isn't your metric anyway; track active buyers or GMV-generating sessions |
+| **Free-to-play gaming** | ✅ Yes — adapted | Track "DAU with at least one monetization opportunity" (saw the shop, had a conversion touchpoint) |
+| **B2B tools** | ❌ No | Seats, not users, are the unit of monetization |
+
+#### How to calculate mDAU — worked example
+
+Starting with raw DAU of 10M:
+- Remove bot traffic (typically 3–8% of raw DAU): -500K → 9.5M
+- Remove logged-out views: -1.5M → 8M
+- Remove embedded views: -300K → 7.7M
+- Remove under-13 and banned accounts: -200K → 7.5M
+- **mDAU = 7.5M** (75% of raw DAU)
+
+The 25% gap between DAU and mDAU is typical for mature social platforms. If your gap is under 5%, you're either being too permissive in filtering or you don't have the scale where bot and embed traffic matters yet. If your gap is over 40%, you have a serious attribution or bot-traffic problem.
+
+#### Real case: Twitter's mDAU introduction (2019)
+
+Twitter introduced mDAU in 2019 specifically because some users were counted as "active" in ways that couldn't be monetized (bots, embeds, logged-out views). Counting them inflated DAU without representing business health. After the change, their reported active user count dropped ~20% overnight — but the metric became meaningful enough to forecast revenue against. The market rewarded the transparency with a small share price bump despite the lower number, because analysts valued the honesty.
+
+**PM lesson:** If your product is ad-monetized and your DAU includes traffic you can't actually monetize, you're lying to yourself. Switch to mDAU even if it means a one-time drop in the headline number. The alternative is optimizing a vanity metric.
 
 ## W3 — Questions to ask your engineer
 
@@ -563,3 +631,27 @@ Any DAU/MAU initiative needs counter metrics matched to the driver:
 ⚠️ **AI decouples this:** A user who gets their answer in 5 seconds appears "less engaged" than a user who navigates the full product for 10 minutes — despite receiving the same or better value.
 
 **What this reveals:** Engagement ratios were designed for products where time-on-product correlates with satisfaction. AI interfaces break that assumption. Metrics haven't caught up to this reality yet.
+
+---
+
+#### Synthetic users and the 2024 bot-detection crisis
+
+A newer problem: **AI-generated synthetic users**. Social platforms in 2024 saw a surge in LLM-powered accounts that can pass traditional bot detection (real login cadence, varied click patterns, plausible content engagement). These accounts inflate DAU without providing the two things real users provide: genuine attention (for ad monetization) and organic network effects.
+
+| Legacy bot signal | Still effective? | Why |
+|---|---|---|
+| **IP reputation** | Partial | Residential proxies defeat this; farmed IPs still detectable |
+| **Click velocity** | Weak | LLM agents can mimic human click timing and pauses |
+| **Session timing patterns** | Weak | Agents can run on human-like schedules (work hours, idle periods) |
+| **Content engagement variation** | Moderate | Current agents produce detectable content signatures but this gap is closing fast |
+| **Cross-signal graph analysis** | Strong | The account's interaction graph (who it follows, who follows it, what it's replied to) still reveals coordination |
+| **Behavioral fingerprint (mouse micro-movements, touch pressure)** | Strong | Hardest for LLM agents to fake, requires device sensor access |
+
+**PM implications (2024 forward):**
+
+1. **If you run an ad-monetized platform**, the gap between DAU and mDAU is widening fast. Agencies and advertisers are increasingly demanding certified human-verified impression counts, not raw DAU.
+2. **If you run a social product**, bot-to-bot engagement is now a measurable fraction of total engagement. Some platforms have started separately tracking "human-originated" vs "agent-originated" actions.
+3. **Your competitive DAU benchmark might be partially fake.** When a competitor announces 50M DAU, ask: what's their bot filtering methodology and when did they last publish it?
+4. **Internal QA:** Every product with a public signup flow should assume 2–5% of new accounts are synthetic and build an estimate into their DAU/MAU interpretation. A DAU/MAU that looks "too good" at launch is often partially bot-inflated.
+
+**The shift in the last 2 years:** Pre-2023, bot detection was mostly about cheap attack accounts — one attacker, thousands of dumb bots. Post-ChatGPT, the cost of running a plausibly-human LLM agent dropped to cents per day, and bot attacks went from "detectable pattern" to "indistinguishable from casual users without cross-signal graph analysis." Any DAU/MAU benchmark older than 2023 was measured in a simpler bot environment and should be recalibrated.

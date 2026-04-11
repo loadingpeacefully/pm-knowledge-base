@@ -151,7 +151,17 @@ The user presents a credential — password, magic link token, OAuth token, biom
 
 The backend checks the credential against its stored representation. Passwords are never stored in plaintext — they're stored as hashed values (bcrypt, Argon2, or similar). The system hashes the submitted password and compares it to the stored hash. If they match, identity is confirmed.
 
-⚠️ **BrightChamps critical auth debt:** The current system stores MPINs (mobile PINs) in plain text in Google Sheets. This is a **Critical severity vulnerability**: anyone with read access to that Google Sheet (any engineer, anyone with leaked credentials) has every MPIN for every mobile user. The auth revamp plan addresses this by migrating MPINs to hashed storage in Chowkidar.
+> ⚠️ **Case study — BrightChamps MPIN plaintext storage (critical severity)**
+>
+> | Aspect | Detail |
+> |---|---|
+> | **What** | Mobile PINs (MPINs) stored in plaintext in a Google Sheet rather than hashed in the auth service |
+> | **Impact scope** | Every mobile user's MPIN readable by anyone with Sheet access — all engineers, plus anyone with leaked Google Workspace credentials |
+> | **Severity** | Critical — full credential compromise across the mobile user base |
+> | **How it was found** | Internal BrightChamps auth revamp audit (pre-Chowkidar migration) flagged the Sheet as the auth source of truth |
+> | **Remediation** | Migrate MPINs to hashed storage (bcrypt/Argon2) in Chowkidar service; deprecate the Sheet; rotate all MPINs post-migration |
+>
+> **PM lesson:** When you inherit an auth system, audit *where the credential material actually lives*, not just how the login flow works. Plaintext credential stores outside the auth service are the most common critical-severity finding in security audits — and they usually trace to a decision made years earlier when the product was smaller and "it's just a spreadsheet" felt acceptable.
 
 #### Step 3: Token issuance
 
@@ -179,6 +189,19 @@ Where the token is stored matters enormously:
 
 **BrightChamps implementation:** Uses `SecureStorage` as an intermediate step—safer than plain localStorage but below the security standard of httpOnly cookies.
 
+#### Step 5: The JWT revocation problem
+
+JWTs are *stateless* by design — the server can verify a token without looking anything up. That's the performance win. It's also the revocation problem: once issued, a JWT is valid until it expires. Changing the user's password, marking their account compromised, or hitting "log out all devices" does not invalidate tokens already in circulation.
+
+| Revocation strategy | How it works | Tradeoff |
+|---|---|---|
+| **Short expiry + refresh tokens** | Access token expires in 5–15 min; client uses a long-lived refresh token to get a new one. Server can revoke the refresh token to cut off future access. | Compromised access token remains valid until its (short) expiry. Standard pattern for most apps. |
+| **Token blacklist** | Maintain a set of revoked token IDs; check every request against it. | Adds a lookup to every request — loses the stateless performance win. Used when instant revocation is required. |
+| **Session versioning** | Every JWT carries the user's session version number. Bumping the version on logout invalidates all prior tokens. | Small DB lookup per request; simpler than a blacklist; most common compromise design. |
+| **Key rotation** | Emergency-only: rotate the signing key. Every token issued under the old key is instantly invalid. | Nuclear option — logs out every user. Reserved for key compromise, not individual account incidents. |
+
+**✓ PM decision:** Short expiry + refresh token is the default. Only move to session versioning or blacklist if your threat model includes "must invalidate a session within 60 seconds" — for example, regulated industries, high-value account takeover recovery, or B2B products where IT admins need instant employee offboarding.
+
 #### BrightChamps's four authentication flows
 
 | Flow | Trigger | Mechanism | Primary use case |
@@ -187,6 +210,25 @@ Where the token is stored matters enormously:
 | **Magic Link** | Token in URL parameters | Backend validates URL token, clears params post-auth | Passwordless login, email invitations |
 | **Masquerade** | Admin with target student ID | Admin permission validated, normal auth bypassed | Support debugging, "view as user" |
 | **Auto-Login** | Valid stored token exists | Token expiry checked, refreshed if near expiry | Return visits, background refresh |
+
+#### Federated identity — when a third party handles auth for you
+
+Most products shouldn't build their own password flow. A **federated identity** approach delegates authentication to an existing identity provider (IdP) that the user already has an account with. The user signs in to the IdP, and the IdP vouches for them to your app.
+
+| Protocol | When to use | What it gives you | Tradeoff |
+|---|---|---|---|
+| **OAuth 2.0** | Consumer apps ("Sign in with Google / Apple / Facebook") | Delegated authorization — user grants your app specific permissions (read email, access calendar) without giving you their password | You depend on the IdP's uptime and policy changes; users who lose their IdP account lose yours |
+| **OpenID Connect (OIDC)** | Consumer auth on top of OAuth 2.0; most "Sign in with X" buttons use this | Identity layer: who the user is, not just what they can access | Adds ID token verification complexity; still vendor-dependent |
+| **SAML 2.0** | Enterprise B2B — required by most SOC 2 / ISO 27001 customers | IT admins can provision and deprovision employees centrally; single sign-on across a company's entire tool stack | XML-based, verbose, older — no consumer support; only relevant if you're selling to companies |
+| **Magic links / WebAuthn** | Passwordless flows when you don't want a third-party dependency | No password to steal; WebAuthn enables FIDO2 hardware-key login | Email deliverability becomes your auth SLA; WebAuthn UX is still unfamiliar for most users |
+
+**✓ PM decision tree:**
+- **B2C product, hobby-to-growth scale** → Start with OAuth 2.0 / OIDC via Google + Apple (Apple is required on iOS if you offer any third-party sign-in).
+- **B2C product, regulated or medical** → Passwordless magic link + WebAuthn. Avoid sharing user identity with a third party.
+- **B2B product** → SAML 2.0 is table stakes for enterprise deals. You will be asked for it in security reviews before you cross $100K ACV.
+- **Multi-tenant SaaS** → SAML per tenant, with each enterprise customer's IdP handling their own user lifecycle. Never let customer A's IdP authenticate a user into customer B's workspace.
+
+**⚠️ The multi-tenant isolation trap:** When you add SAML, you must scope the resulting session to a specific tenant. A common mistake: trust the email domain from the IdP assertion, not the tenant binding. If `user@acme.com` can authenticate via Acme's IdP AND via a leaked personal Acme account on a different IdP, you've created a cross-tenant auth bypass.
 
 ---
 
@@ -224,6 +266,17 @@ Authorization happens at two layers — only one is secure:
 
 The `isFe=true` parameter masks email and phone, but sensitive student data remains exposed. **PM red flag:** This is an authorization gap. Sensitive student data should require at minimum that the requester is authenticated as that student's parent, or an internal service, or an authenticated admin.
 
+**How this kind of gap usually happens — and what should catch it:**
+
+| Root cause | What to ask in PM review |
+|---|---|
+| Endpoint was built for a legitimate unauthenticated use case (referral landing page, public shareable scorecard) and never re-scoped when the payload grew | "What's the minimum data this endpoint actually needs? Can we return a stripped-down DTO for the unauthenticated case and require auth for the full record?" |
+| `auth: None` was a development shortcut that never got removed | "Who reviews new endpoint auth decisions before ship? Is there an automated scanner for `auth: None` in the OpenAPI spec?" |
+| Team assumed obscurity (hard-to-guess IDs) was security | "Are our IDs enumerable? (Incremental integer IDs = yes.) Does removing obscurity break the endpoint entirely?" |
+| Payload grew over time — each feature added a new field to the existing response without revisiting auth scope | "Every time we add a field to a DTO, does the auth scope still match the new data sensitivity?" |
+
+**PM process fix:** Every new endpoint with `auth: None` should go through an explicit security review, not the default PR process. Every PR that *adds a field* to a DTO returned by an unauthenticated endpoint should re-trigger that review. The gap is almost always created by incremental growth, not by a single bad decision.
+
 #### Attribute-Based Access Control (ABAC)
 
 > **ABAC (Attribute-Based Access Control):** An extension of RBAC that adds context to authorization decisions, enabling rules like "role X can do action Y if the data belongs to their own userId or their enrolled students"
@@ -240,15 +293,17 @@ A well-designed auth system issues tokens with minimum necessary permissions —
 
 ### Session lifecycle
 
-Sessions move through distinct phases. PM decisions at each phase impact user experience and security:
+Sessions move through distinct phases. Each phase forces a concrete PM decision with a default and a tradeoff:
 
-| Phase | What happens | PM decisions |
-|---|---|---|
-| **Creation** | Successful auth → token issued with expiry time | How long should sessions last? 15min? 24h? 30 days? |
-| **Use** | Token included in each request; server validates signature and expiry | What should happen when a token is about to expire? |
-| **Refresh** | TokenManager detects near-expiry token; requests a new token silently | Should users be logged out or silently re-authenticated? |
-| **Expiry** | Token is past its expiry time; backend rejects it | What's the user experience of a session expiry? |
-| **Revocation** | Admin or user explicitly invalidates a token before expiry | Can a user log out all sessions? Can admins revoke compromised sessions? |
+| Phase | What happens | PM decision | Default (consumer) | Default (regulated / B2B) |
+|---|---|---|---|---|
+| **Creation** | Successful auth → token issued | Session duration | 30 days (sticky login) | 8 hours (work day) or 15 min (finance/health) |
+| **Use** | Token sent with each request; server validates | Refresh-on-use vs. fixed expiry | Refresh-on-use (keep active users logged in) | Fixed expiry (force re-auth on schedule) |
+| **Refresh** | TokenManager detects near-expiry, requests new token silently | Is refresh silent or does it prompt? | Silent — user never sees it | Silent if <8h inactive, prompt after |
+| **Expiry** | Token past expiry; backend rejects | What UX does the user see? | Soft redirect to login, preserve form state | Hard redirect with "session expired for your security" message |
+| **Revocation** | Admin or user explicitly kills a token | Who can revoke what, and how fast? | User can log out current session; no "log out everywhere" | User can log out all devices; admin can force-revoke within 60s |
+
+**✓ Recommendation:** Pick the consumer defaults unless you're in a regulated industry or selling to companies that require session controls in their security questionnaire. Don't mix — 30-day refresh-on-use sessions with admin-revocable tokens is a common middle ground that confuses users and still fails SOC 2 because the *access token* (not the refresh token) has no revocation path.
 
 #### BrightChamps's TokenManager
 

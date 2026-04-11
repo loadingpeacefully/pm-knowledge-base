@@ -95,13 +95,13 @@ These are product decisions, not engineering decisions.
 
 Not all technical debt is the same. As a PM, understanding the categories helps you prioritize which debt to address and when:
 
-| Type | What it is | Business impact | Example |
+| Type | What it is | Measurable business impact | Example |
 |---|---|---|---|
-| **Performance debt** | Code that works but runs slowly or inefficiently | Direct user experience harm; conversion and retention damage | All 49 routes loading a 2.5MB bundle when the login page needs ~300KB |
-| **Architectural debt** | Systems built for one scale that don't support the current or needed scale | Makes new features slow and risky to build | 27 Redux slices initialized on every page regardless of context |
-| **Dependency debt** | Outdated or duplicated libraries and packages | Security vulnerabilities; compatibility issues with new features | Duplicate react-query dependency; moment.js when date-fns is leaner |
-| **Test debt** | Missing or inadequate automated tests | Every change requires manual verification; bugs ship undetected | No automated tests on checkout flow |
-| **Documentation debt** | Undocumented systems that only a few engineers understand | Onboarding cost; bus-factor risk (critical knowledge in one person's head) | Undocumented data model for legacy course migration |
+| **Performance debt** | Code that works but runs slowly or inefficiently | +1s LCP typically drops mobile conversion 5–7%; every 100ms of latency costs Amazon ~1% of revenue (their 2006 public number) | All 49 routes loading a 2.5MB bundle when the login page needs ~300KB |
+| **Architectural debt** | Systems built for one scale that don't support the current or needed scale | Feature delivery 30–50% slower in affected areas; estimate variance >50% vs. greenfield code | 27 Redux slices initialized on every page regardless of context |
+| **Dependency debt** | Outdated or duplicated libraries and packages | CVE exposure window (days to patch after public disclosure); bundle bloat 200–500KB per duplicate library | Duplicate react-query dependency; moment.js (67KB) when date-fns (12KB tree-shaken) is leaner |
+| **Test debt** | Missing or inadequate automated tests | Change failure rate doubles without automated tests; hotfix frequency 2–4× baseline; ~30 min of manual QA per deploy | No automated tests on checkout flow |
+| **Documentation debt** | Undocumented systems that only a few engineers understand | Onboarding time 2–3× longer (typically 4–6 weeks instead of 2); bus-factor risk quantified by % of critical systems owned by single engineer | Undocumented data model for legacy course migration |
 
 > **Redux:** The global state management library that holds application data in memory
 
@@ -157,7 +157,7 @@ As a PM, your job is to translate debt from engineering language into business o
 | Engineer says | You translate to | Business impact |
 |---|---|---|
 | "We need to refactor the Redux store" | "Every new dashboard feature takes 30% longer because of unnecessary global state management" | 30% longer = $X in engineering cost per feature |
-| "The bundle size is causing LCP failures" | "First meaningful content appears 2 seconds later for users on average mobile connections" | 2 seconds = Y% conversion drop *(Google research: 53% of mobile users abandon after 3 seconds)* |
+| "The bundle size is causing LCP failures" | "First meaningful content appears 2 seconds later for users on average mobile connections" | 2 seconds = Y% conversion drop *(Google/SOASTA 2017 mobile research: 53% of mobile users abandon sites that take longer than 3 seconds to load; more recent Google Web Vitals studies 2020–2023 show 10% bounce-rate increase per 1s of load time added)* |
 | "We have 0% test coverage on checkout" | "Every checkout change requires 2 days of manual QA and still ships bugs" | 2 days per change × 4 changes/month = 8 days QA overhead + bug risk |
 
 > **LCP (Largest Contentful Paint):** A Google Core Web Vital that measures when the main content becomes visible
@@ -197,19 +197,22 @@ The BrightChamps audit organized debt fixes into a two-horizon roadmap:
 
 ### Decision 1: How much capacity should go to debt vs. features?
 
-> **Technical Debt Interest Rate:** Spending 0% on debt causes velocity to decline ~10–15% per quarter. Spending 20% maintains velocity. Spending 30%+ improves it.
+> **Technical Debt Interest Rate:** The observed pattern across teams with no technical-health budget is a steady decline in delivery velocity — typically 10–15% per quarter in the teams that track it, though the rate depends on codebase age, team size, and feature churn. Teams that protect 20% of capacity for technical work generally maintain velocity; teams that protect 30% or more often see velocity *improve* as accumulated drag gets paid down.
 
-There's no universal right answer, but the typical range is **15–25% of engineering capacity** reserved for technical work, including debt, performance, security, and infrastructure.
+This is an empirical pattern, not a universal law. The direction is reliable (0% → decline, 20% → stable, 30%+ → improve), but the exact numbers depend on how old the codebase is and how much debt is already in it.
 
-**Reference point:** Spotify's 20% "tech health ring" is a well-known benchmark.
+**Capacity allocation by company stage:**
 
-| Debt Investment | Velocity Outcome |
-|---|---|
-| 0% | Declines 10–15% per quarter |
-| 20% | Maintained |
-| 30%+ | Improves |
+| Stage | Protected technical capacity | Rationale |
+|---|---|---|
+| **Seed / early startup** (0–18 months, <10 eng) | 10–15% | Codebase is young, debt hasn't compounded, feature velocity matters more than infrastructure |
+| **Growth stage** (18 months – 3 years, 10–50 eng) | 15–20% | Debt starts biting; this is the most common range and where Spotify's 20% "tech health ring" benchmark sits |
+| **Scale-up** (3+ years, 50–200 eng) | 20–30% | Multi-team coordination debt, integration complexity, security hardening all compound |
+| **Enterprise** (public company / regulated industry) | 25–35% | Compliance debt (SOC 2, GDPR, HIPAA), multi-tenant isolation, long-lived API versions, and customer SLAs all require continuous investment independent of feature work |
 
-**✓ Recommendation:** Negotiate a fixed percentage (15–20%) for technical health upfront in roadmap planning — not as a discretionary budget that gets cut when features slip. Treating technical investment as protected capacity is the only way to prevent debt from compounding indefinitely.
+**Reference point:** Spotify's 20% "tech health ring" is the most widely cited benchmark, but Spotify is a mid-scale-up company — enterprise PMs in regulated industries should expect to allocate more, not less.
+
+**✓ Recommendation:** Pick the band for your stage, negotiate it as a fixed percentage upfront in roadmap planning, and protect it from discretionary cuts when features slip. Treating technical investment as protected capacity is the only way to prevent debt from compounding indefinitely. If your stage crosses a threshold (Series A → Series B, pre-SOC-2 → post-SOC-2), revisit the allocation — debt math changes with scale.
 
 ---
 
@@ -339,9 +342,11 @@ Understanding the shape before committing helps you make roadmap tradeoffs.
 
 **What:** 49-route student dashboard loaded a single 2.5MB JavaScript bundle globally.
 
-**Why:** The architectural choice made sense at initial scale but became a user-facing problem as the product grew.
+**How it got there:** Early in the product's life the frontend had 3 routes and building route-based code splitting was over-engineering. The team shipped a single bundle and added routes incrementally over 18 months. No one decision created the 2.5MB bundle — it was 40+ feature shipments, each adding 40–80KB, compounding. By the time the bundle was audited, no single route owner felt responsible; the debt belonged to "the architecture" rather than a specific team.
 
-**The PM insight:** Quantifying debt changes how it's prioritized.
+**Why:** The architectural choice made sense at 3 routes (YAGNI — don't build what you don't need). It became a user-facing problem at 49 routes because login-page users were paying to download code for the other 48 routes they'd never visit.
+
+**The PM insight:** Quantifying debt changes how it's prioritized. And — more importantly — debt that was born from correct early decisions still needs to be paid down once the scale changes. "We didn't make a mistake" isn't a defense; "we haven't updated for the new scale" is the actual diagnosis.
 
 | Problem statement | Classification | Result |
 |---|---|---|
@@ -479,6 +484,24 @@ Engineers who spend most of their time fighting the codebase rather than buildin
 …technical debt is destroying organizational capacity.
 
 ⚠️ **Hidden attrition cost:** Not just replacement hiring — it's the knowledge that leaves with each departing engineer. PMs who treat debt as purely a technical concern miss this signal until it becomes an attrition crisis.
+
+---
+
+### AI-era debt: a new category PMs should track separately
+
+LLM-powered features create categories of debt that didn't exist before 2023, and PMs who treat AI code like normal backend code underestimate how fast it compounds.
+
+| AI debt type | What it is | How it bites |
+|---|---|---|
+| **Prompt debt** | Prompts hardcoded in application code with no version control, no A/B test harness, no output quality tests. Every change is a blind deploy. | Regression risk on every prompt edit; no way to attribute quality changes to prompt vs. model changes; rollback means finding the old string in git history |
+| **Context window debt** | Retrieval logic stitched together ad-hoc (concatenate top-k chunks, truncate to fit). No retrieval evaluation. Quality depends on hidden embedding model drift. | Silent quality degradation as the knowledge base grows; debugging requires tracing retrieval + generation + re-ranking separately |
+| **Model version debt** | Pinning to `gpt-4` or `claude-3-opus` without a migration plan. When the provider deprecates, you have 30–90 days to re-test everything downstream. | Forced upgrade cycles at vendor's pace, not yours; output schema drift between versions; cost-per-token changes break unit economics |
+| **Inference cost debt** | Shipping features that hit the model on every user interaction with no caching, no batching, no fallback tier. | COGS line grows linearly with usage; successful feature = budget crisis; no circuit breakers when usage spikes |
+| **Eval debt** | No automated quality eval pipeline for model outputs. "It looks good in testing" is the only QA. | Regressions ship silently; no ground truth to improve against; subjective quality arguments between PM / eng / users with no data |
+
+**What's different about AI debt:** Normal technical debt compounds over months. Prompt and model-version debt can compound in *weeks* — a single model provider deprecation notice can invalidate quarters of PM work. The PM response is to demand a standing eval harness before shipping the first AI feature, not after the second incident.
+
+**The shift in the last 2 years:** Pre-2023, PMs managed AI debt by talking to ML engineers about model retraining cycles. Post-2023, LLM features are built by backend engineers with no ML background, using vendor APIs. This means AI debt now sits inside product teams, not ML platform teams — and PMs are on the hook for managing it directly.
 
 ## S2 — How this connects to the bigger system
 
