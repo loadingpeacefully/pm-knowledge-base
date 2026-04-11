@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-04-11T15:03:43.601687+00:00",
+  "generated_at": "2026-04-11T15:07:46.827767+00:00",
   "summary": {
     "total_lessons": 89,
     "lessons_scored": 89,
     "avg_score": 6.6,
-    "total_critical": 578,
+    "total_critical": 574,
     "feedback_reports": 89,
     "modules_total": 9
   },
@@ -1994,17 +1994,17 @@
       "file": "06-metrics-and-analytics/data-quality-and-pipelines.md",
       "status": "ready",
       "writer": "senior-pm",
-      "word_count": 6122,
-      "score": 5.8,
+      "word_count": 6267,
+      "score": 6.0,
       "health": "NEEDS_WORK",
-      "criticals": 13,
-      "highs": 33,
-      "mediums": 50,
+      "criticals": 9,
+      "highs": 39,
+      "mediums": 47,
       "run_formatter": true,
-      "last_run": "2026-04-09T12:06:21.582086+00:00",
+      "last_run": "2026-04-11T15:07:46.639709+00:00",
       "scores_by_level": {
-        "foundation": 6.5,
-        "working": 5.4,
+        "foundation": 6.3,
+        "working": 6.0,
         "strategic": 4.5
       }
     },
