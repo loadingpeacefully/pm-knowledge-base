@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-11T12:54:19.525955+00:00",
+  "generated_at": "2026-04-11T12:59:43.681311+00:00",
   "summary": {
     "total_lessons": 89,
-    "lessons_scored": 88,
+    "lessons_scored": 89,
     "avg_score": 6.5,
-    "total_critical": 592,
-    "feedback_reports": 88,
+    "total_critical": 603,
+    "feedback_reports": 89,
     "modules_total": 9
   },
   "modules": [
@@ -2456,7 +2456,19 @@
       "file": "08-gtm-and-growth/sales-pipeline-integration.md",
       "status": "draft",
       "writer": "gtm-lead",
-      "word_count": 4277
+      "word_count": 4277,
+      "score": 6.0,
+      "health": "NEEDS_WORK",
+      "criticals": 11,
+      "highs": 30,
+      "mediums": 36,
+      "run_formatter": true,
+      "last_run": "2026-04-11T12:59:43.482021+00:00",
+      "scores_by_level": {
+        "foundation": 6.5,
+        "working": 6.0,
+        "strategic": 5.5
+      }
     },
     {
       "id": "09.01",
