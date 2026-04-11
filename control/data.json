@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-11T14:59:51.887945+00:00",
+  "generated_at": "2026-04-11T15:03:43.601687+00:00",
   "summary": {
     "total_lessons": 89,
     "lessons_scored": 89,
@@ -1928,18 +1928,18 @@
       "file": "06-metrics-and-analytics/dashboards-and-bi-tools.md",
       "status": "ready",
       "writer": "senior-pm",
-      "word_count": 5136,
-      "score": 6.1,
+      "word_count": 5420,
+      "score": 6.0,
       "health": "NEEDS_WORK",
       "criticals": 10,
-      "highs": 35,
-      "mediums": 54,
+      "highs": 36,
+      "mediums": 48,
       "run_formatter": true,
-      "last_run": "2026-04-08T18:39:48.704485+00:00",
+      "last_run": "2026-04-11T15:03:43.409240+00:00",
       "scores_by_level": {
         "foundation": 6.8,
         "working": 6.0,
-        "strategic": 4.7
+        "strategic": 4.5
       }
     },
     {
