@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-11T14:30:04.242026+00:00",
+  "generated_at": "2026-04-11T14:35:16.909887+00:00",
   "summary": {
     "total_lessons": 89,
     "lessons_scored": 89,
@@ -2258,18 +2258,18 @@
       "file": "08-gtm-and-growth/product-led-growth.md",
       "status": "ready",
       "writer": "gtm-lead",
-      "word_count": 6042,
-      "score": 5.9,
+      "word_count": 6941,
+      "score": 6.2,
       "health": "NEEDS_WORK",
       "criticals": 10,
-      "highs": 41,
-      "mediums": 54,
+      "highs": 26,
+      "mediums": 32,
       "run_formatter": true,
-      "last_run": "2026-04-08T20:38:04.942263+00:00",
+      "last_run": "2026-04-11T14:35:16.694135+00:00",
       "scores_by_level": {
         "foundation": 7.0,
-        "working": 5.3,
-        "strategic": 4.5
+        "working": 6.0,
+        "strategic": 5.0
       }
     },
     {
