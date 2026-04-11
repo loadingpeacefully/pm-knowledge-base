@@ -243,3 +243,25 @@ Remediate them via content fixes like any other below-6.5 lesson.
 - Decision: abandon Option B. Do NOT split Multi-Tenancy, Tech Debt, DAU/MAU, Experimentation
 - Keep 08.11 + 08.12 as standalone lessons, remediate via content fixes (Option A)
 - Lesson B needs minimal F1-F3 stub to fix swarm parsing on future runs
+
+## Option A Remediation Pass — Complete (2026-04-11)
+
+Sessions run: 3 (of 5 planned)
+Lessons remediated: 9
+Avg score change on remediated set: 6.03 → 6.27 (+0.24)
+Avg density change: 51.4 → 40.2 (−22%)
+Curriculum-wide avg: ~6.53 → ~6.59
+
+Stopped at Session 3 — hit instrument noise floor.
+Sessions 4-5 predicted <+0.15 score change, <−15% density drop.
+Remaining 6 lessons have no obvious fixable holes — structurally sound,
+artifact-depressed due to length. Not a content problem.
+
+Key learnings:
+- Option B (split) failed — splitting doesn't break the artifact ceiling
+- Option A works where genuine content holes exist (Sessions 1-2)
+- Option A produces noise where content is already solid (Session 3)
+- Best signal: outdated benchmarks, missing frameworks, unsourced claims
+- Worst use of time: structural micro-complaints on already-complete lessons
+
+Next: share the system publicly. The content is good enough.
