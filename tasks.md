@@ -230,3 +230,16 @@ split Multi-Tenancy, Tech Debt for PMs, DAU/MAU, or Experimentation.
 
 The two new split lessons (08.11, 08.12) stay in the curriculum as-is.
 Remediate them via content fixes like any other below-6.5 lesson.
+
+## CRM Split Prototype Result (2026-04-11)
+- Split 08.08 (856 lines, 5.4) → 08.11 (2,839w, 5.8) + 08.12 (4,132w, 6.0)
+- Option B verdict: FAILED — neither half cleared 6.5
+- Root causes:
+  1. Lesson B still 4,132 words — above artifact threshold
+  2. Lesson A triggers "missing Strategic" criticals structurally
+  3. Lesson B triggers "cold start" criticals — agents expect F1-F3
+  4. Total criticals doubled (9 raw original → 20 raw split)
+  5. pm_swarm.py doesn't understand split format — v1 parsing errors on Lesson B
+- Decision: abandon Option B. Do NOT split Multi-Tenancy, Tech Debt, DAU/MAU, Experimentation
+- Keep 08.11 + 08.12 as standalone lessons, remediate via content fixes (Option A)
+- Lesson B needs minimal F1-F3 stub to fix swarm parsing on future runs
