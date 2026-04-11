@@ -97,9 +97,10 @@
     #sidebar {
       grid-column: 1; grid-row: 2;
       background: var(--surface); border-right: 2px solid #000;
-      overflow-y: auto; overflow-x: hidden; z-index: 50;
+      display: flex; flex-direction: column;
+      overflow: hidden; z-index: 50;
     }
-    #sb-modules { border-top: 2px solid #000; }
+    #sb-modules { border-top: 2px solid #000; flex: 1; overflow-y: auto; overflow-x: hidden; }
     .module-header {
       display: flex; align-items: flex-start; gap: 6px;
       padding: 8px 12px 4px; cursor: pointer; user-select: none;
@@ -342,84 +343,219 @@
     #sb-overlay { display: none; position: fixed; inset: var(--header-h) 0 0 0; background: rgba(0,0,0,.5); z-index: 70; }
     #sb-overlay.open { display: block; }
 
-    /* ── PROFILE BAR (compact) ── */
+    /* ── PROFILE CARD v3 ── */
     #gs-profile {
-      padding: 10px 12px 8px;
-      background: var(--surface);
-    }
-    .gs-profile-top { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
-    .gs-avatar {
-      width: 30px; height: 30px; border-radius: 50%;
-      background: var(--token-brand-light);
-      border: 1px solid var(--token-brand);
-      color: var(--token-brand);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 11px; font-weight: 700; font-family: inherit;
-      flex-shrink: 0;
-    }
-    .gs-name-wrap { flex: 1; min-width: 0; }
-    .gs-name { font-size: 12px; font-weight: 700; color: #000; font-family: inherit; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .gs-level-title { font-size: 10px; color: var(--token-gray-500); font-family: inherit; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-    .gs-streak-inline {
-      display: flex; align-items: center; gap: 4px;
-      padding: 3px 7px; border-radius: 4px; flex-shrink: 0;
-    }
-    .gs-streak-inline.gs-streak-safe { background: var(--token-amber-light); border: 1px solid var(--token-amber); }
-    .gs-streak-inline.gs-streak-risk { background: var(--token-red-light);   border: 1px solid var(--token-red); }
-    .gs-streak-inline.gs-streak-idle { background: var(--token-gray-50);     border: 1px solid var(--token-gray-200); }
-    .gs-streak-icon { font-size: 11px; }
-    .gs-streak-num { font-size: 13px; font-weight: 700; line-height: 1; font-family: inherit; }
-    .gs-streak-num.gs-streak-num-safe { color: var(--token-amber); }
-    .gs-streak-num.gs-streak-num-risk { color: var(--token-red); }
-    .gs-streak-num.gs-streak-num-idle { color: var(--token-gray-700); }
-    .gs-streak-sub { font-size: 10px; font-family: inherit; line-height: 1; }
-    .gs-streak-sub.gs-streak-sub-safe { color: var(--token-amber); }
-    .gs-streak-sub.gs-streak-sub-risk { color: var(--token-red); font-weight: 700; }
-    .gs-streak-sub.gs-streak-sub-idle { color: var(--token-gray-500); }
-
-    .gs-xp-row { }
-    .gs-xp-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 3px; }
-    .gs-xp-val { font-size: 10px; color: var(--token-gray-500); font-family: inherit; }
-    .gs-xp-unlock { font-size: 10px; color: var(--token-purple); font-weight: 700; font-family: inherit; }
-    .gs-xp-bar { height: 5px; background: var(--token-gray-200); border: 1px solid var(--token-gray-400); border-radius: 2px; overflow: hidden; }
-    .gs-xp-bar-fill { height: 100%; background: var(--token-purple); width: 0%; transition: width .4s ease; }
-
-    /* Next badge — single compact line */
-    #gs-next-badge {
-      display: flex; align-items: center; gap: 7px;
-      padding: 6px 12px; background: #FAFAFA;
-      border-top: 1px solid #E5E7EB;
+      padding: 14px 14px 12px;
       border-bottom: 2px solid #000;
       flex-shrink: 0;
+      background: #fff;
     }
-    .gs-badge-icon-inline { font-size: 13px; flex-shrink: 0; }
-    .gs-badge-meta { flex: 1; min-width: 0; }
-    .gs-badge-name {
-      font-size: 10px; font-weight: 700; color: #000;
+    .gs-profile-top {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    }
+    .gs-avatar-wrap {
+      position: relative; width: 40px; height: 40px; flex-shrink: 0;
+    }
+    .gs-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: #A3E635; border: 2px solid #000;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; color: #000;
+      font-family: inherit; position: relative; z-index: 1;
+    }
+    .gs-avatar-ring {
+      position: absolute; inset: -4px; border-radius: 50%;
+      border: 2px dashed #A3E635;
+      animation: gs-spin 8s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes gs-spin { to { transform: rotate(360deg); } }
+    .gs-identity { flex: 1; min-width: 0; }
+    .gs-identity-name {
+      font-size: 13px; font-weight: 700; color: #000;
       font-family: inherit;
       overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     }
-    .gs-badge-progress-bar {
-      height: 2px; margin-top: 3px;
-      background: var(--token-gray-200);
-      border-radius: 99px; overflow: hidden;
+    .gs-identity-rank {
+      font-size: 10px; color: #6b7280; font-family: inherit; margin-top: 1px;
     }
-    .gs-badge-progress-fill { height: 100%; background: var(--accent); width: 0%; transition: width .3s; }
-    .gs-badge-xp-label {
-      font-size: 9px; color: var(--token-purple); font-weight: 700;
+
+    /* Vertical streak pill */
+    .gs-streak-pill {
+      display: flex; flex-direction: column; align-items: center;
+      padding: 5px 9px; border: 2px solid #000; border-radius: 4px;
+      background: #fef9c3; flex-shrink: 0; min-width: 44px;
+    }
+    .gs-streak-pill.risk { background: #fef2f2; border-color: #dc2626; }
+    .gs-streak-fire { font-size: 16px; line-height: 1; }
+    .gs-streak-num {
+      font-size: 14px; font-weight: 700; color: #92400e; line-height: 1;
+      font-family: inherit;
+    }
+    .gs-streak-pill.risk .gs-streak-num { color: #dc2626; }
+    .gs-streak-lbl {
+      font-size: 8px; color: #b45309;
+      text-transform: uppercase; letter-spacing: .05em; font-family: inherit;
+    }
+    .gs-streak-pill.risk .gs-streak-lbl { color: #dc2626; }
+
+    /* XP section */
+    .gs-xp-section { margin-bottom: 10px; }
+    .gs-xp-top {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 5px;
+    }
+    .gs-xp-left { display: flex; align-items: baseline; gap: 4px; }
+    .gs-xp-num { font-size: 15px; font-weight: 700; color: #000; font-family: inherit; }
+    .gs-xp-denom { font-size: 10px; color: #9ca3af; font-family: inherit; }
+    .gs-xp-unlock-tag {
+      font-size: 10px; color: #7c3aed; font-weight: 700;
+      background: #f5f3ff; padding: 2px 6px;
+      border: 1px solid #c4b5fd; border-radius: 3px;
+      font-family: inherit; white-space: nowrap;
+    }
+    .gs-xp-track {
+      height: 8px; background: #f3f4f6;
+      border: 1.5px solid #000; border-radius: 3px; overflow: hidden;
+    }
+    .gs-xp-fill {
+      height: 100%; background: #A3E635; width: 0%;
+      transition: width .5s ease;
+    }
+
+    /* Micro stats */
+    .gs-stats-row { display: flex; gap: 6px; }
+    .gs-stat-box {
+      flex: 1; background: #f9fafb;
+      border: 1px solid #e5e7eb; border-radius: 3px;
+      padding: 5px 6px; text-align: center;
+    }
+    .gs-stat-num {
+      font-size: 14px; font-weight: 700; color: #000;
+      font-family: inherit; line-height: 1;
+    }
+    .gs-stat-lbl {
+      font-size: 8px; color: #9ca3af;
+      text-transform: uppercase; letter-spacing: .05em;
+      font-family: inherit; margin-top: 2px;
+    }
+
+    /* Next badge row */
+    #gs-next-badge {
+      padding: 8px 14px;
+      border-bottom: 1.5px solid #e5e7eb;
+      display: flex; align-items: center; gap: 8px;
+      background: #fafafa; flex-shrink: 0;
+    }
+    .gs-badge-icon-box {
+      width: 28px; height: 28px;
+      border: 2px solid #000; border-radius: 4px;
+      background: #A3E635;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; flex-shrink: 0;
+    }
+    .gs-badge-info { flex: 1; min-width: 0; }
+    .gs-badge-name {
+      font-size: 11px; font-weight: 700; color: #000; font-family: inherit;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .gs-badge-track {
+      height: 3px; background: #e5e7eb; border-radius: 99px;
+      margin-top: 4px; overflow: hidden;
+    }
+    .gs-badge-fill {
+      height: 100%; background: #A3E635; border-radius: 99px;
+      width: 0%; transition: width .3s ease;
+    }
+    .gs-badge-xp-tag {
+      font-size: 9px; font-weight: 700; color: #7c3aed;
       font-family: inherit; flex-shrink: 0;
     }
 
-    #gs-earned-shelf { padding: 5px 12px; border-bottom: 1px solid #E5E7EB; background: #FAFAFA; }
-    .gs-earned-row { display: flex; gap: 4px; flex-wrap: wrap; }
-    .gs-earned-badge {
-      width: 22px; height: 22px; border-radius: 3px;
-      background: var(--token-amber-light);
-      border: 1px solid var(--token-amber);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 12px;
+    /* Earned strip */
+    #gs-earned-shelf {
+      padding: 5px 14px;
+      border-bottom: 1.5px solid #e5e7eb;
+      display: none; align-items: center; gap: 6px;
+      background: #fafafa; flex-shrink: 0;
     }
+    .gs-earned-label {
+      font-size: 9px; color: #9ca3af;
+      text-transform: uppercase; letter-spacing: .05em;
+      font-family: inherit; flex-shrink: 0;
+    }
+    #gs-earned-row { display: flex; gap: 4px; }
+    .gs-earned-icon {
+      width: 22px; height: 22px;
+      border: 1.5px solid #000; border-radius: 3px;
+      background: #fef9c3;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px;
+    }
+
+    /* ── MODULE LIST v3 overrides ── */
+    .mod-head {
+      display: flex; align-items: center; gap: 5px;
+      padding: 7px 12px 4px; cursor: pointer;
+      border-bottom: 1px solid #f3f4f6; user-select: none;
+    }
+    .mod-head:hover { background: #f9fafb; }
+    .mod-arrow { font-size: 8px; color: #9ca3af; width: 10px; flex-shrink: 0; }
+    .mod-num { font-size: 9px; font-weight: 700; color: #9ca3af; font-family: inherit; flex-shrink: 0; width: 16px; }
+    .mod-title-text {
+      font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .06em;
+      color: #374151; font-family: inherit; flex: 1;
+    }
+    .mod-head.collapsed .mod-title-text { color: #6b7280; }
+    .mod-count-text { font-size: 10px; color: #9ca3af; font-family: inherit; flex-shrink: 0; }
+    .mod-done-check { font-size: 10px; color: #A3E635; font-weight: 700; flex-shrink: 0; margin-left: 2px; }
+    .mod-dots {
+      display: flex; gap: 3px;
+      padding: 2px 12px 5px 27px; flex-wrap: wrap;
+    }
+    .mdot {
+      width: 6px; height: 6px; border-radius: 50%;
+      border: 1px solid #000; flex-shrink: 0;
+    }
+    .mdot-done  { background: #A3E635; }
+    .mdot-prog  { background: #fbbf24; }
+    .mdot-empty { background: transparent; }
+
+    /* Lesson item v3 */
+    .les-item {
+      display: flex; align-items: center; gap: 6px;
+      padding: 5px 12px 5px 27px; cursor: pointer;
+      border-left: 2px solid transparent;
+      transition: background .1s, border-color .1s;
+    }
+    .les-item:hover { background: #f9fafb; border-left-color: #d1d5db; }
+    .les-item.active { background: #f0fdf4; border-left-color: #A3E635; }
+    .les-id { font-size: 10px; color: #9ca3af; font-family: inherit; flex-shrink: 0; width: 32px; }
+    .les-name-text {
+      flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      font-size: 12px; color: #374151; font-family: inherit;
+    }
+    .les-item.active .les-name-text { color: #000; font-weight: 700; }
+    .les-dot {
+      width: 16px; height: 16px; border-radius: 50%;
+      border: 1.5px solid #d1d5db; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 8px; font-weight: 700; font-family: inherit;
+    }
+    .les-dot.done { background: #A3E635; border-color: #000; color: #000; }
+    .les-dot.prog { background: #fef9c3; border-color: #d97706; color: #d97706; }
+
+    /* Sidebar footer */
+    #sidebar-footer {
+      padding: 7px 12px;
+      border-top: 2px solid #000;
+      background: #f9fafb;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .sf-stat { font-size: 10px; color: #6b7280; font-family: inherit; }
+    .sf-stat strong { color: #000; font-weight: 700; }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 959px) {
@@ -457,49 +593,79 @@
 <!-- SIDEBAR -->
 <aside id="sidebar">
 
-  <!-- PROFILE BAR — compact 2-row layout -->
+  <!-- PROFILE CARD v3 -->
   <div id="gs-profile">
     <div class="gs-profile-top">
-      <div class="gs-avatar">SJ</div>
-      <div class="gs-name-wrap">
-        <div class="gs-name">PM Learner</div>
-        <div class="gs-level-title" id="gs-level-title">Foundation learner</div>
+      <div class="gs-avatar-wrap">
+        <div class="gs-avatar" id="profile-avatar">SJ</div>
+        <div class="gs-avatar-ring"></div>
       </div>
-      <div id="gs-streak-block" class="gs-streak-inline gs-streak-idle">
-        <span class="gs-streak-icon">🔥</span>
-        <span id="gs-streak-num" class="gs-streak-num gs-streak-num-idle">0</span>
-        <span id="gs-streak-sub" class="gs-streak-sub gs-streak-sub-idle">d</span>
+      <div class="gs-identity">
+        <div class="gs-identity-name" id="profile-name">PM Learner</div>
+        <div class="gs-identity-rank" id="gs-level-title">Foundation learner</div>
+      </div>
+      <div class="gs-streak-pill" id="gs-streak-block">
+        <div class="gs-streak-fire">🔥</div>
+        <div class="gs-streak-num" id="gs-streak-num">0</div>
+        <div class="gs-streak-lbl" id="gs-streak-sub">streak</div>
       </div>
     </div>
-    <div class="gs-xp-row">
-      <div class="gs-xp-header">
-        <span class="gs-xp-val" id="gs-xp-val">0 XP</span>
-        <span class="gs-xp-unlock" id="gs-xp-unlock">→ Strategic Depth at 500 XP</span>
+
+    <div class="gs-xp-section">
+      <div class="gs-xp-top">
+        <div class="gs-xp-left">
+          <span class="gs-xp-num" id="gs-xp-val">0</span>
+          <span class="gs-xp-denom" id="gs-xp-denom">/ 500 XP</span>
+        </div>
+        <span class="gs-xp-unlock-tag" id="gs-xp-unlock">→ Strategic at 500</span>
       </div>
-      <div class="gs-xp-bar">
-        <div class="gs-xp-bar-fill" id="gs-xp-bar"></div>
+      <div class="gs-xp-track">
+        <div class="gs-xp-fill" id="gs-xp-bar"></div>
+      </div>
+    </div>
+
+    <div class="gs-stats-row">
+      <div class="gs-stat-box">
+        <div class="gs-stat-num" id="gs-stat-lessons">0</div>
+        <div class="gs-stat-lbl">Lessons</div>
+      </div>
+      <div class="gs-stat-box">
+        <div class="gs-stat-num" id="gs-stat-quizzes">0</div>
+        <div class="gs-stat-lbl">Quizzes</div>
+      </div>
+      <div class="gs-stat-box">
+        <div class="gs-stat-num" id="gs-stat-badges">0</div>
+        <div class="gs-stat-lbl">Badges</div>
       </div>
     </div>
   </div>
 
-  <!-- NEXT BADGE — compact single line -->
+  <!-- NEXT BADGE -->
   <div id="gs-next-badge">
-    <span class="gs-badge-icon-inline" id="gs-badge-icon">⚡</span>
-    <div class="gs-badge-meta">
+    <div class="gs-badge-icon-box" id="gs-badge-icon">⚡</div>
+    <div class="gs-badge-info">
       <div class="gs-badge-name" id="gs-badge-name">First quiz pass</div>
-      <div class="gs-badge-progress-bar">
-        <div class="gs-badge-progress-fill" id="gs-badge-bar"></div>
+      <div class="gs-badge-track">
+        <div class="gs-badge-fill" id="gs-badge-bar"></div>
       </div>
     </div>
-    <span class="gs-badge-xp-label" id="gs-badge-xp">+50XP</span>
+    <div class="gs-badge-xp-tag" id="gs-badge-xp">+50XP</div>
   </div>
 
-  <!-- EARNED BADGES SHELF — hidden until earned -->
-  <div id="gs-earned-shelf" style="display:none">
-    <div class="gs-earned-row" id="gs-earned-row"></div>
+  <!-- EARNED BADGES SHELF -->
+  <div id="gs-earned-shelf">
+    <span class="gs-earned-label">Earned</span>
+    <div id="gs-earned-row"></div>
   </div>
 
   <div id="sb-modules"></div>
+
+  <!-- SIDEBAR FOOTER -->
+  <div id="sidebar-footer">
+    <span class="sf-stat"><strong id="sf-lessons">0/88</strong> lessons</span>
+    <span class="sf-stat">avg <strong id="sf-score">6.5</strong></span>
+    <span class="sf-stat"><strong>$0.04</strong>/rev</span>
+  </div>
 </aside>
 
 <!-- CONTENT PANEL -->
@@ -719,84 +885,101 @@ const XP_VALUES = { perCorrect: 15, levelBonus: 50, lessonComplete: 100 };
 let GS = gsSyncStreak(gsLoad());
 gsSave(GS);
 
-/* ── PROFILE RENDER ── */
+/* ── PROFILE RENDER v3 ── */
 function gsRenderProfile() {
   const s      = GS;
   const unlock = gsNextUnlock(s.xp);
   const pct    = unlock.target ? Math.min(100, Math.round((s.xp / unlock.target) * 100)) : 100;
   const atRisk = !s.todayDone && s.streak > 0;
 
+  // Rank (level title)
   const lt = document.getElementById('gs-level-title');
   if (lt) lt.textContent = gsLevelTitle(s.xp);
 
-  const sb  = document.getElementById('gs-streak-block');
-  const sn  = document.getElementById('gs-streak-num');
-  const ss  = document.getElementById('gs-streak-sub');
+  // Streak pill
+  const sb = document.getElementById('gs-streak-block');
+  const sn = document.getElementById('gs-streak-num');
+  const ss = document.getElementById('gs-streak-sub');
   if (sn) sn.textContent = s.streak;
-  if (sb && sn && ss) {
-    sb.classList.remove('gs-streak-safe','gs-streak-risk','gs-streak-idle');
-    sn.classList.remove('gs-streak-num-safe','gs-streak-num-risk','gs-streak-num-idle');
-    ss.classList.remove('gs-streak-sub-safe','gs-streak-sub-risk','gs-streak-sub-idle');
-    ss.textContent = 'd';
-    sb.title = atRisk ? 'Streak at risk — read one lesson today' : s.todayDone ? 'Streak safe for today' : 'Read one lesson to start a streak';
-    if (atRisk) {
-      sb.classList.add('gs-streak-risk');
-      sn.classList.add('gs-streak-num-risk');
-      ss.classList.add('gs-streak-sub-risk');
-    } else if (s.todayDone) {
-      sb.classList.add('gs-streak-safe');
-      sn.classList.add('gs-streak-num-safe');
-      ss.classList.add('gs-streak-sub-safe');
+  if (sb) sb.classList.toggle('risk', atRisk);
+  if (ss) ss.textContent = atRisk ? 'at risk!' : 'streak';
+  if (sb) sb.title = atRisk ? 'Streak at risk — read one lesson today' : s.todayDone ? 'Streak safe for today' : 'Read one lesson to start a streak';
+
+  // XP
+  const xv = document.getElementById('gs-xp-val');
+  const xd = document.getElementById('gs-xp-denom');
+  const xb = document.getElementById('gs-xp-bar');
+  const xu = document.getElementById('gs-xp-unlock');
+  if (xv) xv.textContent = s.xp;
+  if (xd) xd.textContent = '/ ' + (unlock.target || 2000) + ' XP';
+  if (xb) xb.style.width = pct + '%';
+  if (xu) {
+    if (unlock.remaining > 0) {
+      // "unlocks Strategic Depth" → "Strategic" (trim verbose)
+      const short = unlock.label
+        .replace('unlocks ', '')
+        .replace(' Depth', '')
+        .replace(' access', '')
+        .replace('reaches ', '');
+      xu.textContent = '→ ' + short + ' at ' + unlock.target;
     } else {
-      sb.classList.add('gs-streak-idle');
-      sn.classList.add('gs-streak-num-idle');
-      ss.classList.add('gs-streak-sub-idle');
+      xu.textContent = 'Max rank';
     }
   }
 
-  const xv = document.getElementById('gs-xp-val');
-  const xb = document.getElementById('gs-xp-bar');
-  const xu = document.getElementById('gs-xp-unlock');
-  const xn = document.getElementById('gs-xp-to-next');
-  if (xv) xv.textContent = s.xp + ' XP';
-  if (xb) xb.style.width = pct + '%';
-  if (xu) xu.textContent = '→ ' + unlock.label;
-  if (xn) xn.textContent = unlock.remaining > 0 ? unlock.remaining + ' XP to next unlock' : 'Max unlock reached';
+  // Micro stats
+  const lessonList = Object.values(s.lessons);
+  const doneLessons = lessonList.filter(l => l.fQuiz && l.wQuiz && l.sQuiz).length;
+  const doneQuizzes = lessonList.reduce((a,l) =>
+    a + (l.fQuiz?1:0) + (l.wQuiz?1:0) + (l.sQuiz?1:0), 0);
+  const doneBadges  = (s.earnedBadges || []).length;
+  const sl  = document.getElementById('gs-stat-lessons');
+  const sq  = document.getElementById('gs-stat-quizzes');
+  const sb2 = document.getElementById('gs-stat-badges');
+  if (sl)  sl.textContent  = doneLessons;
+  if (sq)  sq.textContent  = doneQuizzes;
+  if (sb2) sb2.textContent = doneBadges;
 
+  // Next badge
   const next = gsNextBadge(s);
-  const nextWrap = document.getElementById('gs-next-badge');
-  if (next && nextWrap) {
-    nextWrap.style.display = 'flex';
+  const nbEl = document.getElementById('gs-next-badge');
+  if (next && nbEl) {
+    nbEl.style.display = 'flex';
     const ni = document.getElementById('gs-badge-icon');
     const nn = document.getElementById('gs-badge-name');
     const nb = document.getElementById('gs-badge-bar');
     const nx = document.getElementById('gs-badge-xp');
     if (ni) ni.textContent = next.icon;
     if (nn) nn.textContent = next.name;
-    if (nx) nx.textContent = next.xp > 0 ? '+' + next.xp + 'XP' : '★';
+    if (nx) nx.textContent = next.xp > 0 ? '+' + next.xp + 'XP' : 'milestone';
+
     let prog = 0;
-    if (next.id === 'streak_7')  prog = Math.min(100, Math.round((s.streak/7)*100));
+    if (next.id === 'streak_7')       prog = Math.min(100, Math.round((s.streak/7)*100));
     else if (next.id === 'streak_30') prog = Math.min(100, Math.round((s.streak/30)*100));
     else if (next.id === 'xp_500')    prog = Math.min(100, Math.round((s.xp/500)*100));
     else if (next.id === 'xp_1000')   prog = Math.min(100, Math.round((s.xp/1000)*100));
     else if (next.id === 'speed_reader') {
-      const lvls = Object.values(s.lessons).reduce((a,l) => a+(l.f?1:0)+(l.w?1:0)+(l.s?1:0), 0);
+      const lvls = lessonList.reduce((a,l) => a+(l.f?1:0)+(l.w?1:0)+(l.s?1:0), 0);
       prog = Math.min(100, Math.round((lvls/10)*100));
+    } else if (next.id === 'first_quiz') {
+      prog = lessonList.some(l => l.fQuiz||l.wQuiz||l.sQuiz) ? 100 : 0;
     }
     if (nb) nb.style.width = prog + '%';
-    nextWrap.title = next.name + ' — ' + next.sub;
-  } else if (nextWrap) {
-    nextWrap.style.display = 'none';
+    nbEl.title = next.name + ' — ' + next.sub;
+  } else if (nbEl) {
+    nbEl.style.display = 'none';
   }
 
+  // Earned shelf
   const shelf = document.getElementById('gs-earned-shelf');
   const row   = document.getElementById('gs-earned-row');
   if (shelf && row) {
-    if (s.earnedBadges.length > 0) {
-      shelf.style.display = 'block';
-      row.innerHTML = s.earnedBadges.map(id => {
+    const earned = s.earnedBadges || [];
+    if (earned.length > 0) {
+      shelf.style.display = 'flex';
+      row.innerHTML = earned.map(id => {
         const b = BADGES.find(x => x.id === id);
-        return b ? `<div class="gs-earned-badge" title="${b.name}">${b.icon}</div>` : '';
+        return b ? `<div class="gs-earned-icon" title="${b.name}">${b.icon}</div>` : '';
       }).join('');
     } else {
       shelf.style.display = 'none';
@@ -804,18 +987,22 @@ function gsRenderProfile() {
   }
 }
 
-/* ── SIDEBAR STATE DOTS (brutalist palette) ── */
+/* ── SIDEBAR STATE DOTS — update in-place on .les-dot elements ── */
 function gsRenderSidebarStates() {
-  document.querySelectorAll('[data-lesson-state]').forEach(el => {
+  document.querySelectorAll('.les-dot[data-lesson-id]').forEach(el => {
     const id = el.dataset.lessonId;
     if (!id) return;
     const state = gsSidebarState(GS, id);
-    if (state === 'done')
-      el.innerHTML = '<span style="width:16px;height:16px;border-radius:50%;background:#A3E635;border:1px solid #000;display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#000;flex-shrink:0">✓</span>';
-    else if (state === 'progress')
-      el.innerHTML = '<span style="width:16px;height:16px;border-radius:50%;background:#FEF9C3;border:1px solid #D97706;display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#92400E;flex-shrink:0">½</span>';
-    else
-      el.innerHTML = '<span style="width:16px;height:16px;border-radius:50%;background:transparent;border:1px solid #D1D5DB;display:inline-block;flex-shrink:0"></span>';
+    el.classList.remove('done', 'prog');
+    if (state === 'done') {
+      el.classList.add('done');
+      el.textContent = '✓';
+    } else if (state === 'progress') {
+      el.classList.add('prog');
+      el.textContent = '½';
+    } else {
+      el.textContent = '';
+    }
   });
 }
 
@@ -1097,6 +1284,9 @@ async function loadManifest() {
   updateProgressBtn();
   gsRenderProfile();
   gsRenderSidebarStates();
+  // Sidebar footer stats
+  const sfL = document.getElementById('sf-lessons');
+  if (sfL) sfL.textContent = window.allLessons.filter(l => l.status === 'ready').length + '/' + window.allLessons.length;
   const first = Object.values(S.byId).find(l => l.status === 'ready');
   if (first) selectLesson(first.id);
   else setContent(`<div class="empty-state"><h3>No lessons written yet.</h3><br><p>In Claude Code, run:<br><code>write the next lesson</code></p><br><p>Then refresh this page.</p></div>`);
@@ -1141,7 +1331,7 @@ function isModuleExpanded(moduleId) {
 }
 
 const MODULE_SHORT_TITLES = {
-  '01': 'APIs & Integration',
+  '01': 'APIs',
   '02': 'Databases',
   '03': 'Infrastructure',
   '04': 'AI & ML',
@@ -1160,42 +1350,54 @@ function renderSidebar(filter) {
   const lf = (filter || '').toLowerCase();
   let matchCount = 0;
 
-  const activeModuleId = getActiveModuleId();
-
   const html = S.modules.map(mod => {
     const lessons = lf ? mod.lessons.filter(l => l.title.toLowerCase().includes(lf)) : mod.lessons;
     if (lf && !lessons.length) return '';
     matchCount += lessons.length;
 
-    const ready = mod.lessons.filter(l => l.status === 'ready').length;
     const isExp = !!lf || isModuleExpanded(mod.id);
-    const allDone = typeof gsSidebarState === 'function'
-      ? mod.lessons.every(l => gsSidebarState(GS, l.id) === 'done')
-      : false;
+    const total = mod.lessons.length;
+    const doneCount = typeof gsSidebarState === 'function'
+      ? mod.lessons.filter(l => gsSidebarState(GS, l.id) === 'done').length
+      : 0;
+    const allDone = doneCount === total && total > 0;
+    const title = shortModuleTitle(mod);
+    const arrow = isExp ? '▼' : '▶';
 
-    const dots = mod.lessons.map(l => `<span class="dot ${l.status}"></span>`).join('');
-    const items = lessons.map(l => {
-      const isAct = S.active && S.active.id === l.id;
-      return `<div class="lesson-item${isAct ? ' active' : ''}" onclick="selectLesson('${l.id}')" data-lid="${l.id}">
-        <span class="lesson-id">${l.id}</span>
-        <span class="lesson-title-sb">${esc(l.title)}</span>
-        <span data-lesson-state data-lesson-id="${l.id}" style="flex-shrink:0;display:flex;align-items:center"></span>
+    let modHTML = `<div data-mod="${mod.id}">
+      <div class="mod-head module-header${isExp ? '' : ' collapsed'}" onclick="toggleModule('${mod.id}')">
+        <span class="mod-arrow module-arrow">${arrow}</span>
+        <span class="mod-num">${mod.id}</span>
+        <span class="mod-title-text module-name">${esc(title)}</span>
+        <span class="mod-count-text module-progress-text">${doneCount}/${total}</span>
+        ${allDone ? '<span class="mod-done-check">✓</span>' : ''}
       </div>`;
-    }).join('');
 
-    return `<div data-mod="${mod.id}">
-      <div class="module-header${isExp ? ' expanded' : ''}" onclick="toggleModule('${mod.id}')">
-        <div class="module-header-row">
-          <span class="module-arrow">${isExp ? '▼' : '▶'}</span>
-          <span class="module-num">${mod.id}</span>
-          <span class="module-name">${esc(shortModuleTitle(mod))}</span>
-          <span class="module-progress-text">${ready}/${mod.lessons.length}</span>
-          ${allDone ? '<span class="module-done-check">✓</span>' : ''}
-        </div>
-        ${isExp ? `<div class="module-dots">${dots}</div>` : ''}
-      </div>
-      <div class="lesson-list${isExp ? ' open' : ''}">${items}</div>
-    </div>`;
+    if (isExp) {
+      // Progress dots
+      const dots = mod.lessons.map(l => {
+        const st = typeof gsSidebarState === 'function' ? gsSidebarState(GS, l.id) : 'empty';
+        const cls = st === 'done' ? 'mdot-done' : st === 'progress' ? 'mdot-prog' : 'mdot-empty';
+        return `<div class="mdot ${cls}"></div>`;
+      }).join('');
+      modHTML += `<div class="mod-dots">${dots}</div>`;
+
+      // Lesson items
+      modHTML += lessons.map(l => {
+        const isAct = S.active && S.active.id === l.id;
+        const st = typeof gsSidebarState === 'function' ? gsSidebarState(GS, l.id) : 'empty';
+        const dotCls = st === 'done' ? 'done' : st === 'progress' ? 'prog' : '';
+        const dotContent = st === 'done' ? '✓' : st === 'progress' ? '½' : '';
+        return `<div class="les-item lesson-item${isAct ? ' active' : ''}" onclick="selectLesson('${l.id}')" data-lid="${l.id}">
+          <span class="les-id lesson-id">${l.id}</span>
+          <span class="les-name-text lesson-title-sb">${esc(l.title)}</span>
+          <span class="les-dot ${dotCls}" data-lesson-id="${l.id}">${dotContent}</span>
+        </div>`;
+      }).join('');
+    }
+
+    modHTML += '</div>';
+    return modHTML;
   }).join('');
 
   document.getElementById('sb-modules').innerHTML = html;
