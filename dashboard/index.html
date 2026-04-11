@@ -19,26 +19,68 @@
       --shadow-btn:  3px 3px 0px 0px #000;
       --shadow-lime: 3px 3px 0px 0px #A3E635;
       --font: 'Courier New', Courier, monospace;
-      --header-h: 52px;
-      --sidebar-w: 240px;
-      --notes-w: 300px;
+      --header-h: 48px;
+      --sidebar-w: 260px;
+      --notes-w: 340px;
+
+      /* Design tokens — used by profile bar + new overlay chrome */
+      --token-brand:        #2563eb;
+      --token-brand-light:  #eff6ff;
+      --token-green:        #16a34a;
+      --token-green-light:  #f0fdf4;
+      --token-amber:        #d97706;
+      --token-amber-light:  #fef9c3;
+      --token-red:          #dc2626;
+      --token-red-light:    #fef2f2;
+      --token-purple:       #7c3aed;
+      --token-purple-light: #f5f3ff;
+      --token-gray-50:  #f9fafb;
+      --token-gray-100: #f3f4f6;
+      --token-gray-200: #e5e7eb;
+      --token-gray-400: #9ca3af;
+      --token-gray-500: #6b7280;
+      --token-gray-700: #374151;
+      --token-gray-900: #111827;
     }
 
-    html, body { font-family: var(--font); background: var(--bg); color: var(--black); height: 100%; overflow: hidden; }
+    html, body { font-family: var(--font); background: var(--bg); color: var(--black); height: 100%; margin: 0; overflow: hidden; }
 
     ::selection { background: #000; color: #A3E635; }
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: #000; }
 
+    /* ── APP GRID ── */
+    #app-root {
+      display: grid;
+      grid-template-rows: var(--header-h) 1fr;
+      grid-template-columns: var(--sidebar-w) 1fr;
+      height: 100vh;
+      overflow: hidden;
+    }
+
     /* ── HEADER ── */
     #header {
-      position: fixed; top: 0; left: 0; right: 0;
+      grid-column: 1 / -1; grid-row: 1;
       height: var(--header-h);
       background: var(--black); color: var(--accent);
       display: flex; align-items: center; gap: 12px; padding: 0 16px;
       z-index: 100; border-bottom: 2px solid var(--accent);
     }
+    #notes-toggle-btn {
+      background: none; border: 1.5px solid var(--accent); color: var(--accent);
+      font-family: var(--font); font-size: 12px; font-weight: 700;
+      padding: 4px 10px; cursor: pointer; white-space: nowrap;
+      display: inline-flex; align-items: center; gap: 5px;
+    }
+    #notes-toggle-btn:hover { background: var(--accent); color: #000; }
+    #notes-badge {
+      display: none; background: var(--accent); color: #000;
+      font-size: 10px; font-weight: 700; padding: 0 5px;
+      border: 1.5px solid #000; border-radius: 2px;
+      min-width: 16px; text-align: center;
+    }
+    #notes-toggle-btn:hover #notes-badge { background: #000; color: var(--accent); border-color: var(--accent); }
     #menu-btn { display: none; background: none; border: none; color: var(--accent); font-family: var(--font); font-size: 20px; cursor: pointer; padding: 2px 6px; }
     #header-title { font-size: 14px; font-weight: 700; letter-spacing: .04em; flex: 1; }
     #progress-btn { background: none; border: 1.5px solid var(--accent); color: var(--accent); font-family: var(--font); font-size: 12px; cursor: pointer; padding: 4px 10px; white-space: nowrap; }
@@ -53,8 +95,7 @@
 
     /* ── SIDEBAR ── */
     #sidebar {
-      position: fixed; top: var(--header-h); left: 0;
-      width: var(--sidebar-w); height: calc(100vh - var(--header-h));
+      grid-column: 1; grid-row: 2;
       background: var(--surface); border-right: 2px solid #000;
       overflow-y: auto; overflow-x: hidden; z-index: 50;
     }
@@ -62,8 +103,7 @@
     .module-header:hover { background: #F5F5F5; }
     .module-header.expanded { background: #000; color: var(--accent); border-bottom-color: var(--accent); }
     .module-header-row { display: flex; align-items: center; gap: 6px; }
-    .module-arrow { font-size: 9px; transition: transform .15s; flex-shrink: 0; display: inline-block; }
-    .module-header.expanded .module-arrow { transform: rotate(90deg); }
+    .module-arrow { font-size: 9px; flex-shrink: 0; display: inline-block; width: 10px; }
     .module-num { font-size: 12px; font-weight: 700; flex-shrink: 0; }
     .module-name { font-size: 13px; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .module-progress-text { font-size: 11px; flex-shrink: 0; }
@@ -87,7 +127,7 @@
     .status-pill.none  { background: #E5E7EB; color: var(--muted); border-color: #CCC; }
 
     /* ── CONTENT PANEL ── */
-    #content { margin-left: var(--sidebar-w); margin-right: var(--notes-w); margin-top: var(--header-h); height: calc(100vh - var(--header-h)); overflow-y: auto; }
+    #content { grid-column: 2; grid-row: 2; overflow-y: auto; }
     .content-inner { max-width: 720px; margin: 0 auto; padding: 32px 24px 80px; }
 
     /* Lesson header card */
@@ -115,15 +155,33 @@
     .lesson-body pre code { background: none; padding: 0; }
     .lesson-body strong { font-weight: 700; }
     .lesson-body em { font-style: italic; }
-    .lesson-body table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
-    .lesson-body th { background: #000; color: var(--accent); padding: 10px 12px; text-align: left; font-weight: 700; }
-    .lesson-body td { padding: 10px 12px; border-bottom: 1px solid #000; }
-    .lesson-body tr:nth-child(even) td { background: var(--bg); }
-    .lesson-body table { box-shadow: 3px 3px 0 #000; }
-    .lesson-body th { font-size: 12px; font-family: 'Courier New', monospace; }
-    .lesson-body td { font-size: 13px; vertical-align: top; border-right: 0.5px solid #0001; }
-    .lesson-body tr:last-child td { border-bottom: 2px solid #000; }
-    .lesson-body tr.rec td { background: #F7FEE7; font-weight: 700; }
+    .lesson-body table {
+      width: 100%; border-collapse: collapse;
+      margin: 20px 0; font-size: 13px;
+      border: 2px solid #000; box-shadow: 3px 3px 0 #000;
+      font-family: var(--font);
+    }
+    .lesson-body thead { background: #000; color: #fff; }
+    .lesson-body table.decision thead { background: var(--accent); color: #000; }
+    .lesson-body th {
+      padding: 8px 12px; text-align: left;
+      font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .05em;
+      border-right: 1px solid rgba(255,255,255,0.2);
+      font-family: var(--font);
+    }
+    .lesson-body table.decision th { border-right: 1px solid rgba(0,0,0,.15); }
+    .lesson-body th:last-child { border-right: none; }
+    .lesson-body td {
+      padding: 9px 12px; font-size: 13px;
+      vertical-align: top; line-height: 1.55;
+      border-bottom: 1px solid #e5e7eb;
+      border-right: 1px solid #e5e7eb;
+    }
+    .lesson-body td:last-child { border-right: none; }
+    .lesson-body tbody tr:last-child td { border-bottom: none; }
+    .lesson-body tbody tr:nth-child(even) td { background: #f9fafb; }
+    .lesson-body tr.rec td { background: #FEF9C3; font-weight: 700; border-bottom: 2px solid var(--accent); }
 
     /* Callout variants */
     .lesson-body blockquote { border-left: 3px solid #000; padding: 10px 16px; margin: 16px 0; background: #FEFCE8; font-size: 14px; line-height: 1.65; }
@@ -141,9 +199,15 @@
     /* ── LEVEL SELECTOR ── */
     .level-selector { display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
     .level-pills { display: flex; gap: 8px; flex-wrap: wrap; }
-    .level-pill { background: #E5E7EB; border: 1.5px solid #000; color: #000; font-family: var(--font); font-size: 12px; font-weight: 700; padding: 5px 14px; cursor: pointer; box-shadow: var(--shadow-btn); white-space: nowrap; }
-    .level-pill:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 #000; }
-    .level-pill.active { background: var(--accent); box-shadow: 3px 3px 0 #000; }
+    .level-pill {
+      background: transparent; border: 1px solid #000; color: #000;
+      font-family: var(--font); font-size: 12px; font-weight: 700;
+      padding: 5px 14px; cursor: pointer; white-space: nowrap;
+      transition: background .12s;
+    }
+    .level-pill:hover:not(.locked) { background: #F3F4F6; }
+    .level-pill.active { background: var(--accent); color: #000; border: 1px solid #000; }
+    .level-pill.locked { color: #9CA3AF; border: 1px solid #D1D5DB; cursor: not-allowed; background: transparent; }
     .level-hint { font-size: 11px; color: var(--muted); line-height: 1.5; }
 
     /* V1 banner */
@@ -171,15 +235,37 @@
     .empty-state p { font-size: 14px; color: var(--muted); line-height: 1.75; }
     .empty-state code { background: #000; color: var(--accent); padding: 2px 8px; font-family: var(--font); }
 
-    /* ── NOTES PANEL ── */
-    #notes-panel { position: fixed; top: var(--header-h); right: 0; width: var(--notes-w); height: calc(100vh - var(--header-h)); background: var(--bg); border-left: 2px solid #000; display: flex; flex-direction: column; z-index: 50; overflow: hidden; }
+    /* ── NOTES OVERLAY (single slide-in) ── */
+    #notes-overlay {
+      position: fixed;
+      top: var(--header-h);
+      right: 0;
+      width: var(--notes-w);
+      height: calc(100vh - var(--header-h));
+      background: var(--bg);
+      border-left: 2px solid #000;
+      transform: translateX(100%);
+      transition: transform .2s ease;
+      z-index: 60;
+      display: flex; flex-direction: column;
+      overflow: hidden;
+    }
+    #notes-overlay.open { transform: translateX(0); }
+    #notes-backdrop {
+      display: none;
+      position: fixed;
+      inset: var(--header-h) 0 0 0;
+      background: rgba(0,0,0,.2);
+      z-index: 59;
+    }
+    #notes-backdrop.visible { display: block; }
     .np-header { display: flex; align-items: center; padding: 12px 14px; border-bottom: 2px solid #000; background: var(--surface); flex-shrink: 0; }
     .np-title { font-size: 13px; font-weight: 700; flex: 1; }
     .np-ctx { font-size: 11px; color: var(--muted); padding: 6px 14px 8px; border-bottom: 1px solid #E5E7EB; background: var(--surface); flex-shrink: 0; }
     .np-body { flex: 1; overflow-y: auto; padding: 12px; }
     .notes-empty { padding: 20px 4px; font-size: 13px; color: var(--muted); line-height: 1.8; text-align: center; }
-    #np-add-btn { background: var(--accent); border: 1.5px solid #000; color: #000; font-family: var(--font); font-size: 14px; font-weight: 700; cursor: pointer; padding: 2px 8px; box-shadow: var(--shadow-btn); }
-    #np-add-btn:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 #000; }
+    .np-add-btn { background: var(--accent); border: 1.5px solid #000; color: #000; font-family: var(--font); font-size: 14px; font-weight: 700; cursor: pointer; padding: 2px 8px; box-shadow: var(--shadow-btn); }
+    .np-add-btn:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 #000; }
 
     /* Note card */
     .note-card { background: var(--surface); border: 2px solid #000; box-shadow: var(--shadow-sm); margin-bottom: 12px; }
@@ -192,15 +278,6 @@
     .note-answer { padding: 10px; font-size: 14px; line-height: 1.65; }
     .note-user-note { padding: 10px; font-size: 14px; line-height: 1.65; background: #FFFBEB; }
     .note-loading { padding: 12px 10px; font-size: 13px; color: var(--muted); }
-
-    /* Rail (960–1279px) */
-    #np-rail { display: none; flex-direction: column; align-items: center; padding: 14px 0; gap: 8px; cursor: pointer; flex: 1; }
-    #np-rail:hover { background: #F5F5F5; }
-    .np-rail-icon { font-size: 14px; color: var(--accent); }
-    .np-rail-badge { background: var(--accent); border: 1.5px solid #000; border-radius: 99px; font-size: 10px; font-weight: 700; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; }
-
-    /* Full notes panel (≥1280px) */
-    #np-full { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
 
     /* Inline free note form */
     .free-note-form { background: var(--surface); border: 2px solid var(--accent); box-shadow: var(--shadow-lime); padding: 12px; margin-bottom: 12px; }
@@ -245,37 +322,122 @@
     #api-key-input:focus { border-color: var(--accent); }
     .api-actions { display: flex; justify-content: flex-end; gap: 8px; }
 
-    /* ── NOTES OVERLAY ── */
-    #notes-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 90; }
-    #notes-overlay.open { display: block; }
-    #notes-overlay-inner { position: absolute; right: 0; top: 52px; width: 300px; height: calc(100vh - 52px); background: var(--bg); border-left: 2px solid #000; display: flex; flex-direction: column; }
-    .ov-np-body { flex: 1; overflow-y: auto; padding: 12px; }
-
-    /* Float notes btn (mobile) */
-    #notes-float-btn { display: none; position: fixed; bottom: 20px; right: 20px; z-index: 90; width: 44px; height: 44px; background: #000; border: 2px solid var(--accent); color: var(--accent); font-family: var(--font); font-size: 16px; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--shadow-btn); }
-
     /* Sidebar overlay (mobile) */
-    #sb-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 70; }
+    #sb-overlay { display: none; position: fixed; inset: var(--header-h) 0 0 0; background: rgba(0,0,0,.5); z-index: 70; }
     #sb-overlay.open { display: block; }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 1279px) {
-      :root { --notes-w: 40px; }
-      #np-full { display: none; }
-      #np-rail { display: flex; }
+    /* ── PROFILE BAR (gamification, token-based) ── */
+    #gs-profile {
+      padding: 14px 14px 10px;
+      border-bottom: 2px solid #000;
+      background: var(--surface);
     }
+    .gs-profile-row { display: flex; align-items: center; gap: 9px; margin-bottom: 10px; }
+    .gs-avatar {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--token-brand-light);
+      border: 1px solid var(--token-brand);
+      color: var(--token-brand);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; font-family: inherit;
+      flex-shrink: 0;
+    }
+    .gs-name { font-size: 13px; font-weight: 700; color: #000; }
+    .gs-level-title { font-size: 10px; color: var(--token-gray-500); margin-top: 1px; }
+
+    .gs-stats-row { display: flex; gap: 7px; margin-bottom: 10px; }
+
+    .gs-streak-block {
+      display: flex; align-items: center; gap: 6px;
+      padding: 6px 10px; border-radius: 6px; flex: 1;
+    }
+    .gs-streak-block.gs-streak-safe { background: var(--token-amber-light); border: 1px solid var(--token-amber); }
+    .gs-streak-block.gs-streak-risk { background: var(--token-red-light);   border: 2px solid var(--token-red); }
+    .gs-streak-block.gs-streak-idle { background: var(--token-gray-50);     border: 1px solid var(--token-gray-200); }
+    .gs-streak-icon { font-size: 16px; }
+    .gs-streak-num { font-size: 16px; font-weight: 700; line-height: 1; }
+    .gs-streak-num.gs-streak-num-safe { color: var(--token-amber); }
+    .gs-streak-num.gs-streak-num-risk { color: var(--token-red); }
+    .gs-streak-num.gs-streak-num-idle { color: var(--token-gray-700); }
+    .gs-streak-sub { font-size: 9px; line-height: 1.3; }
+    .gs-streak-sub.gs-streak-sub-safe { color: var(--token-amber); }
+    .gs-streak-sub.gs-streak-sub-risk { color: var(--token-red); font-weight: 700; }
+    .gs-streak-sub.gs-streak-sub-idle { color: var(--token-gray-500); }
+
+    .gs-today-goal {
+      flex: 1;
+      background: var(--token-gray-50);
+      border: 1px solid var(--token-gray-200);
+      border-radius: 6px;
+      padding: 6px 9px;
+    }
+    .gs-today-label { font-size: 9px; text-transform: uppercase; letter-spacing: .07em; color: var(--token-gray-400); }
+    .gs-today-status { font-size: 11px; font-weight: 600; margin-top: 2px; color: var(--token-gray-500); }
+    .gs-today-status.done { color: var(--token-green); }
+    .gs-today-sub { font-size: 9px; color: var(--token-gray-400); margin-top: 1px; }
+
+    .gs-xp-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 3px; }
+    .gs-xp-val { font-size: 10px; color: var(--token-gray-500); }
+    .gs-xp-unlock { font-size: 10px; color: var(--token-purple); font-weight: 600; }
+    .gs-xp-bar { height: 5px; background: var(--token-gray-200); border-radius: 99px; overflow: hidden; margin-bottom: 3px; }
+    .gs-xp-bar-fill { height: 100%; border-radius: 99px; background: var(--token-purple); width: 0%; transition: width .5s ease; }
+    .gs-xp-to-next { font-size: 9px; color: var(--token-gray-400); text-align: right; }
+
+    /* Next badge card */
+    #gs-next-badge {
+      margin: 8px 12px 4px;
+      background: var(--token-gray-50);
+      border: 1px solid var(--token-gray-200);
+      border-radius: 6px;
+      padding: 9px 10px;
+    }
+    .gs-badge-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+    .gs-badge-icon-wrap {
+      width: 28px; height: 28px; border-radius: 4px;
+      background: var(--token-amber-light);
+      border: 1px solid var(--token-amber);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; flex-shrink: 0;
+    }
+    .gs-badge-meta { flex: 1; min-width: 0; }
+    .gs-badge-name { font-size: 11px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .gs-badge-sub  { font-size: 10px; color: var(--token-gray-500); margin-top: 1px; }
+    .gs-badge-progress-bar { height: 3px; background: var(--token-gray-200); border-radius: 99px; overflow: hidden; }
+    .gs-badge-progress-fill { height: 100%; border-radius: 99px; background: var(--token-amber); width: 0%; transition: width .4s ease; }
+    .gs-badge-footer { display: flex; justify-content: space-between; margin-top: 3px; }
+    .gs-badge-progress-label { font-size: 9px; color: var(--token-gray-500); }
+    .gs-badge-xp-label { font-size: 9px; color: var(--token-purple); font-weight: 600; }
+
+    #gs-earned-shelf { margin: 0 12px 8px; }
+    .gs-earned-label { font-size: 9px; text-transform: uppercase; letter-spacing: .08em; color: var(--token-gray-400); margin-bottom: 5px; }
+    .gs-earned-row { display: flex; gap: 5px; flex-wrap: wrap; }
+    .gs-earned-badge {
+      width: 30px; height: 30px; border-radius: 4px;
+      background: var(--token-amber-light);
+      border: 1px solid var(--token-amber);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px;
+    }
+
+    /* ── RESPONSIVE ── */
     @media (max-width: 959px) {
-      :root { --notes-w: 0px; }
-      #sidebar { transform: translateX(-240px); transition: transform .2s; }
+      #app-root { grid-template-columns: 0 1fr; }
+      #sidebar {
+        position: fixed; top: var(--header-h); left: 0;
+        width: 260px; height: calc(100vh - var(--header-h));
+        background: var(--surface); border-right: 2px solid #000;
+        overflow-y: auto; z-index: 75;
+        transform: translateX(-260px); transition: transform .2s;
+      }
       #sidebar.open { transform: translateX(0); }
-      #notes-panel { display: none; }
-      #content { margin-left: 0; margin-right: 0; }
       #menu-btn { display: flex; }
-      #notes-float-btn { display: flex; }
+      #notes-overlay { width: 100vw; }
     }
   </style>
 </head>
 <body>
+
+<div id="app-root">
 
 <!-- HEADER -->
 <header id="header">
@@ -286,74 +448,72 @@
     <input id="search-input" type="text" placeholder="search lessons…" oninput="handleSearch(this.value)" autocomplete="off">
     <span id="search-count"></span>
   </div>
+  <button id="notes-toggle-btn" onclick="toggleNotesOverlay()">📝 Notes<span id="notes-badge">0</span></button>
   <button id="settings-btn" onclick="openApiModal()" title="API Key">⚙</button>
 </header>
-
-<!-- Sidebar overlay (mobile) -->
-<div id="sb-overlay" onclick="toggleSidebar()"></div>
 
 <!-- SIDEBAR -->
 <aside id="sidebar">
 
   <!-- PROFILE BAR -->
-  <div id="gs-profile" style="padding:14px 14px 10px;border-bottom:1px solid #e5e7eb;flex-shrink:0;background:#fff">
-    <div style="display:flex;align-items:center;gap:9px;margin-bottom:10px">
-      <div style="width:34px;height:34px;border-radius:50%;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#1d4ed8;flex-shrink:0">SJ</div>
+  <div id="gs-profile">
+    <div class="gs-profile-row">
+      <div class="gs-avatar">SJ</div>
       <div>
-        <div style="font-size:13px;font-weight:500">PM Learner</div>
-        <div style="font-size:10px;color:#6b7280;margin-top:1px" id="gs-level-title">Foundation learner</div>
+        <div class="gs-name">PM Learner</div>
+        <div class="gs-level-title" id="gs-level-title">Foundation learner</div>
       </div>
     </div>
 
-    <div style="display:flex;gap:7px;margin-bottom:10px">
-      <div id="gs-streak-block" style="display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:8px;flex:1;background:#fef9c3;border:1px solid #fde68a">
-        <span style="font-size:16px">🔥</span>
+    <div class="gs-stats-row">
+      <div id="gs-streak-block" class="gs-streak-block gs-streak-idle">
+        <span class="gs-streak-icon">🔥</span>
         <div>
-          <div id="gs-streak-num" style="font-size:16px;font-weight:600;color:#b45309;line-height:1">0</div>
-          <div id="gs-streak-sub" style="font-size:9px;color:#b45309;line-height:1.3">day streak</div>
+          <div id="gs-streak-num" class="gs-streak-num gs-streak-num-idle">0</div>
+          <div id="gs-streak-sub" class="gs-streak-sub gs-streak-sub-idle">day streak</div>
         </div>
       </div>
-      <div style="flex:1;background:#f3f4f6;border-radius:8px;padding:6px 9px">
-        <div style="font-size:9px;text-transform:uppercase;letter-spacing:.07em;color:#9ca3af">Today</div>
-        <div id="gs-today-status" style="font-size:11px;font-weight:500;margin-top:2px;color:#6b7280">Read 1 lesson</div>
-        <div id="gs-today-sub" style="font-size:9px;color:#9ca3af;margin-top:1px">streak at risk</div>
+      <div class="gs-today-goal">
+        <div class="gs-today-label">Today</div>
+        <div id="gs-today-status" class="gs-today-status">Read 1 lesson</div>
+        <div id="gs-today-sub" class="gs-today-sub">streak at risk</div>
       </div>
     </div>
 
     <div>
-      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px">
-        <span id="gs-xp-val" style="font-size:10px;color:#6b7280">0 XP</span>
-        <span id="gs-xp-unlock" style="font-size:10px;color:#7c3aed;font-weight:500">→ unlocks Strategic Depth</span>
+      <div class="gs-xp-header">
+        <span class="gs-xp-val" id="gs-xp-val">0 XP</span>
+        <span class="gs-xp-unlock" id="gs-xp-unlock">→ unlocks Strategic Depth</span>
       </div>
-      <div style="height:5px;background:#e5e7eb;border-radius:99px;overflow:hidden;margin-bottom:3px">
-        <div id="gs-xp-bar" style="height:100%;border-radius:99px;background:#7c3aed;width:0%;transition:width .5s ease"></div>
+      <div class="gs-xp-bar">
+        <div class="gs-xp-bar-fill" id="gs-xp-bar"></div>
       </div>
-      <div id="gs-xp-to-next" style="font-size:9px;color:#9ca3af;text-align:right">500 XP to next unlock</div>
+      <div class="gs-xp-to-next" id="gs-xp-to-next">500 XP to next unlock</div>
     </div>
   </div>
 
   <!-- NEXT BADGE CARD -->
-  <div id="gs-next-badge" style="margin:8px 12px 4px;background:#f9fafb;border-radius:8px;padding:9px 10px;border:1px solid #e5e7eb;flex-shrink:0">
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
-      <div id="gs-badge-icon" style="width:28px;height:28px;border-radius:6px;background:#fef9c3;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">⚡</div>
-      <div style="flex:1;min-width:0">
-        <div id="gs-badge-name" style="font-size:11px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">First quiz pass</div>
-        <div id="gs-badge-sub" style="font-size:10px;color:#6b7280;margin-top:1px">Pass your first level quiz</div>
+  <div id="gs-next-badge">
+    <div class="gs-badge-row">
+      <div class="gs-badge-icon-wrap" id="gs-badge-icon">⚡</div>
+      <div class="gs-badge-meta">
+        <div class="gs-badge-name" id="gs-badge-name">First quiz pass</div>
+        <div class="gs-badge-sub" id="gs-badge-sub">Pass your first level quiz</div>
       </div>
     </div>
-    <div style="height:3px;background:#e5e7eb;border-radius:99px;overflow:hidden">
-      <div id="gs-badge-bar" style="height:100%;border-radius:99px;background:#f59e0b;width:0%;transition:width .4s ease"></div>
+    <div class="gs-badge-progress-bar">
+      <div class="gs-badge-progress-fill" id="gs-badge-bar"></div>
     </div>
-    <div style="display:flex;justify-content:space-between;margin-top:3px">
-      <span id="gs-badge-progress" style="font-size:9px;color:#6b7280">Not started</span>
-      <span id="gs-badge-xp" style="font-size:9px;color:#7c3aed;font-weight:500">+50 XP on earn</span>
+    <div class="gs-badge-footer">
+      <span class="gs-badge-progress-label" id="gs-badge-progress">Not started</span>
+      <span class="gs-badge-xp-label" id="gs-badge-xp">+50 XP on earn</span>
     </div>
   </div>
 
   <!-- EARNED BADGES SHELF -->
-  <div id="gs-earned-shelf" style="margin:0 12px 8px;display:none">
-    <div style="font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af;margin-bottom:5px">Earned</div>
-    <div id="gs-earned-row" style="display:flex;gap:5px;flex-wrap:wrap"></div>
+  <div id="gs-earned-shelf" style="display:none">
+    <div class="gs-earned-label">Earned</div>
+    <div class="gs-earned-row" id="gs-earned-row"></div>
   </div>
 
   <div id="sb-modules"></div>
@@ -366,40 +526,23 @@
   </div>
 </main>
 
-<!-- NOTES PANEL -->
-<aside id="notes-panel">
-  <div id="np-rail" onclick="openNotesOverlay()">
-    <span class="np-rail-icon">✦</span>
-    <span class="np-rail-badge" id="np-rail-count">0</span>
+</div><!-- /app-root -->
+
+<!-- Sidebar overlay (mobile) -->
+<div id="sb-overlay" onclick="toggleSidebar()"></div>
+
+<!-- Notes overlay (single slide-in) -->
+<div id="notes-backdrop"></div>
+<aside id="notes-overlay">
+  <div class="np-header">
+    <span class="np-title">STUDY NOTES</span>
+    <button class="np-add-btn" onclick="openFreeNote()">+</button>
   </div>
-  <div id="np-full">
-    <div class="np-header">
-      <span class="np-title">STUDY NOTES</span>
-      <button id="np-add-btn" onclick="openFreeNote('np-body')">+</button>
-    </div>
-    <div class="np-ctx" id="np-ctx">Select a lesson to see notes</div>
-    <div class="np-body" id="np-body">
-      <div class="notes-empty">Select any text in the lesson<br>and click "Ask AI" or "Note"<br>to capture context here.<br><br>Notes stay per lesson.</div>
-    </div>
+  <div class="np-ctx" id="np-ctx">Select a lesson to see notes</div>
+  <div class="np-body" id="notes-overlay-body">
+    <div class="notes-empty">Select any text in the lesson<br>and click "Ask AI" or "Note"<br>to capture context here.<br><br>Notes stay per lesson.</div>
   </div>
 </aside>
-
-<!-- NOTES OVERLAY (960–1279px + mobile) -->
-<div id="notes-overlay" onclick="closeNotesOverlay()">
-  <div id="notes-overlay-inner" onclick="event.stopPropagation()">
-    <div class="np-header">
-      <span class="np-title">STUDY NOTES</span>
-      <button style="background:var(--accent);border:1.5px solid #000;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;padding:2px 8px;box-shadow:var(--shadow-btn)" onclick="openFreeNote('np-body-ov')">+</button>
-    </div>
-    <div class="np-ctx" id="np-ctx-ov">Select a lesson to see notes</div>
-    <div class="ov-np-body" id="np-body-ov">
-      <div class="notes-empty">No notes yet.</div>
-    </div>
-  </div>
-</div>
-
-<!-- Float notes button (mobile) -->
-<button id="notes-float-btn" onclick="openNotesOverlay()">✦</button>
 
 <!-- SELECTION TOOLBAR -->
 <div id="sel-toolbar" class="hidden">
@@ -607,18 +750,24 @@ function gsRenderProfile() {
   const sn  = document.getElementById('gs-streak-num');
   const ss  = document.getElementById('gs-streak-sub');
   if (sn) sn.textContent = s.streak;
-  if (sb && ss) {
+  if (sb && sn && ss) {
+    sb.classList.remove('gs-streak-safe','gs-streak-risk','gs-streak-idle');
+    sn.classList.remove('gs-streak-num-safe','gs-streak-num-risk','gs-streak-num-idle');
+    ss.classList.remove('gs-streak-sub-safe','gs-streak-sub-risk','gs-streak-sub-idle');
     if (atRisk) {
-      sb.style.background = '#fef2f2'; sb.style.borderColor = '#fca5a5';
-      sn.style.color = '#dc2626'; ss.style.color = '#dc2626';
+      sb.classList.add('gs-streak-risk');
+      sn.classList.add('gs-streak-num-risk');
+      ss.classList.add('gs-streak-sub-risk');
       ss.innerHTML = 'day streak<br><b>at risk!</b>';
     } else if (s.todayDone) {
-      sb.style.background = '#fef9c3'; sb.style.borderColor = '#fde68a';
-      sn.style.color = '#b45309'; ss.style.color = '#b45309';
+      sb.classList.add('gs-streak-safe');
+      sn.classList.add('gs-streak-num-safe');
+      ss.classList.add('gs-streak-sub-safe');
       ss.innerHTML = 'day streak<br>safe ✓';
     } else {
-      sb.style.background = '#f9fafb'; sb.style.borderColor = '#e5e7eb';
-      sn.style.color = '#374151'; ss.style.color = '#6b7280';
+      sb.classList.add('gs-streak-idle');
+      sn.classList.add('gs-streak-num-idle');
+      ss.classList.add('gs-streak-sub-idle');
       ss.innerHTML = 'day streak';
     }
   }
@@ -627,10 +776,12 @@ function gsRenderProfile() {
   const tu = document.getElementById('gs-today-sub');
   if (ts && tu) {
     if (s.todayDone) {
-      ts.textContent = '✓ 1 lesson read'; ts.style.color = '#16a34a';
+      ts.textContent = '✓ 1 lesson read';
+      ts.classList.add('done');
       tu.textContent = 'streak maintained';
     } else {
-      ts.textContent = 'Read 1 lesson'; ts.style.color = '#6b7280';
+      ts.textContent = 'Read 1 lesson';
+      ts.classList.remove('done');
       tu.textContent = atRisk ? '⚠ streak at risk' : 'keep the streak alive';
     }
   }
@@ -689,7 +840,7 @@ function gsRenderProfile() {
       shelf.style.display = 'block';
       row.innerHTML = s.earnedBadges.map(id => {
         const b = BADGES.find(x => x.id === id);
-        return b ? `<div title="${b.name}" style="width:30px;height:30px;border-radius:6px;background:#fef9c3;display:flex;align-items:center;justify-content:center;font-size:14px;border:1px solid #fde68a">${b.icon}</div>` : '';
+        return b ? `<div class="gs-earned-badge" title="${b.name}">${b.icon}</div>` : '';
       }).join('');
     } else {
       shelf.style.display = 'none';
@@ -919,11 +1070,10 @@ function gsRefreshLevelPills() {
   if (!pills) return;
   const wUnlocked = gsIsUnlocked(GS, S.active.id, 'working');
   const sUnlocked = gsIsUnlocked(GS, S.active.id, 'strategic');
-  const lockStyle = 'opacity:.55;cursor:not-allowed';
   pills.innerHTML = `
     <button class="level-pill${S.activeLevel === 'foundation' ? ' active' : ''}" onclick="changeLevel('foundation')">Foundation</button>
-    <button class="level-pill${S.activeLevel === 'working' ? ' active' : ''}" onclick="changeLevel('working')" ${wUnlocked ? '' : `style="${lockStyle}"`}>${wUnlocked ? '' : '🔒 '}Working Knowledge</button>
-    <button class="level-pill${S.activeLevel === 'strategic' ? ' active' : ''}" onclick="changeLevel('strategic')" ${sUnlocked ? '' : `style="${lockStyle}"`}>${sUnlocked ? '' : '🔒 '}Strategic Depth</button>
+    <button class="level-pill${S.activeLevel === 'working' ? ' active' : ''}${wUnlocked ? '' : ' locked'}" onclick="changeLevel('working')">${wUnlocked ? '' : '🔒 '}Working Knowledge</button>
+    <button class="level-pill${S.activeLevel === 'strategic' ? ' active' : ''}${sUnlocked ? '' : ' locked'}" onclick="changeLevel('strategic')">${sUnlocked ? '' : '🔒 '}Strategic Depth</button>
   `;
 }
 
@@ -1017,6 +1167,27 @@ function parseManifest(lessons) {
 }
 
 /* ── SIDEBAR ── */
+function getActiveModuleId() {
+  if (!S.active) return null;
+  for (const m of S.modules) {
+    if (m.lessons.some(l => l.id === S.active.id)) return m.id;
+  }
+  return null;
+}
+
+function isModuleExpanded(moduleId) {
+  if (moduleId === getActiveModuleId()) return true;
+  const stored = localStorage.getItem('pm_sidebar_' + moduleId);
+  if (stored === 'collapsed') return false;
+  if (stored === 'expanded')  return true;
+  const mod = S.modules.find(m => m.id === moduleId);
+  if (!mod) return false;
+  const hasProgress = typeof gsSidebarState === 'function'
+    ? mod.lessons.some(l => gsSidebarState(GS, l.id) !== 'empty')
+    : false;
+  return hasProgress;
+}
+
 function renderSidebar(filter) {
   const lf = (filter || '').toLowerCase();
   let matchCount = 0;
@@ -1027,7 +1198,7 @@ function renderSidebar(filter) {
     matchCount += lessons.length;
 
     const ready = mod.lessons.filter(l => l.status === 'ready').length;
-    const isExp = lf || S.expanded.has(mod.id) || (S.active && mod.lessons.some(l => l.id === S.active.id));
+    const isExp = !!lf || isModuleExpanded(mod.id);
 
     const dots = mod.lessons.map(l => `<span class="dot ${l.status}"></span>`).join('');
     const items = lessons.map(l => {
@@ -1042,7 +1213,7 @@ function renderSidebar(filter) {
     return `<div data-mod="${mod.id}">
       <div class="module-header${isExp ? ' expanded' : ''}" onclick="toggleModule('${mod.id}')">
         <div class="module-header-row">
-          <span class="module-arrow">▶</span>
+          <span class="module-arrow">${isExp ? '▼' : '▶'}</span>
           <span class="module-num">${mod.id}</span>
           <span class="module-name">${esc(mod.name)}</span>
           <span class="module-progress-text">${ready}/${mod.lessons.length}</span>
@@ -1059,7 +1230,11 @@ function renderSidebar(filter) {
 }
 
 function toggleModule(id) {
-  S.expanded.has(id) ? S.expanded.delete(id) : S.expanded.add(id);
+  // Cannot collapse the active module
+  if (id === getActiveModuleId()) return;
+  const key = 'pm_sidebar_' + id;
+  const isCollapsed = localStorage.getItem(key) === 'collapsed';
+  localStorage.setItem(key, isCollapsed ? 'expanded' : 'collapsed');
   renderSidebar(document.getElementById('search-input').value);
 }
 
@@ -1171,12 +1346,11 @@ function renderLesson(lesson, md) {
     const hint = profiles[S.activeLevel] ? `For: ${esc(profiles[S.activeLevel])}` : '';
     const wUnlocked = gsIsUnlocked(GS, lesson.id, 'working');
     const sUnlocked = gsIsUnlocked(GS, lesson.id, 'strategic');
-    const lockStyle = 'opacity:.55;cursor:not-allowed';
     levelSelectorHtml = `<div class="level-selector" id="level-selector">
       <div class="level-pills">
         <button class="level-pill${S.activeLevel === 'foundation' ? ' active' : ''}" onclick="changeLevel('foundation')">Foundation</button>
-        <button class="level-pill${S.activeLevel === 'working' ? ' active' : ''}" onclick="changeLevel('working')" ${wUnlocked ? '' : `style="${lockStyle}"`}>${wUnlocked ? '' : '🔒 '}Working Knowledge</button>
-        <button class="level-pill${S.activeLevel === 'strategic' ? ' active' : ''}" onclick="changeLevel('strategic')" ${sUnlocked ? '' : `style="${lockStyle}"`}>${sUnlocked ? '' : '🔒 '}Strategic Depth</button>
+        <button class="level-pill${S.activeLevel === 'working' ? ' active' : ''}${wUnlocked ? '' : ' locked'}" onclick="changeLevel('working')">${wUnlocked ? '' : '🔒 '}Working Knowledge</button>
+        <button class="level-pill${S.activeLevel === 'strategic' ? ' active' : ''}${sUnlocked ? '' : ' locked'}" onclick="changeLevel('strategic')">${sUnlocked ? '' : '🔒 '}Strategic Depth</button>
       </div>
       <div class="level-hint" id="level-hint">${hint}</div>
     </div>`;
@@ -1470,11 +1644,14 @@ function renderTable(tl) {
   const parse = line => line.split('|').slice(1, -1).map(c => c.trim());
   const hd = parse(tl[0]);
   const rows = tl.slice(2).map(parse);
+  let hasRec = false;
   const bodyHtml = rows.map(r => {
     const isRec = r[0] && /\*\*/.test(r[0]);
+    if (isRec) hasRec = true;
     return `<tr${isRec ? ' class="rec"' : ''}>${r.map(c => `<td>${inline(c)}</td>`).join('')}</tr>`;
   }).join('');
-  return `<table><thead><tr>${hd.map(c => `<th>${inline(c)}</th>`).join('')}</tr></thead><tbody>${bodyHtml}</tbody></table>`;
+  const tableClass = hasRec ? ' class="decision"' : '';
+  return `<table${tableClass}><thead><tr>${hd.map(c => `<th>${inline(c)}</th>`).join('')}</tr></thead><tbody>${bodyHtml}</tbody></table>`;
 }
 
 function renderRelated(md) {
@@ -1684,16 +1861,22 @@ function getNotes(lessonId) {
 
 function loadNotesForLesson(id) {
   const notes = getNotes(id);
-  renderNotesList(notes, 'np-body');
+  renderNotesList(notes, 'notes-overlay-body');
   refreshNotesCount(id);
 }
 
 function refreshNotesCount(lessonId) {
-  const n = getNotes(lessonId).length;
-  const ctx = `${lessonId} · ${n} note${n !== 1 ? 's' : ''}`;
-  ['np-ctx', 'np-ctx-ov'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = ctx; });
-  const badge = document.getElementById('np-rail-count');
-  if (badge) badge.textContent = n;
+  const id  = lessonId || S.active?.id;
+  if (!id) return;
+  const n   = getNotes(id).length;
+  const ctx = `${id} · ${n} note${n !== 1 ? 's' : ''}`;
+  const ctxEl = document.getElementById('np-ctx');
+  if (ctxEl) ctxEl.textContent = ctx;
+  const badge = document.getElementById('notes-badge');
+  if (badge) {
+    if (n > 0) { badge.style.display = 'inline-block'; badge.textContent = n; }
+    else       { badge.style.display = 'none'; }
+  }
 }
 
 function renderNotesList(notes, containerId) {
@@ -1722,14 +1905,12 @@ function noteCardHtml(n, loading) {
 }
 
 function addNoteCards(note, loading) {
-  ['np-body', 'np-body-ov'].forEach(id => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.querySelector('.notes-empty')?.remove();
-    const div = document.createElement('div');
-    div.innerHTML = noteCardHtml(note, loading);
-    el.insertBefore(div.firstElementChild, el.firstChild);
-  });
+  const el = document.getElementById('notes-overlay-body');
+  if (!el) return;
+  el.querySelector('.notes-empty')?.remove();
+  const div = document.createElement('div');
+  div.innerHTML = noteCardHtml(note, loading);
+  el.insertBefore(div.firstElementChild, el.firstChild);
 }
 
 function refreshNoteCard(note) {
@@ -1749,24 +1930,25 @@ function deleteNote(noteId) {
 
   refreshNotesCount(S.active.id);
 
-  ['np-body', 'np-body-ov'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el && !el.querySelector('.note-card')) el.innerHTML = `<div class="notes-empty">Select any text in the lesson<br>and click "Ask AI" or "Note"<br>to capture context here.</div>`;
-  });
+  const el = document.getElementById('notes-overlay-body');
+  if (el && !el.querySelector('.note-card')) el.innerHTML = `<div class="notes-empty">Select any text in the lesson<br>and click "Ask AI" or "Note"<br>to capture context here.</div>`;
 }
 
-function openFreeNote(bodyId) {
-  const el = document.getElementById(bodyId);
+function openFreeNote() {
+  const el = document.getElementById('notes-overlay-body');
   if (!el) return;
+  // Make sure overlay is open
+  const ov = document.getElementById('notes-overlay');
+  if (ov && !ov.classList.contains('open')) toggleNotesOverlay();
   if (el.querySelector('.free-note-form')) { el.querySelector('.free-note-form').remove(); return; }
   const form = document.createElement('div');
   form.className = 'free-note-form';
-  form.innerHTML = `<label>Free note for this lesson:</label><textarea rows="3" placeholder="Type anything…"></textarea><div class="free-note-form-actions"><button class="btn-cancel" onclick="this.closest('.free-note-form').remove()">Cancel</button><button class="btn-save" onclick="saveFreeNote(this,'${bodyId}')">Save →</button></div>`;
+  form.innerHTML = `<label>Free note for this lesson:</label><textarea rows="3" placeholder="Type anything…"></textarea><div class="free-note-form-actions"><button class="btn-cancel" onclick="this.closest('.free-note-form').remove()">Cancel</button><button class="btn-save" onclick="saveFreeNote(this)">Save →</button></div>`;
   el.insertBefore(form, el.firstChild);
   form.querySelector('textarea').focus();
 }
 
-function saveFreeNote(btn, bodyId) {
+function saveFreeNote(btn) {
   const form = btn.closest('.free-note-form');
   const txt  = form.querySelector('textarea').value.trim();
   if (!txt || !S.active) return;
@@ -1805,18 +1987,23 @@ function toggleSidebar(force) {
   ov.classList.toggle('open', open);
 }
 
-function openNotesOverlay() {
-  if (S.active) {
+function toggleNotesOverlay() {
+  const ov = document.getElementById('notes-overlay');
+  const bd = document.getElementById('notes-backdrop');
+  const open = !ov.classList.contains('open');
+  ov.classList.toggle('open', open);
+  bd.classList.toggle('visible', open);
+  if (open && S.active) {
     const notes = getNotes(S.active.id);
-    renderNotesList(notes, 'np-body-ov');
-    const n = notes.length;
-    const ctxEl = document.getElementById('np-ctx-ov');
-    if (ctxEl) ctxEl.textContent = `${S.active.id} · ${n} note${n !== 1 ? 's' : ''}`;
+    renderNotesList(notes, 'notes-overlay-body');
+    refreshNotesCount(S.active.id);
   }
-  document.getElementById('notes-overlay').classList.add('open');
 }
 
-function closeNotesOverlay() { document.getElementById('notes-overlay').classList.remove('open'); }
+function closeNotesOverlay() {
+  document.getElementById('notes-overlay').classList.remove('open');
+  document.getElementById('notes-backdrop').classList.remove('visible');
+}
 
 /* ── UTILS ── */
 function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
@@ -1839,6 +2026,7 @@ document.addEventListener('keydown', e => {
   if (document.getElementById('sidebar').classList.contains('open')) toggleSidebar(false);
 });
 document.getElementById('content').addEventListener('scroll', dismissToolbar);
+document.getElementById('notes-backdrop').addEventListener('click', closeNotesOverlay);
 
 /* ── INIT ── */
 // Hide settings button if key is already loaded from config.js
