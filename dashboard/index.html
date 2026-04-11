@@ -20,7 +20,7 @@
       --shadow-lime: 3px 3px 0px 0px #A3E635;
       --font: 'Courier New', Courier, monospace;
       --header-h: 48px;
-      --sidebar-w: 260px;
+      --sidebar-w: 280px;
       --notes-w: 340px;
 
       /* Design tokens — used by profile bar + new overlay chrome */
@@ -99,28 +99,44 @@
       background: var(--surface); border-right: 2px solid #000;
       overflow-y: auto; overflow-x: hidden; z-index: 50;
     }
-    .module-header { display: flex; flex-direction: column; padding: 10px 12px 8px; cursor: pointer; border-bottom: 2px solid #000; user-select: none; transition: background .1s; }
-    .module-header:hover { background: #F5F5F5; }
-    .module-header.expanded { background: #000; color: var(--accent); border-bottom-color: var(--accent); }
-    .module-header-row { display: flex; align-items: center; gap: 6px; }
-    .module-arrow { font-size: 9px; flex-shrink: 0; display: inline-block; width: 10px; }
-    .module-num { font-size: 12px; font-weight: 700; flex-shrink: 0; }
-    .module-name { font-size: 13px; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .module-progress-text { font-size: 11px; flex-shrink: 0; }
-    .module-dots { display: flex; flex-wrap: wrap; gap: 2px; margin-top: 5px; padding-left: 18px; }
-    .dot { width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid #000; display: inline-block; }
-    .module-header.expanded .dot { border-color: #555; }
+    #sb-modules { border-top: 2px solid #000; }
+    .module-header {
+      display: flex; align-items: flex-start; gap: 6px;
+      padding: 8px 12px 4px; cursor: pointer; user-select: none;
+      background: transparent;
+      transition: background .1s;
+    }
+    .module-header:hover { background: #F3F4F6; }
+    .module-header-row { display: flex; align-items: flex-start; gap: 6px; width: 100%; }
+    .module-arrow { font-size: 9px; color: #6b7280; flex-shrink: 0; width: 10px; padding-top: 2px; }
+    .module-num { font-size: 10px; font-weight: 700; flex-shrink: 0; padding-top: 1px; }
+    .module-name {
+      font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .04em;
+      color: #374151; flex: 1;
+      line-height: 1.35; word-break: break-word;
+    }
+    .module-progress-text { font-size: 10px; color: #9ca3af; flex-shrink: 0; padding-top: 1px; }
+    .module-done-check { font-size: 10px; color: #16a34a; font-weight: 700; flex-shrink: 0; padding-top: 1px; }
+    .module-dots { display: flex; flex-wrap: wrap; gap: 2px; margin-top: 4px; padding: 0 12px 6px 28px; }
+    .dot { width: 7px; height: 7px; border-radius: 50%; border: 1px solid #000; display: inline-block; }
     .dot.ready { background: var(--accent); }
     .dot.draft { background: #FCD34D; }
-    .dot.none  { background: var(--bg); }
-    .module-header.expanded .dot.none { background: #333; }
-    .lesson-list { display: none; border-bottom: 2px solid #000; }
+    .dot.none  { background: transparent; border-color: #d1d5db; }
+    .lesson-list { display: none; border-bottom: 1px solid #000; }
     .lesson-list.open { display: block; }
-    .lesson-item { display: flex; align-items: center; padding: 8px 10px 8px 24px; cursor: pointer; border-bottom: 1px solid #E5E7EB; gap: 6px; transition: transform .1s, box-shadow .1s; position: relative; border-left: 3px solid transparent; }
-    .lesson-item:hover { transform: translate(-1px,-1px); background: #F9F9F9; box-shadow: 2px 2px 0 #000; }
-    .lesson-item.active { border-left-color: var(--accent); background: #F7FEE7; }
-    .lesson-id { font-size: 11px; color: var(--muted); flex-shrink: 0; width: 34px; }
-    .lesson-title-sb { font-size: 12px; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .lesson-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 5px 12px 5px 26px;
+      cursor: pointer; font-size: 12px; font-family: inherit;
+      color: #374151;
+      border-left: 2px solid transparent;
+      transition: background .1s, border-color .1s;
+    }
+    .lesson-item:hover { background: #F3F4F6; border-left-color: #d1d5db; }
+    .lesson-item.active { background: #F7FEE7; border-left-color: var(--accent); color: #000; font-weight: 700; }
+    .lesson-id { font-size: 10px; color: var(--muted); flex-shrink: 0; width: 32px; }
+    .lesson-title-sb { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .status-pill { font-size: 10px; padding: 2px 6px; border-radius: 99px; border: 1.5px solid #000; white-space: nowrap; flex-shrink: 0; }
     .status-pill.ready { background: var(--accent); color: #000; box-shadow: 2px 2px 0 #000; }
     .status-pill.draft { background: #FCD34D; color: #000; }
@@ -326,97 +342,83 @@
     #sb-overlay { display: none; position: fixed; inset: var(--header-h) 0 0 0; background: rgba(0,0,0,.5); z-index: 70; }
     #sb-overlay.open { display: block; }
 
-    /* ── PROFILE BAR (gamification, token-based) ── */
+    /* ── PROFILE BAR (compact) ── */
     #gs-profile {
-      padding: 14px 14px 10px;
-      border-bottom: 2px solid #000;
+      padding: 10px 12px 8px;
       background: var(--surface);
     }
-    .gs-profile-row { display: flex; align-items: center; gap: 9px; margin-bottom: 10px; }
+    .gs-profile-top { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
     .gs-avatar {
-      width: 34px; height: 34px; border-radius: 50%;
+      width: 30px; height: 30px; border-radius: 50%;
       background: var(--token-brand-light);
       border: 1px solid var(--token-brand);
       color: var(--token-brand);
       display: flex; align-items: center; justify-content: center;
-      font-size: 12px; font-weight: 700; font-family: inherit;
+      font-size: 11px; font-weight: 700; font-family: inherit;
       flex-shrink: 0;
     }
-    .gs-name { font-size: 13px; font-weight: 700; color: #000; }
-    .gs-level-title { font-size: 10px; color: var(--token-gray-500); margin-top: 1px; }
+    .gs-name-wrap { flex: 1; min-width: 0; }
+    .gs-name { font-size: 12px; font-weight: 700; color: #000; font-family: inherit; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .gs-level-title { font-size: 10px; color: var(--token-gray-500); font-family: inherit; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-    .gs-stats-row { display: flex; gap: 7px; margin-bottom: 10px; }
-
-    .gs-streak-block {
-      display: flex; align-items: center; gap: 6px;
-      padding: 6px 10px; border-radius: 6px; flex: 1;
+    .gs-streak-inline {
+      display: flex; align-items: center; gap: 4px;
+      padding: 3px 7px; border-radius: 4px; flex-shrink: 0;
     }
-    .gs-streak-block.gs-streak-safe { background: var(--token-amber-light); border: 1px solid var(--token-amber); }
-    .gs-streak-block.gs-streak-risk { background: var(--token-red-light);   border: 2px solid var(--token-red); }
-    .gs-streak-block.gs-streak-idle { background: var(--token-gray-50);     border: 1px solid var(--token-gray-200); }
-    .gs-streak-icon { font-size: 16px; }
-    .gs-streak-num { font-size: 16px; font-weight: 700; line-height: 1; }
+    .gs-streak-inline.gs-streak-safe { background: var(--token-amber-light); border: 1px solid var(--token-amber); }
+    .gs-streak-inline.gs-streak-risk { background: var(--token-red-light);   border: 1px solid var(--token-red); }
+    .gs-streak-inline.gs-streak-idle { background: var(--token-gray-50);     border: 1px solid var(--token-gray-200); }
+    .gs-streak-icon { font-size: 11px; }
+    .gs-streak-num { font-size: 13px; font-weight: 700; line-height: 1; font-family: inherit; }
     .gs-streak-num.gs-streak-num-safe { color: var(--token-amber); }
     .gs-streak-num.gs-streak-num-risk { color: var(--token-red); }
     .gs-streak-num.gs-streak-num-idle { color: var(--token-gray-700); }
-    .gs-streak-sub { font-size: 9px; line-height: 1.3; }
+    .gs-streak-sub { font-size: 10px; font-family: inherit; line-height: 1; }
     .gs-streak-sub.gs-streak-sub-safe { color: var(--token-amber); }
     .gs-streak-sub.gs-streak-sub-risk { color: var(--token-red); font-weight: 700; }
     .gs-streak-sub.gs-streak-sub-idle { color: var(--token-gray-500); }
 
-    .gs-today-goal {
-      flex: 1;
-      background: var(--token-gray-50);
-      border: 1px solid var(--token-gray-200);
-      border-radius: 6px;
-      padding: 6px 9px;
-    }
-    .gs-today-label { font-size: 9px; text-transform: uppercase; letter-spacing: .07em; color: var(--token-gray-400); }
-    .gs-today-status { font-size: 11px; font-weight: 600; margin-top: 2px; color: var(--token-gray-500); }
-    .gs-today-status.done { color: var(--token-green); }
-    .gs-today-sub { font-size: 9px; color: var(--token-gray-400); margin-top: 1px; }
-
+    .gs-xp-row { }
     .gs-xp-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 3px; }
-    .gs-xp-val { font-size: 10px; color: var(--token-gray-500); }
-    .gs-xp-unlock { font-size: 10px; color: var(--token-purple); font-weight: 600; }
-    .gs-xp-bar { height: 5px; background: var(--token-gray-200); border-radius: 99px; overflow: hidden; margin-bottom: 3px; }
-    .gs-xp-bar-fill { height: 100%; border-radius: 99px; background: var(--token-purple); width: 0%; transition: width .5s ease; }
-    .gs-xp-to-next { font-size: 9px; color: var(--token-gray-400); text-align: right; }
+    .gs-xp-val { font-size: 10px; color: var(--token-gray-500); font-family: inherit; }
+    .gs-xp-unlock { font-size: 10px; color: var(--token-purple); font-weight: 700; font-family: inherit; }
+    .gs-xp-bar { height: 5px; background: var(--token-gray-200); border: 1px solid var(--token-gray-400); border-radius: 2px; overflow: hidden; }
+    .gs-xp-bar-fill { height: 100%; background: var(--token-purple); width: 0%; transition: width .4s ease; }
 
-    /* Next badge card */
+    /* Next badge — single compact line */
     #gs-next-badge {
-      margin: 8px 12px 4px;
-      background: var(--token-gray-50);
-      border: 1px solid var(--token-gray-200);
-      border-radius: 6px;
-      padding: 9px 10px;
+      display: flex; align-items: center; gap: 7px;
+      padding: 6px 12px; background: #FAFAFA;
+      border-top: 1px solid #E5E7EB;
+      border-bottom: 2px solid #000;
+      flex-shrink: 0;
     }
-    .gs-badge-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
-    .gs-badge-icon-wrap {
-      width: 28px; height: 28px; border-radius: 4px;
-      background: var(--token-amber-light);
-      border: 1px solid var(--token-amber);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 15px; flex-shrink: 0;
-    }
+    .gs-badge-icon-inline { font-size: 13px; flex-shrink: 0; }
     .gs-badge-meta { flex: 1; min-width: 0; }
-    .gs-badge-name { font-size: 11px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .gs-badge-sub  { font-size: 10px; color: var(--token-gray-500); margin-top: 1px; }
-    .gs-badge-progress-bar { height: 3px; background: var(--token-gray-200); border-radius: 99px; overflow: hidden; }
-    .gs-badge-progress-fill { height: 100%; border-radius: 99px; background: var(--token-amber); width: 0%; transition: width .4s ease; }
-    .gs-badge-footer { display: flex; justify-content: space-between; margin-top: 3px; }
-    .gs-badge-progress-label { font-size: 9px; color: var(--token-gray-500); }
-    .gs-badge-xp-label { font-size: 9px; color: var(--token-purple); font-weight: 600; }
+    .gs-badge-name {
+      font-size: 10px; font-weight: 700; color: #000;
+      font-family: inherit;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .gs-badge-progress-bar {
+      height: 2px; margin-top: 3px;
+      background: var(--token-gray-200);
+      border-radius: 99px; overflow: hidden;
+    }
+    .gs-badge-progress-fill { height: 100%; background: var(--accent); width: 0%; transition: width .3s; }
+    .gs-badge-xp-label {
+      font-size: 9px; color: var(--token-purple); font-weight: 700;
+      font-family: inherit; flex-shrink: 0;
+    }
 
-    #gs-earned-shelf { margin: 0 12px 8px; }
-    .gs-earned-label { font-size: 9px; text-transform: uppercase; letter-spacing: .08em; color: var(--token-gray-400); margin-bottom: 5px; }
-    .gs-earned-row { display: flex; gap: 5px; flex-wrap: wrap; }
+    #gs-earned-shelf { padding: 5px 12px; border-bottom: 1px solid #E5E7EB; background: #FAFAFA; }
+    .gs-earned-row { display: flex; gap: 4px; flex-wrap: wrap; }
     .gs-earned-badge {
-      width: 30px; height: 30px; border-radius: 4px;
+      width: 22px; height: 22px; border-radius: 3px;
       background: var(--token-amber-light);
       border: 1px solid var(--token-amber);
       display: flex; align-items: center; justify-content: center;
-      font-size: 14px;
+      font-size: 12px;
     }
 
     /* ── RESPONSIVE ── */
@@ -455,64 +457,45 @@
 <!-- SIDEBAR -->
 <aside id="sidebar">
 
-  <!-- PROFILE BAR -->
+  <!-- PROFILE BAR — compact 2-row layout -->
   <div id="gs-profile">
-    <div class="gs-profile-row">
+    <div class="gs-profile-top">
       <div class="gs-avatar">SJ</div>
-      <div>
+      <div class="gs-name-wrap">
         <div class="gs-name">PM Learner</div>
         <div class="gs-level-title" id="gs-level-title">Foundation learner</div>
       </div>
-    </div>
-
-    <div class="gs-stats-row">
-      <div id="gs-streak-block" class="gs-streak-block gs-streak-idle">
+      <div id="gs-streak-block" class="gs-streak-inline gs-streak-idle">
         <span class="gs-streak-icon">🔥</span>
-        <div>
-          <div id="gs-streak-num" class="gs-streak-num gs-streak-num-idle">0</div>
-          <div id="gs-streak-sub" class="gs-streak-sub gs-streak-sub-idle">day streak</div>
-        </div>
-      </div>
-      <div class="gs-today-goal">
-        <div class="gs-today-label">Today</div>
-        <div id="gs-today-status" class="gs-today-status">Read 1 lesson</div>
-        <div id="gs-today-sub" class="gs-today-sub">streak at risk</div>
+        <span id="gs-streak-num" class="gs-streak-num gs-streak-num-idle">0</span>
+        <span id="gs-streak-sub" class="gs-streak-sub gs-streak-sub-idle">d</span>
       </div>
     </div>
-
-    <div>
+    <div class="gs-xp-row">
       <div class="gs-xp-header">
         <span class="gs-xp-val" id="gs-xp-val">0 XP</span>
-        <span class="gs-xp-unlock" id="gs-xp-unlock">→ unlocks Strategic Depth</span>
+        <span class="gs-xp-unlock" id="gs-xp-unlock">→ Strategic Depth at 500 XP</span>
       </div>
       <div class="gs-xp-bar">
         <div class="gs-xp-bar-fill" id="gs-xp-bar"></div>
       </div>
-      <div class="gs-xp-to-next" id="gs-xp-to-next">500 XP to next unlock</div>
     </div>
   </div>
 
-  <!-- NEXT BADGE CARD -->
+  <!-- NEXT BADGE — compact single line -->
   <div id="gs-next-badge">
-    <div class="gs-badge-row">
-      <div class="gs-badge-icon-wrap" id="gs-badge-icon">⚡</div>
-      <div class="gs-badge-meta">
-        <div class="gs-badge-name" id="gs-badge-name">First quiz pass</div>
-        <div class="gs-badge-sub" id="gs-badge-sub">Pass your first level quiz</div>
+    <span class="gs-badge-icon-inline" id="gs-badge-icon">⚡</span>
+    <div class="gs-badge-meta">
+      <div class="gs-badge-name" id="gs-badge-name">First quiz pass</div>
+      <div class="gs-badge-progress-bar">
+        <div class="gs-badge-progress-fill" id="gs-badge-bar"></div>
       </div>
     </div>
-    <div class="gs-badge-progress-bar">
-      <div class="gs-badge-progress-fill" id="gs-badge-bar"></div>
-    </div>
-    <div class="gs-badge-footer">
-      <span class="gs-badge-progress-label" id="gs-badge-progress">Not started</span>
-      <span class="gs-badge-xp-label" id="gs-badge-xp">+50 XP on earn</span>
-    </div>
+    <span class="gs-badge-xp-label" id="gs-badge-xp">+50XP</span>
   </div>
 
-  <!-- EARNED BADGES SHELF -->
+  <!-- EARNED BADGES SHELF — hidden until earned -->
   <div id="gs-earned-shelf" style="display:none">
-    <div class="gs-earned-label">Earned</div>
     <div class="gs-earned-row" id="gs-earned-row"></div>
   </div>
 
@@ -754,35 +737,20 @@ function gsRenderProfile() {
     sb.classList.remove('gs-streak-safe','gs-streak-risk','gs-streak-idle');
     sn.classList.remove('gs-streak-num-safe','gs-streak-num-risk','gs-streak-num-idle');
     ss.classList.remove('gs-streak-sub-safe','gs-streak-sub-risk','gs-streak-sub-idle');
+    ss.textContent = 'd';
+    sb.title = atRisk ? 'Streak at risk — read one lesson today' : s.todayDone ? 'Streak safe for today' : 'Read one lesson to start a streak';
     if (atRisk) {
       sb.classList.add('gs-streak-risk');
       sn.classList.add('gs-streak-num-risk');
       ss.classList.add('gs-streak-sub-risk');
-      ss.innerHTML = 'day streak<br><b>at risk!</b>';
     } else if (s.todayDone) {
       sb.classList.add('gs-streak-safe');
       sn.classList.add('gs-streak-num-safe');
       ss.classList.add('gs-streak-sub-safe');
-      ss.innerHTML = 'day streak<br>safe ✓';
     } else {
       sb.classList.add('gs-streak-idle');
       sn.classList.add('gs-streak-num-idle');
       ss.classList.add('gs-streak-sub-idle');
-      ss.innerHTML = 'day streak';
-    }
-  }
-
-  const ts = document.getElementById('gs-today-status');
-  const tu = document.getElementById('gs-today-sub');
-  if (ts && tu) {
-    if (s.todayDone) {
-      ts.textContent = '✓ 1 lesson read';
-      ts.classList.add('done');
-      tu.textContent = 'streak maintained';
-    } else {
-      ts.textContent = 'Read 1 lesson';
-      ts.classList.remove('done');
-      tu.textContent = atRisk ? '⚠ streak at risk' : 'keep the streak alive';
     }
   }
 
@@ -798,37 +766,25 @@ function gsRenderProfile() {
   const next = gsNextBadge(s);
   const nextWrap = document.getElementById('gs-next-badge');
   if (next && nextWrap) {
-    nextWrap.style.display = 'block';
+    nextWrap.style.display = 'flex';
     const ni = document.getElementById('gs-badge-icon');
     const nn = document.getElementById('gs-badge-name');
-    const ns = document.getElementById('gs-badge-sub');
     const nb = document.getElementById('gs-badge-bar');
-    const np = document.getElementById('gs-badge-progress');
     const nx = document.getElementById('gs-badge-xp');
     if (ni) ni.textContent = next.icon;
     if (nn) nn.textContent = next.name;
-    if (ns) ns.textContent = next.sub;
-    if (nx) nx.textContent = next.xp > 0 ? '+' + next.xp + ' XP on earn' : 'milestone badge';
-    let prog = 0, progLabel = 'Not started';
-    if (next.id === 'streak_7') {
-      prog = Math.min(100, Math.round((s.streak/7)*100));
-      progLabel = s.streak + ' / 7 days';
-    } else if (next.id === 'streak_30') {
-      prog = Math.min(100, Math.round((s.streak/30)*100));
-      progLabel = s.streak + ' / 30 days';
-    } else if (next.id === 'xp_500') {
-      prog = Math.min(100, Math.round((s.xp/500)*100));
-      progLabel = s.xp + ' / 500 XP';
-    } else if (next.id === 'xp_1000') {
-      prog = Math.min(100, Math.round((s.xp/1000)*100));
-      progLabel = s.xp + ' / 1000 XP';
-    } else if (next.id === 'speed_reader') {
+    if (nx) nx.textContent = next.xp > 0 ? '+' + next.xp + 'XP' : '★';
+    let prog = 0;
+    if (next.id === 'streak_7')  prog = Math.min(100, Math.round((s.streak/7)*100));
+    else if (next.id === 'streak_30') prog = Math.min(100, Math.round((s.streak/30)*100));
+    else if (next.id === 'xp_500')    prog = Math.min(100, Math.round((s.xp/500)*100));
+    else if (next.id === 'xp_1000')   prog = Math.min(100, Math.round((s.xp/1000)*100));
+    else if (next.id === 'speed_reader') {
       const lvls = Object.values(s.lessons).reduce((a,l) => a+(l.f?1:0)+(l.w?1:0)+(l.s?1:0), 0);
       prog = Math.min(100, Math.round((lvls/10)*100));
-      progLabel = lvls + ' / 10 levels read';
     }
     if (nb) nb.style.width = prog + '%';
-    if (np) np.textContent = progLabel;
+    nextWrap.title = next.name + ' — ' + next.sub;
   } else if (nextWrap) {
     nextWrap.style.display = 'none';
   }
@@ -848,18 +804,18 @@ function gsRenderProfile() {
   }
 }
 
-/* ── SIDEBAR STATE DOTS ── */
+/* ── SIDEBAR STATE DOTS (brutalist palette) ── */
 function gsRenderSidebarStates() {
   document.querySelectorAll('[data-lesson-state]').forEach(el => {
     const id = el.dataset.lessonId;
     if (!id) return;
     const state = gsSidebarState(GS, id);
     if (state === 'done')
-      el.innerHTML = '<div style="width:18px;height:18px;border-radius:50%;background:#16a34a;display:flex;align-items:center;justify-content:center;font-size:9px;color:#fff;font-weight:600;flex-shrink:0">✓</div>';
+      el.innerHTML = '<span style="width:16px;height:16px;border-radius:50%;background:#A3E635;border:1px solid #000;display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#000;flex-shrink:0">✓</span>';
     else if (state === 'progress')
-      el.innerHTML = '<div style="width:18px;height:18px;border-radius:50%;background:#eff6ff;border:1px solid #3b82f6;display:flex;align-items:center;justify-content:center;font-size:9px;color:#3b82f6;font-weight:600;flex-shrink:0">½</div>';
+      el.innerHTML = '<span style="width:16px;height:16px;border-radius:50%;background:#FEF9C3;border:1px solid #D97706;display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#92400E;flex-shrink:0">½</span>';
     else
-      el.innerHTML = '<div style="width:18px;height:18px;border-radius:50%;border:1.5px solid #d1d5db;flex-shrink:0"></div>';
+      el.innerHTML = '<span style="width:16px;height:16px;border-radius:50%;background:transparent;border:1px solid #D1D5DB;display:inline-block;flex-shrink:0"></span>';
   });
 }
 
@@ -1176,21 +1132,37 @@ function getActiveModuleId() {
 }
 
 function isModuleExpanded(moduleId) {
+  // Active module is always expanded (cannot collapse)
   if (moduleId === getActiveModuleId()) return true;
+  // Then honor localStorage
   const stored = localStorage.getItem('pm_sidebar_' + moduleId);
   if (stored === 'collapsed') return false;
   if (stored === 'expanded')  return true;
-  const mod = S.modules.find(m => m.id === moduleId);
-  if (!mod) return false;
-  const hasProgress = typeof gsSidebarState === 'function'
-    ? mod.lessons.some(l => gsSidebarState(GS, l.id) !== 'empty')
-    : false;
-  return hasProgress;
+  // Default: collapsed — only the active module is open on first load
+  return false;
+}
+
+const MODULE_SHORT_TITLES = {
+  '01': 'APIs & Integration',
+  '02': 'Databases',
+  '03': 'Infrastructure',
+  '04': 'AI & ML',
+  '05': 'Product',
+  '06': 'Metrics',
+  '07': 'Business',
+  '08': 'GTM & Growth',
+  '09': 'Security',
+};
+
+function shortModuleTitle(mod) {
+  return MODULE_SHORT_TITLES[mod.id] || mod.name;
 }
 
 function renderSidebar(filter) {
   const lf = (filter || '').toLowerCase();
   let matchCount = 0;
+
+  const activeModuleId = getActiveModuleId();
 
   const html = S.modules.map(mod => {
     const lessons = lf ? mod.lessons.filter(l => l.title.toLowerCase().includes(lf)) : mod.lessons;
@@ -1199,6 +1171,9 @@ function renderSidebar(filter) {
 
     const ready = mod.lessons.filter(l => l.status === 'ready').length;
     const isExp = !!lf || isModuleExpanded(mod.id);
+    const allDone = typeof gsSidebarState === 'function'
+      ? mod.lessons.every(l => gsSidebarState(GS, l.id) === 'done')
+      : false;
 
     const dots = mod.lessons.map(l => `<span class="dot ${l.status}"></span>`).join('');
     const items = lessons.map(l => {
@@ -1215,10 +1190,11 @@ function renderSidebar(filter) {
         <div class="module-header-row">
           <span class="module-arrow">${isExp ? '▼' : '▶'}</span>
           <span class="module-num">${mod.id}</span>
-          <span class="module-name">${esc(mod.name)}</span>
+          <span class="module-name">${esc(shortModuleTitle(mod))}</span>
           <span class="module-progress-text">${ready}/${mod.lessons.length}</span>
+          ${allDone ? '<span class="module-done-check">✓</span>' : ''}
         </div>
-        <div class="module-dots">${dots}</div>
+        ${isExp ? `<div class="module-dots">${dots}</div>` : ''}
       </div>
       <div class="lesson-list${isExp ? ' open' : ''}">${items}</div>
     </div>`;
@@ -1233,8 +1209,9 @@ function toggleModule(id) {
   // Cannot collapse the active module
   if (id === getActiveModuleId()) return;
   const key = 'pm_sidebar_' + id;
-  const isCollapsed = localStorage.getItem(key) === 'collapsed';
-  localStorage.setItem(key, isCollapsed ? 'expanded' : 'collapsed');
+  // Flip the *effective* state — honors default collapsed for first click
+  const currentlyExpanded = isModuleExpanded(id);
+  localStorage.setItem(key, currentlyExpanded ? 'collapsed' : 'expanded');
   renderSidebar(document.getElementById('search-input').value);
 }
 
