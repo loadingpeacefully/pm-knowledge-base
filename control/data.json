@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-04-11T14:25:17.997540+00:00",
+  "generated_at": "2026-04-11T14:30:04.242026+00:00",
   "summary": {
     "total_lessons": 89,
     "lessons_scored": 89,
-    "avg_score": 6.5,
-    "total_critical": 579,
+    "avg_score": 6.6,
+    "total_critical": 581,
     "feedback_reports": 89,
     "modules_total": 9
   },
@@ -1664,18 +1664,18 @@
       "file": "05-product-fundamentals/roadmapping.md",
       "status": "ready",
       "writer": "senior-pm",
-      "word_count": 4730,
-      "score": 6.1,
+      "word_count": 4868,
+      "score": 6.4,
       "health": "NEEDS_WORK",
-      "criticals": 11,
-      "highs": 35,
-      "mediums": 45,
+      "criticals": 13,
+      "highs": 34,
+      "mediums": 62,
       "run_formatter": true,
-      "last_run": "2026-04-08T16:38:52.362569+00:00",
+      "last_run": "2026-04-11T14:30:04.048764+00:00",
       "scores_by_level": {
-        "foundation": 7.0,
-        "working": 5.7,
-        "strategic": 5.0
+        "foundation": 7.3,
+        "working": 6.3,
+        "strategic": 5.3
       }
     },
     {
