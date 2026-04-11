@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-04-11T14:10:45.301411+00:00",
+  "generated_at": "2026-04-11T14:25:17.997540+00:00",
   "summary": {
     "total_lessons": 89,
     "lessons_scored": 89,
     "avg_score": 6.5,
-    "total_critical": 589,
+    "total_critical": 579,
     "feedback_reports": 89,
     "modules_total": 9
   },
@@ -1708,18 +1708,18 @@
       "file": "05-product-fundamentals/experimentation-and-ab-testing.md",
       "status": "ready",
       "writer": "senior-pm",
-      "word_count": 4973,
-      "score": 6.2,
-      "health": "NEEDS_WORK",
-      "criticals": 13,
-      "highs": 39,
-      "mediums": 51,
+      "word_count": 5667,
+      "score": 6.4,
+      "health": "GOOD",
+      "criticals": 3,
+      "highs": 30,
+      "mediums": 36,
       "run_formatter": true,
-      "last_run": "2026-04-08T16:52:31.366598+00:00",
+      "last_run": "2026-04-11T14:25:17.810861+00:00",
       "scores_by_level": {
         "foundation": 7.0,
-        "working": 6.3,
-        "strategic": 3.0
+        "working": 7.0,
+        "strategic": 5.0
       }
     },
     {
