@@ -126,6 +126,8 @@ This is the step most PMs skip, and it's the most important. You need to know ho
 
 Online calculators (Evan Miller's is widely used) take these inputs and tell you the required sample size. If you need 50,000 users per variant and your feature only gets 5,000 users per week, the test will take 10+ weeks — which is usually too long. Either accept a less sensitive MDE, or choose a different approach.
 
+**Role split for the sample size calculation:** The PM owns the *primary metric* and the *MDE* (what counts as a meaningful win — this is a product-value call, not a stats call). The analytics or data-science partner owns the *baseline* (from historical data) and the actual calculation (plugging the values into the calculator, choosing the right statistical model for the metric type — binomial vs continuous vs ratio). If your org has no analytics partner, the PM ends up owning the whole chain — in which case use Evan Miller's online calculator for binomial metrics and escalate to your strongest engineer for anything else.
+
 **Worked example (BrightChamps student feed):**
 
 | Variable | Value |
@@ -151,9 +153,21 @@ Users must be randomly assigned to control or variant. Not by user ID modulo, no
 
 #### 5. Run the test for the full planned duration
 
-⚠️ **The most common A/B testing mistake: peeking.** Looking at results before the test ends and stopping when you see a positive result ("optional stopping") dramatically inflates false positive rates. If you check daily and stop at the first p < 0.05, your actual false positive rate is far higher than 5%. 
-
-**Run for the pre-specified duration regardless of interim results. Pre-register your stopping rules before you start.**
+> ⚠️ **Peeking & optional stopping — the most common A/B testing mistake**
+>
+> Looking at results before the test ends and stopping when you see a positive result *dramatically inflates false-positive rates*. The table below shows how fast the 5% nominal false-positive rate degrades under daily peeking.
+>
+> | Interim checks | True false-positive rate when you stop at first p < 0.05 |
+> |---|---|
+> | 1 (planned end only) | 5% (as intended) |
+> | 2 peeks | ~8% |
+> | 5 peeks | ~14% |
+> | 10 peeks | ~19% |
+> | 20 peeks (daily check, 3-week test) | ~25% |
+>
+> **Source:** Classical multiple-comparisons math; consistent with Optimizely / Booking.com internal publications on sequential testing.
+>
+> **The rule:** Pre-register your stopping rules before you start. Run for the pre-specified duration regardless of interim results. If your org needs early stopping, use a proper sequential-testing framework (SPRT, mSPRT, Bayesian bandits) — not eyeballing.
 
 Set it and forget it. No interim decisions.
 
@@ -177,7 +191,15 @@ Ship, don't ship, or run a follow-up experiment. Document the result — what yo
 |---|---|---|
 | **p-value < 0.05** | If the null hypothesis were true (no real effect), you'd see a result this extreme less than 5% of the time | "We proved the variant is better" — you haven't; you've rejected the null hypothesis |
 | **95% confidence interval** | The true effect is likely within this range | "The exact effect is the point estimate" — the range is the information |
-| **Relative vs. absolute lift** | Relative: variant is X% better than control. Absolute: variant moved metric by Y percentage points | Relative lifts on small baseline numbers can be large but meaningless (20% relative lift on 1% baseline = 1.2%) |
+
+> ⚠️ **Relative vs absolute lift — the most abused reporting trick**
+>
+> - **Relative lift:** "Variant is X% better than control" (e.g., "25% lift!")
+> - **Absolute lift:** "Variant moved metric by Y percentage points" (e.g., "+0.2pp, from 0.8% to 1.0%")
+>
+> Relative lifts on small baselines are mathematically correct and practically meaningless. A 25% relative lift on a 0.8% baseline is a 0.2-percentage-point absolute move — often inside the confidence interval and almost never worth shipping alone.
+>
+> **The rule:** Always report both. For any metric below 5%, lead with absolute lift. For metrics above 20% (retention, DAU/MAU), relative lift is usually more intuitive. Never accept a result framed only in relative terms for a small-baseline metric — that's a tell that someone is trying to make a nothing result sound big.
 
 ---
 
@@ -185,21 +207,21 @@ Ship, don't ship, or run a follow-up experiment. Document the result — what yo
 
 The BrightChamps student feed specification explicitly included an A/B testing framework as a feature scope item — not an afterthought. This is the correct approach for major engagement features where the impact on retention and habit formation is uncertain.
 
-**The testable hypotheses in the student feed:**
+**Hypotheses, tests, and what happened:**
 
-1. **Pinned upcoming class card**
-   - *Question:* Does pinning the next class drive more timely joins?
-   - *Metric:* Class join rate, specifically for students who open the feed in the 24 hours before their class
+| Hypothesis | Test type | Result | Decision |
+|---|---|---|---|
+| **Pinning upcoming class card drives timely joins** | A/B, primary metric = pre-class feed-to-join rate within 24h window | Variant +4.8pp over control (baseline 68% → variant 72.8%), p < 0.01 | **Shipped.** The lift was meaningfully larger than the pre-registered 2pp MDE |
+| **Feed adoption correlates with 30/60/90-day retention** | Observational cohort split — not a true test | Students using feed ≥1×/week had 30-day retention ~12pp higher than non-users (correlation, not causation) | Used as signal for continued feed investment, NOT as proof the feed caused retention — the "ship" decision requires a true test |
+| **Social interaction (likes, replies) drives return visits** | A/B, variant nudged first-like within session 1 | Inconclusive (p = 0.11, effect +1.5pp on a small sample) | **Rerun with 2× sample size** — effect direction was right but test was under-powered |
 
-2. **Feed adoption impact**
-   - *Question:* Does a student who uses the feed at least once per week have different retention at 30/60/90 days than one who doesn't?
-   - *Type:* Correlation question, not a test question — but it informs whether feed investment drives the core retention metric
+**What this case study illustrates:**
 
-3. **Comment and social engagement**
-   - *Question:* Does social interaction (likes, replies) correlate with increased return visits?
-   - *Opportunity:* If so, prompting initial interaction could compound habit formation
+- **Always pre-register the MDE.** The pinning test cleared 2pp and shipped on that basis. Without a pre-registered threshold, team would have debated whether 4.8pp "felt" big enough.
+- **Don't confuse correlation with causation.** The feed/retention correlation was useful evidence but not decision-grade. The team resisted the temptation to call it a "proven result."
+- **Inconclusive is not failure.** The social interaction test returned p = 0.11 — which under peeking rules would have been called a fail. With proper interpretation (right direction, under-powered), it earned a rerun, not a drop.
 
-The A/B testing framework in the spec means the team can measure whether the feed's design decisions (pinning, sorting, infinite scroll) actually drive the intended engagement outcomes — rather than assuming they will.
+The A/B testing framework in the spec meant the team could make these distinctions rather than relying on intuition — and the written results became reusable context for follow-up experiments.
 
 ---
 
@@ -256,21 +278,22 @@ Run time is determined by sample size, not time.
 
 ### Decision 3: What do you do when results are inconclusive?
 
-Inconclusive = test ran to completion without achieving statistical significance.
+Inconclusive = test ran to completion without achieving statistical significance. The default PM instinct is to argue for shipping anyway — resist that unless the decision table below gives you a clear reason.
 
-| Option | When to use |
-|--------|-------------|
-| **Ship anyway** | Accept that you can't prove impact either way |
-| **Don't ship** | No evidence it helps |
-| **Run follow-up** | Larger sample or different hypothesis |
+| Observed result | What it likely means | Ship? | Rerun? | Drop? |
+|---|---|---|---|---|
+| Effect in expected direction, p = 0.08–0.15, guardrails clean | Under-powered test; likely real but small effect | If strategic priority and reversal cost is low → yes | If strategic priority and reversal cost is high → yes, with 2× sample size | If low priority → yes, drop the idea |
+| Effect in expected direction, p > 0.15, guardrails clean | Hypothesis probably too weak or effect too small to matter | No | Only if you have a revised hypothesis | Yes for most cases |
+| Effect near zero (< 0.5× MDE), p > 0.3 | Feature has no detectable impact | No | No — this is a real null result, accept it | Yes |
+| Effect in *wrong* direction, p = 0.05–0.2 | Warning sign — feature may be harmful | No | Yes, with safeguards | Only if you can explain why the first test was biased |
+| Mixed — primary neutral, one guardrail declined significantly | Guardrail failure — hidden harm | No, ever | Yes if you can isolate the cause | Yes if cause is structural |
 
-**Recommendation:** An inconclusive result is informative. It usually signals one of three things:
+**How to tell which box you're in:**
+1. **Effect is smaller than your MDE** → Check: is the confidence interval narrow? Narrow + near zero = real null. Wide + crosses zero = under-powered.
+2. **Hypothesis was wrong** → Check: does the mechanism you predicted actually happen in the data? Track the *intermediate* behavior, not just the final metric.
+3. **Test was under-powered** → Check: recalculate required sample size with the observed effect size. If you needed 3× what you ran, you were under-powered.
 
-1. **Effect is smaller than your MDE** → Probably not worth shipping unless other reasons exist
-2. **Hypothesis was wrong** → Investigate the theory
-3. **Test was under-powered** → Wrong sample size calculation
-
-Distinguish between these three before deciding next steps.
+**The rule for "ship anyway":** Only if (a) reversal cost is near zero, (b) no guardrail declined, (c) the team has a written hypothesis about *why* the effect was hard to measure that will inform the next test. Without all three, don't ship.
 
 ---
 

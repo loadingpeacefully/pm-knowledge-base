@@ -44,9 +44,15 @@ The PM's domain in PLG: not just building a good product, but designing the acti
 
 > **Activation:** The moment when a new user first experiences the core value of the product. Activation is the most critical moment in PLG — a user who doesn't activate almost certainly won't pay. The PM's job is to minimize the time from signup to activation.
 
-> **Product-Qualified Lead (PQL):** A user who has reached a usage threshold that predicts conversion to paid. In PLG, PQLs replace Marketing-Qualified Leads (MQLs). Instead of "this person clicked on our ad," the signal is "this person used the product enough to know it's valuable."
+> **Product-Qualified Lead (PQL):** A user who has reached a usage threshold that predicts conversion to paid. In PLG, PQLs replace Marketing-Qualified Leads (MQLs). Instead of "this person clicked on our ad," the signal is "this person used the product enough to know it's valuable." Concrete example: a Notion user who has created 10 pages and invited 2 collaborators within 14 days is a PQL; the sales team has strong evidence they'll pay, rather than guessing from a marketing engagement score.
 
-> **Expansion revenue:** Revenue generated when existing users grow their usage — upgrading from a free tier, adding team members, purchasing more capacity. In PLG, expansion revenue is often the highest-margin revenue because it requires no new acquisition cost.
+> **Expansion revenue:** Revenue generated when existing users grow their usage — upgrading from a free tier, adding team members, purchasing more capacity. In PLG, expansion revenue is often the highest-margin revenue because it requires no new acquisition cost. Concrete example: a Slack workspace that starts at 5 paid seats and grows to 50 over 12 months generates 10× the original contract value without any new sales effort.
+
+> **Net Revenue Retention (NRR):** A SaaS metric that measures revenue change from your existing customer base month-over-month, including upgrades, downgrades, and churn, but excluding new customer revenue. NRR > 100% means existing customers generate *more* revenue over time than they lose (strong PLG signal); NRR < 100% means the base is shrinking in revenue terms.
+
+> **Bottoms-up adoption:** A sales pattern where individual employees adopt a product for personal use, then gradually pull in teammates, then an entire department, then an entire company. Slack, Dropbox, and Figma all grew this way — by the time procurement noticed, the product was already entrenched. Contrast with "top-down" sales where an executive decides and rolls out to employees.
+
+> **Data lock-in:** A retention mechanism where users can't easily switch to a competitor because their meaningful data lives in your product. Example: a Notion workspace with 3 years of notes, a Figma file with all the team's design history, a Slack workspace with 5 years of decisions. Data lock-in is PLG's strongest retention tool because it compounds with usage rather than with payment.
 
 ### A way to think about it
 
@@ -114,7 +120,20 @@ User gets permanent free access with feature limits. Pays when they hit the limi
 | **Examples** | Notion (collaborators), Slack (message history), Spotify (offline listening) |
 | **Design requirement** | Free tier must be genuinely valuable (users stay), but paid tier must be clearly worth paying for (upgrade must be obvious) |
 | **Common failure** | Free tier too good (no upgrade need) OR too limited (users churn) |
-| **Key metric** | Free-to-paid conversion rate: 2–8% of free users (healthy range) |
+| **Key metric** | Free-to-paid conversion rate: typically 2–8% of free users, but the range is wide — see variance table below |
+
+**What drives freemium conversion variance (2% vs 8%):**
+
+| Driver | 2% end of range | 8% end of range |
+|---|---|---|
+| **Paywall design** | Feature gate at use you rarely need | Feature gate at the exact moment of highest value |
+| **Product type** | Consumer utility (individual use) | Team collaboration (value scales with upgrade) |
+| **Market** | B2C, price-sensitive, abundant alternatives | B2B, budget-approved, few substitutes |
+| **Free tier generosity** | Free tier does everything — no reason to pay | Free tier gets users to value, paid tier unlocks scale |
+| **Time-to-value** | Users take weeks to understand the product | Users get value in the first session |
+| **Expansion pressure** | Individual use, flat ceiling | Team expansion creates natural upgrade pressure (more users = more paid seats) |
+
+**Real-world anchors:** Spotify free-to-paid sits around 45% (consumer media with clear paid-only features — ad-free, offline), Dropbox around 4% (consumer storage where free tier is very usable), Slack around 30% of teams that adopt seriously (team collaboration with message history cap as the gate). Your product type determines which end of the curve you should target.
 
 #### Motion 2: Free Trial → Paid
 
@@ -155,8 +174,8 @@ The moment when a new user first experiences the product's core value. This is t
 - **Activation drop-off:** 50–70% of users who don't activate in first session never return (varies by product type, acquisition channel quality, activation definition)
 - **Activation events:** should be specific, measurable, and correlated with long-term retention
 - **Examples:** 
-  - Slack: "sent 2,000 messages" — teams reaching this threshold almost never churn
-  - Figma: "shared a design for collaboration"
+  - Slack: "a team sent 2,000 messages" — teams reaching this threshold almost never churn (caveat: this is a *team* metric, not an individual one; achieved typically with 8+ active users over multiple weeks; not applicable to products without team collaboration as the core unit)
+  - Figma: "shared a design for collaboration" — this is an *individual-to-collaborator* action that turns a solo user into a network node; the activation event is a *sharing* event, not a *creation* event
 
 #### Retention
 Users keep coming back because the product is genuinely valuable and their data is in it.
@@ -176,7 +195,7 @@ Existing users generate more revenue without new acquisition.
 Existing users bring in new users — completing the flywheel.
 
 - **Product-native referral:** product creates referral moments naturally (sharing Figma design forces recipient to open Figma)
-- **Incentivized referral:** explicit rewards for bringing in new users (Dropbox storage-for-referrals: 3,900% user growth in 15 months)
+- **Incentivized referral:** explicit rewards for bringing in new users (Dropbox storage-for-referrals: 3,900% user growth in 15 months, Sept 2008 – Jan 2010, per Drew Houston's 2010 Startup Lessons Learned presentation). **Unpacking the 3,900% number:** the referral program alone wasn't the story — Dropbox already had product-market fit (users who saved a file once came back). The referral loop compounded on top of that. Without the existing product quality, the same referral incentive on a weaker product would have produced a much smaller lift. **The caveat for PMs:** don't copy the Dropbox referral structure expecting similar growth unless your product already has strong organic retention to compound on. Incentivized referrals amplify existing product quality; they don't create it.
 
 ---
 
@@ -258,13 +277,26 @@ In hybrid PLG models (PLG + inside sales), PQLs are routed to sales for outreach
 
 **Quick diagnosis:** Not every product is suited for PLG. Use this framework to evaluate your fit.
 
-| Dimension | PLG-suitable | Sales-led-suitable |
-|---|---|---|
-| **Value delivery** | User can experience core value alone, without guidance | Value requires configuration, integration, or change management |
-| **Decision maker** | Individual or small team can decide to use and pay | Requires procurement, legal, or executive approval |
-| **Price point** | $0–$500/month self-serve purchase | $5,000+ per year requires contract and invoice |
-| **Virality** | Product use creates natural referral or network value | No natural spread mechanism |
-| **Iteration speed** | Product can be shipped and tested quickly | Long sales cycle makes fast iteration difficult |
+| Dimension | PLG-suitable | Hybrid (PLG + sales) | Sales-led-suitable |
+|---|---|---|---|
+| **Value delivery** | User can experience core value alone | Self-serve for small-team users; sales-led motion for enterprise deployments | Value requires configuration, integration, or change management |
+| **Decision maker** | Individual or small team can decide | Individuals adopt bottoms-up; procurement ratifies later | Requires procurement, legal, or executive approval |
+| **Price point** | $0–$500/month self-serve | Self-serve up to $2K/month; enterprise deals $10K+/year | $5,000+ per year requires contract and invoice |
+| **Virality** | Product use creates natural referral | Viral adoption at the bottom; enterprise sales consolidates at the top | No natural spread mechanism |
+| **Iteration speed** | Product shipped and tested quickly | Fast product iteration + slower enterprise sales cycle in parallel | Long sales cycle makes fast iteration difficult |
+| **Examples** | Figma early days, Notion individuals | Slack, Figma now, Notion now, Dropbox, HubSpot | Salesforce, Oracle, Workday |
+
+**Decision rule — if your metric looks like X, your motion should be Y:**
+
+| Current signal | Recommended motion |
+|---|---|
+| Self-serve trials convert >5% to paid AND ACV < $5K | **Pure PLG** — don't hire sales yet, it'll slow you down |
+| Self-serve trials convert 2–5% AND ACV $5K–$20K AND free users are in enterprise accounts | **Hybrid** — add enterprise sales on top of the self-serve flywheel |
+| Self-serve trials convert <1% AND deals require multi-stakeholder sign-off | **Sales-led primary** — PLG may still play a minor role for lead-gen, but sales drives the revenue |
+| ACV > $50K AND procurement cycle > 3 months | **Sales-led** — PLG as an evaluation tool (self-serve trial for individual evaluators) but commerce is sales-led |
+| B2B, but self-serve NRR > 120% on accounts that also have enterprise seats | **Hybrid, with self-serve leading** — let the product pull users in, let sales handle procurement later |
+
+**The hybrid reality:** Most modern B2B SaaS is hybrid. Slack, Figma, Notion, and Dropbox all combine PLG for the bottom of the market (individual users, small teams, self-serve) with enterprise sales for large accounts. Pure PLG at scale is rare; pure sales-led is fading. The interesting question is usually *how much of each* and *at which price point the handoff happens*, not whether to have both.
 
 > **PLG:** Product-Led Growth — a go-to-market motion where the product itself drives acquisition, activation, and retention instead of sales and marketing.
 

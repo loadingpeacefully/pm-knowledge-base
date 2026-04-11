@@ -83,11 +83,13 @@ Without the itinerary, everyone on the road trip makes different assumptions. Wi
 
 The format that works for most product teams is a three-horizon view:
 
-| Horizon | Timeframe | Confidence | What goes here |
-|---|---|---|---|
-| **Now** | 0–4 weeks | High | Actively being built; features are specified, stories exist |
-| **Next** | 1–3 months | Medium | Directionally committed; research done, not fully specified |
-| **Later** | 3+ months | Low | Strategic intent; problems identified, solutions not decided |
+| Horizon | Consumer / SaaS | Enterprise / regulated | Confidence | What goes here |
+|---|---|---|---|---|
+| **Now** | 0–4 weeks | 0–3 months | High | Actively being built; features are specified, stories exist |
+| **Next** | 1–3 months | 3–6 months | Medium | Directionally committed; research done, not fully specified |
+| **Later** | 3+ months | 6–12+ months | Low | Strategic intent; problems identified, solutions not decided |
+
+**Why enterprise horizons run longer:** Enterprise buyers need 6–12 month visibility to plan procurement, budget cycles, and integration work. Regulated industries (healthcare, finance) add compliance review windows (HIPAA, SOC 2 renewal cycles) that force longer planning. If you sell to IT departments, your "Now" is their "Next" — your roadmap is a purchasing input, not just an internal tool.
 
 The horizon format is honest about uncertainty by design. Specificity decreases as you move right:
 - **Now** items have engineering estimates and designs
@@ -138,7 +140,18 @@ When the bulk export ships but nobody uses it, a feature-based roadmap says "don
 | **Engineering constraints** | The sequence — what's technically feasible and what unlocks later capabilities | When two equally important items conflict; the one with lower technical risk goes first |
 | **Competitive and market signals** | The timing — when "good enough" is no longer defensible | When a competitor ships; timeline pressure overrides ideal sequencing |
 
-**Conflict resolution rule:** When inputs conflict — strategy says X, engineering says Y can't ship for 3 months — don't pick one. Ask: **what's the minimum version of X that delivers value before Y becomes available?** Almost every constraint has a partial path forward.
+**When inputs conflict — which one wins?**
+
+| Conflict | Who wins | Why |
+|---|---|---|
+| Strategy wants X, discovery says X is wrong problem | **Discovery.** Strategy is aspirational; discovery is empirical. Push back upward with the evidence. | A wrong problem with a beautiful strategy is still a wrong problem |
+| Strategy wants X, engineering says X is 3 months away | **Find the minimum version of X.** Don't pick either one whole. | Almost every constraint has a partial path forward |
+| Discovery says user needs A, engineering says B is easier | **Discovery.** Do the work to solve A. Easier is not a product argument. | "We built the easy one" is the story of feature-shaped products that nobody uses |
+| User research says A, competitive pressure says B (now) | **Competitive, with discovery in the next horizon.** Ship B for timing, queue A for Next. | Timing windows close; user problems persist |
+| Engineering says X creates technical debt, strategy wants X anyway | **Strategy, with explicit debt acknowledgement.** Commit to the debt pay-down in the same plan. | Pretending debt doesn't exist is how it becomes a crisis |
+| All four inputs conflict | **The PM owns the decision.** Call a 30-minute alignment with one rep from each input, frame the tradeoffs, decide in the meeting. | A roadmap that tries to satisfy all inputs equally satisfies none of them |
+
+**The underlying principle:** Don't pick one input and ignore the others. Ask *what's the minimum version that respects all four*? That answer is almost always possible — and almost always better than picking a single input as "winner."
 
 ---
 
@@ -211,11 +224,13 @@ Every sequencing decision was made by asking:
 
 ### What goes on a roadmap and what doesn't
 
-Not every idea belongs on a roadmap. The roadmap represents your bets — things you believe are worth doing now given what you know. The rest goes in the backlog.
+> ✅ **The one-question filter:** Does this item connect to a current company or product goal?
+>
+> **Yes → on the roadmap.** **No → parking lot.**
+>
+> Every other filter (is it exciting, is it asked-for, is it easy) is noise. If you can't name the goal this item advances, it does not belong on the roadmap regardless of who wants it.
 
-**Practical filter:** Does this item connect to a current company or product goal?
-- ✅ **Yes** → Roadmap-eligible
-- ❌ **No** → Parking lot for later review
+Not every idea belongs on a roadmap. The roadmap represents your bets — things you believe are worth doing now given what you know. The rest goes in the backlog.
 
 #### Tech debt and maintenance work
 
@@ -231,17 +246,9 @@ This avoids treating tech debt as a feature.
 
 ## W2 — The decisions this forces
 
-| **Decision** | **The Tension** | **Recommendation** |
-|---|---|---|
-| How far out should the roadmap extend? | 12 months is expected, but uncertainty makes commitments misleading beyond 6 months | Build at the detail level you can commit to, then extend with decreasing specificity. 3 months of real commitments beats 12 months of wishful thinking. |
-| Feature-based or outcome-based? | Outcomes are more valuable but harder to communicate; stakeholders want specific features | Write an internal outcome-based roadmap and simplified feature-based summary for external audiences. Features are your hypothesis for achieving the outcome. |
-| How much specificity in "Later"? | Too little looks unorganized; too much creates false commitment | "Later" items should be problems, not features. One sentence per item. "Reduce manual ops work in student onboarding" ✓ — "Build automated email sequencing" ✗ |
-| Who sees the roadmap, and what do they need? | Engineering, leadership, sales, and customers all need different things from one document | Maintain one authoritative internal roadmap. Create derivatives for specific audiences: executive summary, sales enablement, customer-facing statement. |
-| How do you handle urgent requests that disrupt the roadmap? | Urgent requests arrive constantly; without a process, the roadmap becomes irrelevant within weeks | Treat urgent requests as priority-override candidates. When something arrives, explicitly name what gets pushed out or cut. Adding without removing creates a 18-month roadmap in a 6-month box. |
+Five decisions show up in every roadmap, regardless of company stage. Each one has a standard trap and a working answer.
 
-### Deeper look at each decision
-
-#### Decision 1: How far out should the roadmap extend?
+#### Decision 1 — Scope: How far out should the roadmap extend?
 
 > **Standard practice:** 12 months is the standard answer, but the meaningful part of most roadmaps is 3–6 months.
 
@@ -252,7 +259,7 @@ The honest answer depends on *what you're using the roadmap for*:
 
 ---
 
-#### Decision 2: Feature-based or outcome-based?
+#### Decision 2 — Framing: Feature-based or outcome-based?
 
 | **Approach** | **Strength** | **Weakness** |
 |---|---|---|
@@ -263,7 +270,7 @@ The honest answer depends on *what you're using the roadmap for*:
 
 ---
 
-#### Decision 3: How much specificity in the "Later" column?
+#### Decision 3 — Specificity: How much detail in the "Later" column?
 
 **What to avoid:**
 - Too little specificity → "Later" looks like an unorganized backlog
@@ -277,7 +284,7 @@ Format: One sentence per item, clearly framed as a *problem* you intend to solve
 
 ---
 
-#### Decision 4: Who sees the roadmap, and what do they need from it?
+#### Decision 4 — Audience: Who sees the roadmap, and what do they need from it?
 
 | **Audience** | **Primary Need** |
 |---|---|
@@ -299,7 +306,7 @@ Each derivative is a *subset* of the authoritative version.
 
 ---
 
-#### Decision 5: How do you handle urgent requests that disrupt the roadmap?
+#### Decision 5 — Disruption: How do you handle urgent requests that break the plan?
 
 ⚠️ **Risk:** Without a process for handling urgent requests, your roadmap becomes irrelevant within weeks of publication.
 
