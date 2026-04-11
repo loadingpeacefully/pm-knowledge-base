@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-04-11T14:35:16.909887+00:00",
+  "generated_at": "2026-04-11T14:59:51.887945+00:00",
   "summary": {
     "total_lessons": 89,
     "lessons_scored": 89,
     "avg_score": 6.6,
-    "total_critical": 581,
+    "total_critical": 578,
     "feedback_reports": 89,
     "modules_total": 9
   },
@@ -1906,18 +1906,18 @@
       "file": "06-metrics-and-analytics/statistical-significance.md",
       "status": "ready",
       "writer": "senior-pm",
-      "word_count": 5344,
+      "word_count": 5468,
       "score": 6.1,
       "health": "NEEDS_WORK",
-      "criticals": 9,
-      "highs": 39,
-      "mediums": 49,
+      "criticals": 6,
+      "highs": 32,
+      "mediums": 42,
       "run_formatter": true,
-      "last_run": "2026-04-08T18:32:27.575987+00:00",
+      "last_run": "2026-04-11T14:59:51.690987+00:00",
       "scores_by_level": {
-        "foundation": 6.8,
-        "working": 6.0,
-        "strategic": 3.0
+        "foundation": 7.0,
+        "working": 6.5,
+        "strategic": 4.5
       }
     },
     {
