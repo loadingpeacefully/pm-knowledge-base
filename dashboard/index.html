@@ -20,7 +20,7 @@
       --shadow-lime: 3px 3px 0px 0px #A3E635;
       --font: 'Courier New', Courier, monospace;
       --header-h: 48px;
-      --sidebar-w: 280px;
+      --sidebar-w: 290px;
       --notes-w: 340px;
 
       /* Design tokens — used by profile bar + new overlay chrome */
@@ -383,8 +383,8 @@
     /* Vertical streak pill */
     .gs-streak-pill {
       display: flex; flex-direction: column; align-items: center;
-      padding: 5px 9px; border: 2px solid #000; border-radius: 4px;
-      background: #fef9c3; flex-shrink: 0; min-width: 44px;
+      padding: 4px 7px; border: 2px solid #000; border-radius: 4px;
+      background: #fef9c3; flex-shrink: 0; min-width: unset; width: auto;
     }
     .gs-streak-pill.risk { background: #fef2f2; border-color: #dc2626; }
     .gs-streak-fire { font-size: 16px; line-height: 1; }
@@ -419,7 +419,7 @@
       border: 1.5px solid #000; border-radius: 3px; overflow: hidden;
     }
     .gs-xp-fill {
-      height: 100%; background: #A3E635; width: 0%;
+      height: 100%; background: #A3E635; width: 0%; min-width: 0;
       transition: width .5s ease;
     }
 
