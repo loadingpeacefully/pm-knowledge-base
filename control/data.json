@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-09T16:13:08.296184+00:00",
+  "generated_at": "2026-04-11T12:54:19.525955+00:00",
   "summary": {
-    "total_lessons": 88,
+    "total_lessons": 89,
     "lessons_scored": 88,
     "avg_score": 6.5,
     "total_critical": 592,
@@ -595,13 +595,6 @@
           "writer": "gtm-lead"
         },
         {
-          "id": "08.08",
-          "title": "CRM & Sales Pipeline",
-          "file": "08-gtm-and-growth/crm-and-sales-pipeline.md",
-          "status": "ready",
-          "writer": "gtm-lead"
-        },
-        {
           "id": "08.09",
           "title": "Internationalization & Localization",
           "file": "08-gtm-and-growth/internationalization-and-localization.md",
@@ -613,6 +606,20 @@
           "title": "Competitive Benchmarking",
           "file": "08-gtm-and-growth/competitive-benchmarking.md",
           "status": "ready",
+          "writer": "gtm-lead"
+        },
+        {
+          "id": "08.11",
+          "title": "CRM Fundamentals",
+          "file": "08-gtm-and-growth/crm-fundamentals.md",
+          "status": "draft",
+          "writer": "gtm-lead"
+        },
+        {
+          "id": "08.12",
+          "title": "Sales Pipeline Integration",
+          "file": "08-gtm-and-growth/sales-pipeline-integration.md",
+          "status": "draft",
           "writer": "gtm-lead"
         }
       ]
@@ -2376,28 +2383,6 @@
       }
     },
     {
-      "id": "08.08",
-      "title": "CRM & Sales Pipeline",
-      "module_id": "08",
-      "module_title": "GTM & Growth",
-      "file": "08-gtm-and-growth/crm-and-sales-pipeline.md",
-      "status": "ready",
-      "writer": "gtm-lead",
-      "word_count": 6999,
-      "score": 5.4,
-      "health": "NEEDS_WORK",
-      "criticals": 9,
-      "highs": 51,
-      "mediums": 53,
-      "run_formatter": true,
-      "last_run": "2026-04-09T16:06:20.035992+00:00",
-      "scores_by_level": {
-        "foundation": 6.3,
-        "working": 6.0,
-        "strategic": 4.7
-      }
-    },
-    {
       "id": "08.09",
       "title": "Internationalization & Localization",
       "module_id": "08",
@@ -2440,6 +2425,38 @@
         "working": 5.3,
         "strategic": 4.5
       }
+    },
+    {
+      "id": "08.11",
+      "title": "CRM Fundamentals",
+      "module_id": "08",
+      "module_title": "GTM & Growth",
+      "file": "08-gtm-and-growth/crm-fundamentals.md",
+      "status": "draft",
+      "writer": "gtm-lead",
+      "word_count": 2930,
+      "score": 5.8,
+      "health": "NEEDS_WORK",
+      "criticals": 9,
+      "highs": 33,
+      "mediums": 38,
+      "run_formatter": true,
+      "last_run": "2026-04-11T12:54:19.314035+00:00",
+      "scores_by_level": {
+        "foundation": 6.3,
+        "working": 5.6,
+        "strategic": 5.0
+      }
+    },
+    {
+      "id": "08.12",
+      "title": "Sales Pipeline Integration",
+      "module_id": "08",
+      "module_title": "GTM & Growth",
+      "file": "08-gtm-and-growth/sales-pipeline-integration.md",
+      "status": "draft",
+      "writer": "gtm-lead",
+      "word_count": 4277
     },
     {
       "id": "09.01",
