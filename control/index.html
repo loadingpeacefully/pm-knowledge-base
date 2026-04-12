@@ -333,133 +333,59 @@ html,body{height:100vh;overflow:hidden;background:var(--bg);color:var(--text);fo
     </div>
   </div>
 
-  <!-- PANEL 3: LEARNER PULSE -->
+  <!-- PANEL 3: LEARNER PULSE (real localStorage data) -->
   <div class="panel" id="panel-learner">
-    <div class="panel-header">
-      <span class="panel-title">Learner Pulse</span>
-      <div class="tabs">
-        <button class="tab active" data-tab="learners" onclick="switchTab(this)">Learners</button>
-        <button class="tab" data-tab="dropoffs" onclick="switchTab(this)">Drop-offs</button>
-        <button class="tab" data-tab="insights" onclick="switchTab(this)">Insights</button>
-      </div>
-    </div>
-    <div class="panel-body">
-      <div class="demo-banner">Demo mode — learner tracking not yet wired. Data below is illustrative.</div>
-
-      <div class="tab-pane visible" id="pane-learners">
-        <div class="learner-row">
-          <div class="avatar" style="background:#00e5a0">SJ</div>
-          <div class="learner-info">
-            <div class="learner-name">Suneet J.</div>
-            <div class="learner-lesson">07.01 Unit Economics · Strategic</div>
-          </div>
-          <div class="learner-meta">
-            <div class="progress-bar"><div class="progress-fill" style="width:94%;background:var(--green)"></div></div>
-            <span style="font-size:10px;color:var(--muted)">94%</span>
-            <div class="status-dot status-active"></div>
-          </div>
-        </div>
-        <div class="learner-row">
-          <div class="avatar" style="background:#f5a623">PM</div>
-          <div class="learner-info">
-            <div class="learner-name">Priya M.</div>
-            <div class="learner-lesson">02.04 Caching (Redis) · Working</div>
-          </div>
-          <div class="learner-meta">
-            <div class="progress-bar"><div class="progress-fill" style="width:67%;background:var(--amber)"></div></div>
-            <span style="font-size:10px;color:var(--muted)">67%</span>
-            <div class="status-dot status-stalled"></div>
-          </div>
-        </div>
-        <div class="learner-row">
-          <div class="avatar" style="background:#4d9eff">AK</div>
-          <div class="learner-info">
-            <div class="learner-name">Arjun K.</div>
-            <div class="learner-lesson">01.03 Webhooks vs Polling · Foundation</div>
-          </div>
-          <div class="learner-meta">
-            <div class="progress-bar"><div class="progress-fill" style="width:31%;background:var(--green)"></div></div>
-            <span style="font-size:10px;color:var(--muted)">31%</span>
-            <div class="status-dot status-active"></div>
-          </div>
-        </div>
-        <div class="learner-row">
-          <div class="avatar" style="background:#a78bfa">SR</div>
-          <div class="learner-info">
-            <div class="learner-name">Sofia R.</div>
-            <div class="learner-lesson">03.02 Containers &amp; Docker · Working</div>
-          </div>
-          <div class="learner-meta">
-            <div class="progress-bar"><div class="progress-fill" style="width:88%;background:var(--green)"></div></div>
-            <span style="font-size:10px;color:var(--muted)">88%</span>
-            <div class="status-dot status-active"></div>
-          </div>
-        </div>
-        <div class="learner-row">
-          <div class="avatar" style="background:#6b6b82">RS</div>
-          <div class="learner-info">
-            <div class="learner-name">Rahul S.</div>
-            <div class="learner-lesson">06.01 North Star Metric · Foundation</div>
-          </div>
-          <div class="learner-meta">
-            <div class="progress-bar"><div class="progress-fill" style="width:12%;background:var(--red)"></div></div>
-            <span style="font-size:10px;color:var(--muted)">12%</span>
-            <div class="status-dot status-churned"></div>
-          </div>
+    <div id="learner-pulse-panel" style="display:flex;flex-direction:column;height:100%;overflow:hidden">
+      <div style="padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text)">Learner Pulse</div>
+        <div id="lp-live-dot" style="display:flex;align-items:center;gap:4px;font-size:9px;color:var(--muted)">
+          <div style="width:5px;height:5px;border-radius:50%;background:var(--green)"></div>
+          Live · localStorage
         </div>
       </div>
-
-      <div class="tab-pane" id="pane-dropoffs">
-        <div class="dropoff-row">
-          <span class="dropoff-lesson">01.01 What is an API</span>
-          <span class="dropoff-section">§ W2</span>
-          <span class="dropoff-pct">34%</span>
+      <div style="flex:1;overflow-y:auto;padding:12px 14px">
+        <div id="lp-identity" style="display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border)">
+          <div style="width:36px;height:36px;border-radius:50%;background:#A3E635;border:2px solid #000;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#000;flex-shrink:0">SJ</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13px;font-weight:700;color:var(--text)">Suneet J.</div>
+            <div id="lp-rank" style="font-size:10px;color:var(--muted)">Foundation learner · 0 XP</div>
+          </div>
+          <div style="text-align:right;flex-shrink:0">
+            <div id="lp-streak" style="font-size:12px;font-weight:700;color:#d97706">🔥 0</div>
+            <div id="lp-today" style="font-size:9px;color:var(--muted)">not started</div>
+          </div>
         </div>
-        <div class="dropoff-row">
-          <span class="dropoff-lesson">02.03 Transactions &amp; ACID</span>
-          <span class="dropoff-section">§ W1</span>
-          <span class="dropoff-pct">28%</span>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px">
+          <div style="background:var(--surface2);border:1px solid var(--border);padding:7px 8px">
+            <div id="lp-stat-lessons" style="font-size:18px;font-weight:700;color:var(--text);line-height:1">0</div>
+            <div style="font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-top:2px">Lessons done</div>
+            <div id="lp-stat-lessons-delta" style="font-size:9px;color:var(--green);font-weight:700"></div>
+          </div>
+          <div style="background:var(--surface2);border:1px solid var(--border);padding:7px 8px">
+            <div id="lp-stat-quizzes" style="font-size:18px;font-weight:700;color:var(--text);line-height:1">0</div>
+            <div style="font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-top:2px">Quizzes passed</div>
+            <div id="lp-stat-quizzes-delta" style="font-size:9px;color:var(--muted);font-weight:700"></div>
+          </div>
+          <div style="background:var(--surface2);border:1px solid var(--border);padding:7px 8px">
+            <div id="lp-stat-xp" style="font-size:18px;font-weight:700;color:var(--text);line-height:1">0</div>
+            <div style="font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-top:2px">XP earned</div>
+            <div id="lp-stat-xp-delta" style="font-size:9px;color:var(--green);font-weight:700"></div>
+          </div>
+          <div style="background:var(--surface2);border:1px solid var(--border);padding:7px 8px">
+            <div id="lp-stat-badges" style="font-size:18px;font-weight:700;color:var(--text);line-height:1">0</div>
+            <div style="font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-top:2px">Badges earned</div>
+            <div id="lp-stat-badges-icons" style="font-size:11px;margin-top:2px"></div>
+          </div>
         </div>
-        <div class="dropoff-row">
-          <span class="dropoff-lesson">03.03 Kubernetes</span>
-          <span class="dropoff-section">§ S1</span>
-          <span class="dropoff-pct">41%</span>
+        <div style="margin-bottom:12px">
+          <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px">7-day activity</div>
+          <div id="lp-bars" style="display:flex;gap:3px;align-items:flex-end;height:36px"></div>
+          <div id="lp-bar-labels" style="display:flex;gap:3px;margin-top:3px"></div>
         </div>
-        <div class="dropoff-row">
-          <span class="dropoff-lesson">07.01 Unit Economics</span>
-          <span class="dropoff-section">§ W3</span>
-          <span class="dropoff-pct">22%</span>
+        <div>
+          <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px">Recent activity</div>
+          <div id="lp-feed" style="font-size:11px;color:var(--muted)">No activity yet — open the lesson reader to start.</div>
         </div>
-        <div class="note-text">Drop-off tracking ships with spy agent — Week 3</div>
-      </div>
-
-      <div class="tab-pane" id="pane-insights">
-        <div class="insight-row">
-          <span class="insight-label">Avg time on Foundation</span>
-          <span class="insight-value">8.4 min</span>
-        </div>
-        <div class="insight-row">
-          <span class="insight-label">Avg time on Working</span>
-          <span class="insight-value">22.1 min</span>
-        </div>
-        <div class="insight-row">
-          <span class="insight-label">Most-noted passage</span>
-          <span class="insight-value" style="font-size:10px;max-width:160px;text-align:right">"The DLQ preservation point"</span>
-        </div>
-        <div class="insight-row">
-          <span class="insight-label">Level switch rate</span>
-          <span class="insight-value">34% reach Strategic</span>
-        </div>
-        <div class="note-text">Behavioral signals ship with spy agent — Week 3</div>
-      </div>
-    </div>
-    <div class="panel-feed">
-      <div class="feed-label">Activity</div>
-      <div>
-        <div class="feed-line"><span class="feed-time">2m ago</span><span class="feed-msg"><b>Suneet J.</b> completed 07.01 · Strategic</span></div>
-        <div class="feed-line"><span class="feed-time">14m ago</span><span class="feed-msg"><b>Priya M.</b> stalled at 02.04 · 67%</span></div>
-        <div class="feed-line"><span class="feed-time">1h ago</span><span class="feed-msg"><b>Arjun K.</b> started 01.03 · Foundation</span></div>
-        <div class="feed-line"><span class="feed-time">3h ago</span><span class="feed-msg"><b>Sofia R.</b> resumed 03.02 · Working</span></div>
       </div>
     </div>
   </div>
@@ -745,6 +671,8 @@ function updateAgentDots(status) {
 
 // ── POLLING ──────────────────────────────────────────────────────────────────
 async function poll() {
+  renderLearnerPulse();
+
   const newStatus = await loadSwarmStatus();
   swarmStatus = newStatus;
   updateLogStream(newStatus);
@@ -919,6 +847,83 @@ window.addEventListener('resize',()=>{
   if(window._lastData){const tc=document.getElementById('trend-canvas');if(tc&&tc.closest('.tab-pane.visible'))drawTrend(tc,window._lastData.lessons);}
 });
 
+function renderLearnerPulse() {
+  let gs;
+  try {
+    const raw = localStorage.getItem('pm_gamification_v1');
+    gs = raw ? JSON.parse(raw) : null;
+  } catch { gs = null; }
+  if (!gs) {
+    const feedEl = document.getElementById('lp-feed');
+    if (feedEl) feedEl.textContent = 'No data yet — open the lesson reader to start learning.';
+    return;
+  }
+  const today = new Date().toISOString().slice(0, 10);
+  const xp = gs.xp || 0, streak = gs.streak || 0, todayOk = gs.todayDone;
+  const rankTitle = xp >= 2000 ? 'Principal PM' : xp >= 1200 ? 'Strategic PM' : xp >= 700 ? 'Technical PM' : xp >= 300 ? 'Working PM' : 'Foundation learner';
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  set('lp-rank', rankTitle + ' · ' + xp + ' XP');
+  const streakEl = document.getElementById('lp-streak');
+  if (streakEl) { streakEl.textContent = '🔥 ' + streak; streakEl.style.color = (!todayOk && streak > 0) ? '#dc2626' : '#d97706'; }
+  set('lp-today', todayOk ? '✓ done today' : 'not yet today');
+  const lessons = gs.lessons || {};
+  const doneLessons = Object.values(lessons).filter(l => l.fQuiz && l.wQuiz && l.sQuiz).length;
+  const doneQuizzes = Object.values(lessons).reduce((a, l) => a + (l.fQuiz?1:0) + (l.wQuiz?1:0) + (l.sQuiz?1:0), 0);
+  const earnedBadges = gs.earnedBadges || [];
+  const todayXP = (gs.xpHistory || {})[today] || 0;
+  const todayLessons = (gs.events || []).filter(e => e.ts && e.ts.slice(0,10) === today && e.type === 'quiz_passed').length;
+  set('lp-stat-lessons', doneLessons);
+  set('lp-stat-quizzes', doneQuizzes);
+  set('lp-stat-xp', xp);
+  set('lp-stat-badges', earnedBadges.length);
+  set('lp-stat-lessons-delta', todayLessons > 0 ? '+' + todayLessons + ' today' : '');
+  set('lp-stat-xp-delta', todayXP > 0 ? '+' + todayXP + ' today' : '');
+  set('lp-stat-quizzes-delta', doneQuizzes > 0 ? Math.round((doneQuizzes/(doneQuizzes+0.01))*100) + '% pass rate' : '');
+  const iconsEl = document.getElementById('lp-stat-badges-icons');
+  if (iconsEl) {
+    const BI = {first_quiz:'⚡',streak_7:'🔥',streak_30:'🌟',module_01:'🏆',module_02:'🗄️',xp_500:'💜',xp_1000:'💎',speed_reader:'📚',perfect_quiz:'🎯'};
+    iconsEl.textContent = earnedBadges.map(id => BI[id] || '🏅').join(' ');
+  }
+  const xpHistory = gs.xpHistory || {};
+  const days = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const key = d.toISOString().slice(0, 10);
+    days.push({ key, label: d.toLocaleDateString('en',{weekday:'short'}).slice(0,2), xp: xpHistory[key] || 0, isToday: key === today });
+  }
+  const maxXP = Math.max(...days.map(d => d.xp), 1);
+  const barsEl = document.getElementById('lp-bars');
+  const labelsEl = document.getElementById('lp-bar-labels');
+  if (barsEl) {
+    barsEl.innerHTML = days.map(d => {
+      const h = Math.max(Math.round((d.xp / maxXP) * 100), d.xp > 0 ? 4 : 0);
+      const bg = d.xp === 0 ? 'background:var(--surface2);border:1px solid var(--border)' : d.isToday ? 'background:#A3E635;border:2px solid #000' : 'background:#A3E635;border:1px solid #000';
+      return `<div style="flex:1;height:${h}%;min-height:${d.xp>0?4:2}px;border-radius:2px;${bg}" title="${d.key}: ${d.xp} XP"></div>`;
+    }).join('');
+  }
+  if (labelsEl) {
+    labelsEl.innerHTML = days.map(d =>
+      `<div style="flex:1;font-size:8px;color:${d.isToday?'var(--text)':'var(--muted)'};text-align:center;font-weight:${d.isToday?'700':'400'}">${d.label}</div>`
+    ).join('');
+  }
+  const events = (gs.events || []).slice().reverse().slice(0, 8);
+  const feedEl = document.getElementById('lp-feed');
+  if (!feedEl) return;
+  if (events.length === 0) { feedEl.textContent = 'No activity yet — open the lesson reader to start.'; return; }
+  const tc = { level_read:{color:'#4d9eff',label:'Read'}, quiz_passed:{color:'#a78bfa',label:'Passed quiz'}, xp_awarded:{color:'#00e5a0',label:'XP earned'}, badge_earned:{color:'#f5a623',label:'Badge earned'}, streak_extended:{color:'#00e5a0',label:'Streak'} };
+  function timeAgoLP(iso) { const d = Math.floor((Date.now()-new Date(iso))/1000); if(d<60)return d+'s ago'; if(d<3600)return Math.floor(d/60)+'m ago'; if(d<86400)return Math.floor(d/3600)+'h ago'; return Math.floor(d/86400)+'d ago'; }
+  feedEl.innerHTML = events.map(e => {
+    const cfg = tc[e.type] || {color:'var(--muted)',label:e.type};
+    let desc = '';
+    if (e.type === 'level_read') desc = (e.level?e.level.charAt(0).toUpperCase()+e.level.slice(0,3)+' · ':'')+(e.title||e.lessonId||'');
+    else if (e.type === 'quiz_passed') desc = (e.title||e.lessonId||'')+(e.correct!==undefined?' · '+e.correct+'/'+e.total:'');
+    else if (e.type === 'xp_awarded') desc = '+'+e.amount+' XP'+(e.reason?' · '+e.reason.replace(/_/g,' '):'');
+    else if (e.type === 'badge_earned') desc = (e.badgeIcon||'')+' '+(e.badgeName||e.badgeId||'');
+    else if (e.type === 'streak_extended') desc = 'Day '+e.day+' 🔥';
+    return `<div style="display:flex;align-items:flex-start;gap:7px;padding:5px 0;border-bottom:1px solid var(--border)"><div style="width:6px;height:6px;border-radius:50%;background:${cfg.color};flex-shrink:0;margin-top:4px"></div><div style="flex:1;line-height:1.4;color:var(--text)">${cfg.label}<span style="color:var(--muted)"> · ${desc}</span></div><div style="font-size:9px;color:var(--muted);flex-shrink:0;margin-top:1px">${timeAgoLP(e.ts)}</div></div>`;
+  }).join('');
+}
+
 (async () => {
   const data = await loadData();
   currentData = data;
@@ -927,6 +932,7 @@ window.addEventListener('resize',()=>{
     data.lessons.forEach(l => { if (l.score) lastScores[l.id] = l.score; });
     render(data);
   }
+  renderLearnerPulse();
   setInterval(poll, 15000);
 })();
 </script>

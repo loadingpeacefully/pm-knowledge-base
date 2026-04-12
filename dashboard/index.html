@@ -743,6 +743,7 @@
 const GS_KEY = 'pm_gamification_v1';
 
 const GS_DEFAULT = {
+  version: 2,
   xp: 0,
   streak: 0,
   lastActiveDate: null,
@@ -752,18 +753,54 @@ const GS_DEFAULT = {
   lessons: {},
   quizCache: {},
   perfectQuizzes: 0,
+  events: [],
+  lessonTimestamps: {},
+  xpHistory: {},
 };
 
 function gsLoad() {
   try {
     const raw = localStorage.getItem(GS_KEY);
-    return raw ? { ...GS_DEFAULT, ...JSON.parse(raw) } : { ...GS_DEFAULT };
+    if (!raw) return { ...GS_DEFAULT };
+    const stored = JSON.parse(raw);
+    const migrated = { ...GS_DEFAULT, ...stored };
+    if (!migrated.events)           migrated.events = [];
+    if (!migrated.lessonTimestamps) migrated.lessonTimestamps = {};
+    if (!migrated.xpHistory)        migrated.xpHistory = {};
+    if (!migrated.version)          migrated.version = 2;
+    return migrated;
   } catch { return { ...GS_DEFAULT }; }
 }
 
 function gsSave(s) {
   try { localStorage.setItem(GS_KEY, JSON.stringify(s)); }
   catch(e) { console.warn('State save failed', e); }
+}
+
+function gsLogEvent(type, details = {}) {
+  const now = new Date().toISOString();
+  const event = { type, ts: now, ...details };
+  const events = [...(GS.events || []), event];
+  if (events.length > 100) events.splice(0, events.length - 100);
+  GS = { ...GS, events };
+  if (type === 'xp_awarded' && details.amount) {
+    const today = now.slice(0, 10);
+    const history = { ...(GS.xpHistory || {}) };
+    history[today] = (history[today] || 0) + details.amount;
+    GS = { ...GS, xpHistory: history };
+  }
+  if (details.lessonId && details.level) {
+    const lts = { ...(GS.lessonTimestamps || {}) };
+    if (!lts[details.lessonId]) lts[details.lessonId] = {};
+    const fieldMap = {
+      'level_read_foundation': 'fRead', 'level_read_working': 'wRead', 'level_read_strategic': 'sRead',
+      'quiz_passed_foundation': 'fQuiz', 'quiz_passed_working': 'wQuiz', 'quiz_passed_strategic': 'sQuiz',
+    };
+    const field = fieldMap[`${type}_${details.level}`];
+    if (field && !lts[details.lessonId][field]) lts[details.lessonId][field] = now;
+    GS = { ...GS, lessonTimestamps: lts };
+  }
+  gsSave(GS);
 }
 
 function gsSyncStreak(s) {
@@ -1172,12 +1209,36 @@ function gsCompleteLevel() {
   const passed  = correct >= Math.ceil(questions.length * 0.67);
   const perfect = correct === questions.length;
   const xpGain  = (correct * XP_VALUES.perCorrect) + (passed ? XP_VALUES.levelBonus : 0);
+  const lessonTitle = (window.allLessons || []).find(l => l.id === lessonId)?.title || lessonId;
 
   GS = gsMarkLevel(GS, lessonId, level);
   GS = gsMarkQuiz(GS, lessonId, level, passed, perfect);
+
+  // Hook: quiz passed
+  if (passed) {
+    gsLogEvent('quiz_passed', { lessonId, level, correct, total: questions.length, title: lessonTitle });
+  }
+
   GS = gsAwardXP(GS, xpGain);
+  // Hook: XP awarded
+  gsLogEvent('xp_awarded', { amount: xpGain, reason: passed ? 'quiz_pass' : 'quiz_attempt', lessonId, level });
+
+  // Hook: streak extended
+  const streakBefore = GS.streak;
   GS = gsMarkToday(GS);
+  if (GS.streak > streakBefore) {
+    gsLogEvent('streak_extended', { day: GS.streak });
+  }
+
+  // Hook: badge earned
+  const badgesBefore = [...(GS.earnedBadges || [])];
   GS = { ...GS, earnedBadges: gsCheckBadges(GS, Object.values(S.byId)) };
+  const newBadges = GS.earnedBadges.filter(id => !badgesBefore.includes(id));
+  newBadges.forEach(id => {
+    const badge = BADGES.find(b => b.id === id);
+    gsLogEvent('badge_earned', { badgeId: id, badgeName: badge?.name || id, badgeIcon: badge?.icon || '🏅' });
+  });
+
   gsSave(GS);
 
   gsShowComplete(lessonId, level, passed, correct, questions.length);
@@ -1569,7 +1630,7 @@ function renderLesson(lesson, md) {
   // Mark this level as read and refresh gamification UI
   if (levels.isV2 && S.activeLevel) {
     GS = gsMarkLevel(GS, lesson.id, S.activeLevel);
-    gsSave(GS);
+    gsLogEvent('level_read', { lessonId: lesson.id, level: S.activeLevel, title: lesson.title, module: lesson.modNum });
     gsRenderProfile();
     gsRenderSidebarStates();
   }
@@ -1642,7 +1703,7 @@ function changeLevel(level) {
   S.activeLevel = level;
   localStorage.setItem(`pm_level_${S.active.id}`, level);
   GS = gsMarkLevel(GS, S.active.id, level);
-  gsSave(GS);
+  gsLogEvent('level_read', { lessonId: S.active.id, level, title: S.active.title, module: S.active.modNum });
   gsRenderProfile();
   gsRenderSidebarStates();
 
