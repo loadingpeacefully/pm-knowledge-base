@@ -20,7 +20,7 @@ profiles:
     - Growth PM
     - Consumer Startup PM
     - B2B Enterprise PM
-status: draft
+status: ready
 last_qa: 2026-04-11
 split: lesson_a
 continues_in: 08.12 — Sales Pipeline Integration

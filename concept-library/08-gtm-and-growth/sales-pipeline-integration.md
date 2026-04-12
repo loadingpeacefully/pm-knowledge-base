@@ -24,7 +24,7 @@ profiles:
     - Ex-Engineer PM
     - Senior PM
     - Head of Product
-status: draft
+status: ready
 last_qa: 2026-04-11
 split: lesson_b
 continues_from: 08.11 — CRM Fundamentals
