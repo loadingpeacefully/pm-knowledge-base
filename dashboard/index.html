@@ -1387,8 +1387,10 @@ function isModuleExpanded(moduleId) {
   const stored = localStorage.getItem('pm_sidebar_' + moduleId);
   if (stored === 'collapsed') return false;
   if (stored === 'expanded')  return true;
-  // Default: only the active module is open on first load
-  return moduleId === getActiveModuleId();
+  // Default: expand the active module, or module 01 if nothing is active yet
+  const activeMod = getActiveModuleId();
+  if (!activeMod) return moduleId === (S.modules[0]?.id || '01');
+  return moduleId === activeMod;
 }
 
 const MODULE_SHORT_TITLES = {
