@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-04-13T18:09:56.481367+00:00",
+  "generated_at": "2026-04-13T18:11:40.827361+00:00",
   "summary": {
     "total_lessons": 89,
     "lessons_scored": 89,
-    "avg_score": 7.2,
-    "total_critical": 436,
+    "avg_score": 7.3,
+    "total_critical": 435,
     "feedback_reports": 89,
     "modules_total": 9
   },
@@ -2061,17 +2061,17 @@
       "status": "ready",
       "writer": "cfo-finance",
       "word_count": 5420,
-      "score": 6.1,
+      "score": 7.3,
       "health": "NEEDS_WORK",
-      "criticals": 5,
-      "highs": 30,
-      "mediums": 39,
+      "criticals": 4,
+      "highs": 27,
+      "mediums": 46,
       "run_formatter": true,
-      "last_run": "2026-04-08T19:21:50.688347+00:00",
+      "last_run": "2026-04-13T18:11:40.638415+00:00",
       "scores_by_level": {
-        "foundation": 6.7,
-        "working": 6.0,
-        "strategic": 5.0
+        "foundation": 7.8,
+        "working": 7.0,
+        "strategic": 7.0
       }
     },
     {
