@@ -441,8 +441,28 @@ LESSON CONTENT TO REVIEW:
 YOUR SPECIFIC CHECKS FOR THIS LEVEL:
 {checks}
 
-Review the lesson from your persona's perspective. Be honest and specific.
-Do not be generous — real learning gaps matter.
+Review the lesson from your persona's perspective. Be precise and honest.
+
+SCORING RUBRIC — use this to calibrate your score:
+  10 — Exceptional. Near-perfect for this level. A benchmark lesson.
+       No meaningful gaps. Would impress a senior PM at any top company.
+  9  — Excellent. Strong content with only minor polish needed.
+       All key concepts covered, well-structured, great examples.
+  8  — Good, publishable content. Addresses the level's core purpose.
+       Minor gaps exist but don't meaningfully hurt the learner.
+       This is the baseline for "this lesson is doing its job."
+  7  — Decent foundation with real gaps. Works but leaves the learner
+       with unanswered questions a PM will actually face on the job.
+  6  — Significant gaps. Missing key concepts, thin examples, or the
+       PM-relevance of the content isn't clear enough to be actionable.
+  5  — Needs substantial work. Core purpose not achieved at this level.
+  1-4 — Broken, missing, or fundamentally wrong. Rare.
+
+IMPORTANT: If the lesson content for this level is complete, well-structured,
+and addresses your specific checks below, you should score 8 or above.
+A score of 7 means "good but has real gaps you could name specifically."
+A score of 6 means "has problems a learner would notice."
+Do not anchor to 7 as a default — use the rubric.
 
 Respond in this EXACT JSON format:
 {{
