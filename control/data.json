@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-04-13T18:38:58.054457+00:00",
+  "generated_at": "2026-04-13T18:41:11.433374+00:00",
   "summary": {
     "total_lessons": 89,
     "lessons_scored": 89,
-    "avg_score": 7.4,
-    "total_critical": 379,
+    "avg_score": 7.5,
+    "total_critical": 382,
     "feedback_reports": 89,
     "modules_total": 9
   },
@@ -2457,16 +2457,16 @@
       "status": "draft",
       "writer": "gtm-lead",
       "word_count": 4460,
-      "score": 6.0,
+      "score": 6.3,
       "health": "NEEDS_WORK",
-      "criticals": 11,
-      "highs": 30,
-      "mediums": 36,
+      "criticals": 14,
+      "highs": 40,
+      "mediums": 50,
       "run_formatter": true,
-      "last_run": "2026-04-11T12:59:43.482021+00:00",
+      "last_run": "2026-04-13T18:41:11.266823+00:00",
       "scores_by_level": {
-        "foundation": 6.5,
-        "working": 6.0,
+        "foundation": 6.2,
+        "working": 6.8,
         "strategic": 5.5
       }
     },
