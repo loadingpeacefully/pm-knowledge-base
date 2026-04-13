@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-13T17:33:56.336784+00:00",
+  "generated_at": "2026-04-13T17:35:46.396221+00:00",
   "summary": {
     "total_lessons": 89,
     "lessons_scored": 89,
@@ -1709,17 +1709,17 @@
       "status": "ready",
       "writer": "senior-pm",
       "word_count": 5667,
-      "score": 6.4,
+      "score": 7.9,
       "health": "GOOD",
       "criticals": 3,
-      "highs": 30,
-      "mediums": 36,
+      "highs": 14,
+      "mediums": 45,
       "run_formatter": true,
-      "last_run": "2026-04-11T14:25:17.810861+00:00",
+      "last_run": "2026-04-13T17:35:46.209010+00:00",
       "scores_by_level": {
-        "foundation": 7.0,
-        "working": 7.0,
-        "strategic": 5.0
+        "foundation": 8.0,
+        "working": 7.8,
+        "strategic": 8.0
       }
     },
     {
