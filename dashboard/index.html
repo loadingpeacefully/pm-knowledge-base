@@ -1383,14 +1383,16 @@ function getActiveModuleId() {
 }
 
 function isModuleExpanded(moduleId) {
-  // Honor explicit localStorage state for all modules
+  // Active module always expanded — can't hide the lesson you're reading
+  const activeMod = getActiveModuleId();
+  if (activeMod && moduleId === activeMod) return true;
+  // Honor localStorage for non-active modules
   const stored = localStorage.getItem('pm_sidebar_' + moduleId);
   if (stored === 'collapsed') return false;
   if (stored === 'expanded')  return true;
-  // Default: expand the active module, or module 01 if nothing is active yet
-  const activeMod = getActiveModuleId();
+  // Default: expand module 01 if nothing is active yet
   if (!activeMod) return moduleId === (S.modules[0]?.id || '01');
-  return moduleId === activeMod;
+  return false;
 }
 
 const MODULE_SHORT_TITLES = {
