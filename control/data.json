@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-04-13T17:57:04.604422+00:00",
+  "generated_at": "2026-04-13T17:58:40.028416+00:00",
   "summary": {
     "total_lessons": 89,
     "lessons_scored": 89,
     "avg_score": 7.2,
-    "total_critical": 453,
+    "total_critical": 449,
     "feedback_reports": 89,
     "modules_total": 9
   },
@@ -1885,17 +1885,17 @@
       "status": "ready",
       "writer": "senior-pm",
       "word_count": 4809,
-      "score": 6.0,
-      "health": "NEEDS_WORK",
-      "criticals": 9,
-      "highs": 30,
+      "score": 7.3,
+      "health": "GOOD",
+      "criticals": 5,
+      "highs": 23,
       "mediums": 53,
       "run_formatter": true,
-      "last_run": "2026-04-08T18:24:50.276459+00:00",
+      "last_run": "2026-04-13T17:58:39.838555+00:00",
       "scores_by_level": {
-        "foundation": 7.0,
-        "working": 6.0,
-        "strategic": 4.5
+        "foundation": 8.0,
+        "working": 7.2,
+        "strategic": 7.0
       }
     },
     {
