@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-04-13T18:27:54.567852+00:00",
+  "generated_at": "2026-04-13T18:29:36.623202+00:00",
   "summary": {
     "total_lessons": 89,
     "lessons_scored": 89,
     "avg_score": 7.4,
-    "total_critical": 399,
+    "total_critical": 396,
     "feedback_reports": 89,
     "modules_total": 9
   },
@@ -2237,17 +2237,17 @@
       "status": "ready",
       "writer": "gtm-lead",
       "word_count": 4862,
-      "score": 7.0,
+      "score": 8.1,
       "health": "GOOD",
-      "criticals": 4,
-      "highs": 26,
-      "mediums": 45,
+      "criticals": 1,
+      "highs": 11,
+      "mediums": 37,
       "run_formatter": true,
-      "last_run": "2026-04-07T08:08:43.402743+00:00",
+      "last_run": "2026-04-13T18:29:36.431629+00:00",
       "scores_by_level": {
-        "foundation": 7.2,
-        "working": 7.0,
-        "strategic": 7.0
+        "foundation": 8.2,
+        "working": 8.0,
+        "strategic": 8.0
       }
     },
     {
