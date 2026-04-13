@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-04-13T18:54:07.222478+00:00",
+  "generated_at": "2026-04-13T18:56:03.133060+00:00",
   "summary": {
     "total_lessons": 89,
     "lessons_scored": 89,
     "avg_score": 7.5,
-    "total_critical": 358,
+    "total_critical": 354,
     "feedback_reports": 89,
     "modules_total": 9
   },
@@ -2523,16 +2523,16 @@
       "status": "ready",
       "writer": "staff-engineer-pm",
       "word_count": 6188,
-      "score": 6.2,
+      "score": 7.0,
       "health": "NEEDS_WORK",
-      "criticals": 8,
-      "highs": 29,
-      "mediums": 32,
+      "criticals": 4,
+      "highs": 35,
+      "mediums": 59,
       "run_formatter": true,
-      "last_run": "2026-04-09T09:51:04.824357+00:00",
+      "last_run": "2026-04-13T18:56:02.966690+00:00",
       "scores_by_level": {
-        "foundation": 6.7,
-        "working": 5.5,
+        "foundation": 7.6,
+        "working": 6.6,
         "strategic": 6.0
       }
     },
