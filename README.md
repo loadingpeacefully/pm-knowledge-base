@@ -30,16 +30,17 @@ Write → Review → Score → Fix → Measure → Repeat
 
 | Metric | Value |
 |---|---|
-| Lessons written | 88 |
-| Lessons scored | 88 |
-| Average quality score | 6.5 / 10 |
-| Highest score | 7.4 / 10 (Error Codes & Response Design) |
-| Lowest score | 5.1 / 10 (CRM & Sales Pipeline) |
-| Open critical flags | 598 |
-| Total planned lessons | 88 across 9 modules — complete |
+| Lessons written | 89 |
+| Lessons scored | 89 |
+| Average quality score | 7.58 / 10 |
+| Highest score | 8.2 / 10 (API Gateway) |
+| Lowest score | 5.9 / 10 (User Story Writing) |
+| Lessons at 8.0+ | 20 / 89 |
+| Open critical flags | 345 |
+| Total planned lessons | 89 across 9 modules |
 | Agents in the swarm | 13 (11 PM personas + synthesizer + formatter) |
 | Cost per review run | ~$0.04 (Haiku fast mode) |
-| Total API cost to date | ~$4.50 |
+| Total API cost to date | ~$8 |
 
 ---
 
@@ -119,15 +120,15 @@ A PM knowledge base covering the technical and strategic concepts product manage
 
 | Module | Topic | Lessons | Avg Score |
 |---|---|---|---|
-| 01 | APIs & System Integration | 10/10 | 7.1 |
-| 02 | Databases & Data | 10/10 | 6.9 |
-| 03 | Infrastructure & DevOps | 10/10 | 6.8 |
-| 04 | AI & ML Systems | 10/10 | 7.0 |
-| 05 | Product Fundamentals | 10/10 | 6.3 |
-| 06 | Metrics & Analytics | 10/10 | 6.1 |
-| 07 | Business & Monetization | 10/10 | 6.2 |
-| 08 | GTM & Growth | 10/10 | 6.0 |
-| 09 | Security & Scale | 8/8 | 5.9 |
+| 01 | APIs & System Integration | 10/10 | 8.0 |
+| 02 | Databases & Data | 10/10 | 8.0 |
+| 03 | Infrastructure & DevOps | 10/10 | 7.9 |
+| 04 | AI & ML Systems | 10/10 | 7.9 |
+| 05 | Product Fundamentals | 10/10 | 7.3 |
+| 06 | Metrics & Analytics | 10/10 | 7.4 |
+| 07 | Business & Monetization | 10/10 | 7.3 |
+| 08 | GTM & Growth | 11/11 | 7.3 |
+| 09 | Security & Scale | 8/8 | 7.2 |
 
 Each lesson has three depth levels so different PMs can read the same content at the right altitude — Foundation for context, Working Knowledge for day-to-day application, Strategic Depth for senior decision-making.
 
@@ -153,3 +154,7 @@ The swarm runtime log (`control/swarm_status.json` — gitignored, ephemeral).
 
 *Built with Claude Sonnet and Haiku via the Anthropic API.*
 *Lesson reader and mission control run as static HTML — no backend required.*
+
+---
+
+**I built a system that autonomously reviews, scores, and improves a PM curriculum using a swarm of 13 AI agents — 89 lessons, average quality score 7.58/10, 20 lessons scoring 8.0+, at $0.04 per review run.**
